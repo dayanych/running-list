@@ -26,6 +26,11 @@
     "array-bracket-newline": ["error", { "multiline": true }],
     "object-curly-newline": ["error", { "multiline": true }],
     "no-console": "error",
+    "no-restricted-exports": ["error", 
+      { "restrictDefaultExports": 
+        { "direct": true, "defaultFrom": true }
+      }
+    ],
     "@stylistic/semi": [2, "always"],
     "@stylistic/semi-style": ["error", "last"],
     "@stylistic/eol-last": ["error", "always"],

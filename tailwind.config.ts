@@ -1,9 +1,9 @@
+/* eslint-disable no-restricted-exports */
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./src/**/*.{ts,tsx}', './index.html'],
   theme: {
     extend: {
-      fontFamily: { sans: ['Graphik', 'sans-serif'] },
       colors: {
         border: 'var(--border)',
         input: 'var(--input)',
