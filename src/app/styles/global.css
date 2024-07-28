@@ -36,6 +36,9 @@
     --ring: 222.2 84% 4.9%;
 
     --radius: 0.5rem;
+
+    --state-block-width: 40px;
+    --state-block-height: 40px;
   }
 
   .dark {
@@ -107,4 +110,16 @@ ol {
 
 input {
   font-family: inherit;
+}
+
+.w-state {
+  width: var(--state-block-width);
+}
+
+.h-state {
+  height: var(--state-block-height);
+}
+
+.border-state {
+  border: 1px dotted var(--muted);
 }

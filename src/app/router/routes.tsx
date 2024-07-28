@@ -1,13 +1,12 @@
-import { Navigate, RouteObject } from 'react-router-dom';
+import { Navigate, Outlet, RouteObject } from 'react-router-dom';
 
 import { SignInPage, SignUpPage } from '@/pages/auth';
 import { NotFoundPage } from '@/pages/not-found';
+import { WeekPage } from '@/pages/week-page';
 import { AuthInjector } from '@/widgets/auth-injector';
 import { BaseLayout } from '@/widgets/base-layout';
 import { ProtectedLayout } from '@/widgets/protected-layout';
 import { PublicLayout } from '@/widgets/public-layout';
-
-import { App } from '../app';
 
 const routes: RouteObject[] = [
   {
@@ -41,8 +40,14 @@ const routes: RouteObject[] = [
             element: <ProtectedLayout />,
             children: [
               {
-                path: '',
-                element: <App />,
+                path: ':year',
+                element: <Outlet />,
+                children: [
+                  {
+                    path: ':week',
+                    element: <WeekPage />,
+                  },
+                ],
               },
             ],
           },
