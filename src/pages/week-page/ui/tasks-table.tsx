@@ -17,6 +17,7 @@ import {
 } from '@/shared/ui/shadcn/table';
 
 import { useTasksTable } from '../lib/use-tasks-table';
+import { TaskContext } from '../model/task-context';
 
 export interface TaskWithStates extends Task {
   states: State[];
@@ -27,10 +28,17 @@ interface Props {
   startWeekDate: Date;
   loading?: boolean;
   error?: boolean;
+  createTask: () => void;
 }
 
-const TasksTable = ({ data, startWeekDate, loading, error }: Props) => {
-  const { columns, table } = useTasksTable(data, startWeekDate);
+const TasksTable = ({
+  data,
+  startWeekDate,
+  loading,
+  error,
+  createTask,
+}: Props) => {
+  const { columns, table, tasks } = useTasksTable(data, startWeekDate);
 
   return (
     <Table className="border-collapse border text-lg">
@@ -102,18 +110,19 @@ const TasksTable = ({ data, startWeekDate, loading, error }: Props) => {
           </TableRow>
         )}
         {table.getRowModel().rows?.length > 0 &&
-          table.getRowModel().rows.map((row) => (
-            <TableRow
-              key={row.id}
-              data-state={row.getIsSelected() && 'selected'}
-              className="border-b-0"
-            >
-              {row
-                .getVisibleCells()
-                .map((cell) =>
-                  flexRender(cell.column.columnDef.cell, cell.getContext()),
-                )}
-            </TableRow>
+          table.getRowModel().rows.map((row, index) => (
+            <TaskContext.Provider key={row.id} value={tasks[index]}>
+              <TableRow
+                data-state={row.getIsSelected() && 'selected'}
+                className="border-b-0"
+              >
+                {row
+                  .getVisibleCells()
+                  .map((cell) =>
+                    flexRender(cell.column.columnDef.cell, cell.getContext()),
+                  )}
+              </TableRow>
+            </TaskContext.Provider>
           ))}
       </TableBody>
       {table.getRowModel().rows?.length > 0 && (
@@ -121,7 +130,7 @@ const TasksTable = ({ data, startWeekDate, loading, error }: Props) => {
           <TableRow>
             <TableCell colSpan={columns.length}>
               <div className="flex w-full items-center justify-end p-2">
-                <Button>
+                <Button onClick={createTask}>
                   <span className="text-sm">Create task</span>
                   <span className="ml-2 inline-flex items-center">
                     <Plus size={16} />

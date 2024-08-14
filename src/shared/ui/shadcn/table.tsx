@@ -87,11 +87,13 @@ const TableCell = React.forwardRef<
   HTMLTableCellElement,
   React.TdHTMLAttributes<HTMLTableCellElement> & {
     className?: string;
+    onCellClick?: () => void;
   }
->(({ className, ...props }, ref) => (
+>(({ className, onCellClick, ...props }, ref) => (
   <td
     ref={ref}
     className={cn('p-0 align-middle [&:has([role=checkbox])]:pr-0', className)}
+    onClick={onCellClick}
     {...props}
   />
 ));

@@ -2,7 +2,8 @@ import { useWeekPage } from '../lib/use-week-page';
 import { TasksTable } from './tasks-table';
 
 export const WeekPage = () => {
-  const { startWeekDate, tasksWithStates, isLoading, isError } = useWeekPage();
+  const { startWeekDate, tasksWithStates, isLoading, isError, createTask } =
+    useWeekPage();
 
   return (
     <div className="container">
@@ -12,6 +13,7 @@ export const WeekPage = () => {
         startWeekDate={startWeekDate}
         loading={isLoading}
         error={isError}
+        createTask={createTask}
       />
     </div>
   );

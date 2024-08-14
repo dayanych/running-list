@@ -74,5 +74,5 @@ export const useTasksTable = (tasks: TaskWithStates[], startWeekDate: Date) => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  return { columns, table };
+  return { columns, table, tasks };
 };

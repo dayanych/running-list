@@ -1,8 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 
-import { StatesDal } from '@/entities/states';
 import { TasksDal } from '@/entities/tasks';
+import { useTasksQuery } from '@/shared/lib/hooks/use-tasks-query';
 import { useUser } from '@/shared/lib/hooks/use-user';
 
 import { useYearWeekParams } from './use-year-week-params';
@@ -18,6 +18,7 @@ const getStartDateOfWeek = (week: number, year: number) => {
 export const useWeekPage = () => {
   const user = useUser();
   const { year, week } = useYearWeekParams();
+  const queryClient = useQueryClient();
 
   if (!user || !year || !week) {
     toast.error('User, year, or week not provided');
@@ -30,22 +31,30 @@ export const useWeekPage = () => {
     data: tasksWithStates,
     isLoading,
     isError,
-  } = useQuery({
-    queryKey: ['getTasks', user.id, year, week],
-    queryFn: async () => {
-      const tasks = await TasksDal.getTasksByUserIdYearWeek(
-        user.id,
-        year,
+  } = useTasksQuery(user.id, year, week);
+
+  const { mutate } = useMutation({
+    mutationKey: ['updateTaskState'],
+    mutationFn: () =>
+      TasksDal.createTask({
+        title: '',
+        userId: user.id,
         week,
-      );
-      const tasksWithStates = tasks.map(async (task) => {
-        const taskId = task.id;
-        const states = await StatesDal.getStatesByTaskId(taskId);
-
-        return { ...task, states };
+        year,
+        color: '',
+        createdAt: new Date(),
+      }),
+    onSuccess: async (newTask) => {
+      // await queryClient.invalidateQueries({
+      //   queryKey: ['getTasks', user.id, year, week],
+      // });
+      if (!tasksWithStates) {
+        return;
+      }
+      await queryClient.setQueryData(['getTasks', user.id, year, week], () => {
+        const newData = [...tasksWithStates, { ...newTask, states: [] }];
+        return newData;
       });
-
-      return Promise.all(tasksWithStates);
     },
   });
 
@@ -54,5 +63,6 @@ export const useWeekPage = () => {
     tasksWithStates,
     isLoading,
     isError,
+    createTask: mutate,
   };
 };

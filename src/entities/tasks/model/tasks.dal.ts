@@ -1,3 +1,5 @@
+import { Timestamp } from 'firebase/firestore';
+
 import { converterTaskDtoToTask } from '../api/mappers/task-dto-to-task.mapper';
 import { convertedTaskToTaskDto } from '../api/mappers/task-to-task-dto.mapper';
 import { TasksService } from '../api/tasks.service';
@@ -30,7 +32,7 @@ export class TasksDal {
       week: taskDtoWithoutId.week,
       year: taskDtoWithoutId.year,
       color: taskDtoWithoutId.color,
-      created_at: new Date(),
+      created_at: Timestamp.fromDate(new Date()),
     };
 
     const task = await TasksService.createAndGetTask(taskDto);
