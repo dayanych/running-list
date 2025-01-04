@@ -1,3 +1,5 @@
+import { Timestamp } from 'firebase/firestore';
+
 import { Task } from '../../model/types/task.type';
 import { TaskDto } from '../dto/task.dto';
 
@@ -9,6 +11,6 @@ export const convertedTaskToTaskDto = (task: Task): TaskDto => {
     year: task.year,
     color: task.color,
     user_id: task.userId,
-    created_at: task.createdAt,
+    created_at: Timestamp.fromDate(task.createdAt),
   };
 };

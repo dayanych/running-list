@@ -1,3 +1,5 @@
+import { Timestamp } from 'firebase/firestore';
+
 export type TaskDto = {
   id: string;
   title: string;
@@ -5,5 +7,5 @@ export type TaskDto = {
   week: number;
   year: number;
   color: string;
-  created_at: Date;
+  created_at: Timestamp;
 };

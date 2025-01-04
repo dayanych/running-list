@@ -9,6 +9,6 @@ export const converterTaskDtoToTask = (taskDto: TaskDto): Task => {
     year: taskDto.year,
     color: taskDto.color,
     userId: taskDto.user_id,
-    createdAt: taskDto.created_at,
+    createdAt: taskDto.created_at.toDate(),
   };
 };
