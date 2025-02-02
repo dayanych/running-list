@@ -5,7 +5,7 @@ import { convertedTaskToTaskDto } from '../api/mappers/task-to-task-dto.mapper';
 import { TasksService } from '../api/tasks.service';
 import { Task } from './types/task.type';
 
-type TaskWithoutId = Omit<Task, 'id'>;
+type TaskWithoutId = Omit<Task, 'id' | 'createdAt'>;
 
 export class TasksDal {
   public static async getTasksByUserIdYearWeek(

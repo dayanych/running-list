@@ -7,15 +7,11 @@ import { EditableText } from '@/shared/ui/editable-text';
 import { Button } from '@/shared/ui/shadcn/button';
 import { TableCell } from '@/shared/ui/shadcn/table';
 
-import { DayNameCell } from '../ui/day-name.cell';
-import { EmptyStateCell } from '../ui/empty-state-cell';
-import { FillStateCell } from '../ui/fill-state-cell';
+import { DayNameCell } from '../ui/day-name-cell';
+import { StateCell } from '../ui/state-cell';
 
 const returnStateCell = (value: { date: Date; state: State }) => {
-  if (value.state === null) {
-    return <EmptyStateCell date={value.date} />;
-  }
-  return <FillStateCell state={value.state} />;
+  return <StateCell state={value.state} date={value.date} />;
 };
 
 export const getTasksColumns = (): ColumnDef<any, any>[] => [

@@ -3,6 +3,7 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  orderBy,
   query,
   setDoc,
   updateDoc,
@@ -29,6 +30,7 @@ export class TasksService {
         where('user_id', '==', userId),
         where('year', '==', year),
         where('week', '==', week),
+        orderBy('created_at', 'asc'),
       ),
     );
 

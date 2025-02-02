@@ -4,8 +4,7 @@ import toast from 'react-hot-toast';
 import { StatesDal } from '@/entities/states';
 import { TasksDal } from '@/entities/tasks';
 import { useUser } from '@/shared/lib/hooks/use-user';
-
-import { useYearWeekParams } from './use-year-week-params';
+import { useYearWeekParams } from '@/shared/lib/hooks/use-year-week-params';
 
 const getStartDateOfWeek = (week: number, year: number) => {
   const firstDayOfYear = new Date(year, 0, 1);
@@ -38,14 +37,14 @@ export const useWeekPage = () => {
         year,
         week,
       );
-      const tasksWithStates = tasks.map(async (task) => {
-        const taskId = task.id;
-        const states = await StatesDal.getStatesByTaskId(taskId);
+      const tasksWithStates = await Promise.all(
+        tasks.map(async (task) => {
+          const states = await StatesDal.getStatesByTaskId(task.id);
+          return { ...task, states };
+        }),
+      );
 
-        return { ...task, states };
-      });
-
-      return Promise.all(tasksWithStates);
+      return tasksWithStates;
     },
   });
 

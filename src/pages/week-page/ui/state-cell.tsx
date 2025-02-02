@@ -12,7 +12,8 @@ import {
 import { TableCell } from '@/shared/ui/shadcn/table';
 
 interface Props {
-  state: State;
+  state: State | null;
+  date: Date;
 }
 
 const size = 16;
@@ -50,18 +51,20 @@ const statusItems = [
   },
 ];
 
-export const FillStateCell = ({ state }: Props) => {
+export const StateCell = ({ state }: Props) => {
   return (
-    <DropdownMenu key={state.id}>
+    <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <TableCell className="cursor-pointer border-2">
+        <TableCell
+          className={`cursor-pointer ${state ? 'border-2' : 'border border-dashed'}`}
+        >
           <div className="h-state w-state flex items-center justify-center text-gray-500">
-            {state.status}
+            {state ? state.status : ''}
           </div>
         </TableCell>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuGroup key={state.id}>
+        <DropdownMenuGroup>
           {statusItems.map((item, index) => (
             <>
               {index === statusItems.length - 1 && <DropdownMenuSeparator />}

@@ -1,16 +1,14 @@
 import { flexRender } from '@tanstack/react-table';
-import { CalendarX, LoaderCircle, Plus } from 'lucide-react';
+import { LoaderCircle } from 'lucide-react';
 import { memo } from 'react';
 
 import { State } from '@/entities/states/model/types/state.type';
 import { Task } from '@/entities/tasks/model/types/task.type';
 import { cn } from '@/shared/lib/cn';
-import { Button } from '@/shared/ui/shadcn/button';
 import {
   Table,
   TableBody,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -86,17 +84,9 @@ const TasksTable = ({ data, startWeekDate, loading, error }: Props) => {
           <TableRow>
             <TableCell colSpan={columns.length} className="text-center">
               <div className="flex w-full flex-col items-center justify-center gap-4 py-8">
-                <CalendarX size={50} className="text-muted-foreground" />
-                <p className="text-4xl">Nothing!</p>
                 <span className="text-sm text-muted-foreground">
                   Add the first task to get started
                 </span>
-                <Button>
-                  <span className="text-sm">Create task</span>
-                  <span className="ml-2 inline-flex items-center">
-                    <Plus size={16} />
-                  </span>
-                </Button>
               </div>
             </TableCell>
           </TableRow>
@@ -116,22 +106,6 @@ const TasksTable = ({ data, startWeekDate, loading, error }: Props) => {
             </TableRow>
           ))}
       </TableBody>
-      {table.getRowModel().rows?.length > 0 && (
-        <TableFooter>
-          <TableRow>
-            <TableCell colSpan={columns.length}>
-              <div className="flex w-full items-center justify-end p-2">
-                <Button>
-                  <span className="text-sm">Create task</span>
-                  <span className="ml-2 inline-flex items-center">
-                    <Plus size={16} />
-                  </span>
-                </Button>
-              </div>
-            </TableCell>
-          </TableRow>
-        </TableFooter>
-      )}
     </Table>
   );
 };
