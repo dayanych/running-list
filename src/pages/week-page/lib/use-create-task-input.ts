@@ -15,7 +15,7 @@ export const useCreateTaskInput = () => {
     throw new Error('User not provided');
   }
 
-  const { mutate: createTask } = useMutation({
+  const { mutate: createTask, isPending } = useMutation({
     mutationKey: ['createTask'],
     mutationFn: async () =>
       TasksDal.createTask({
@@ -47,6 +47,7 @@ export const useCreateTaskInput = () => {
 
   return {
     taskTitle,
+    isLoading: isPending,
     onSubmit,
     handleTaskTitleChange,
   };

@@ -1,5 +1,8 @@
 import { Plus, Square, Trash2 } from 'lucide-react';
+import { useMemo } from 'react';
 
+import { StatesDal } from '@/entities/states';
+import { StateStatus } from '@/entities/states/model/constants/state-status';
 import { State } from '@/entities/states/model/types/state.type';
 import {
   DropdownMenu,
@@ -12,46 +15,65 @@ import {
 import { TableCell } from '@/shared/ui/shadcn/table';
 
 interface Props {
-  state: State | null;
   date: Date;
+  state: State | null;
+  taskId: string;
 }
 
 const size = 16;
 
-const statusItems = [
-  {
-    icon: <Square size={size} />,
-    label: 'Empty',
-    onclick: () => {},
-  },
-  {
-    icon: <Square size={size} color="green" />,
-    label: 'Full done',
-    onclick: () => {},
-  },
-  {
-    icon: <Square size={size} color="blue" />,
-    label: 'Half done',
-    onclick: () => {},
-  },
-  {
-    icon: <Square size={size} color="orange" />,
-    label: 'Delay',
-    onclick: () => {},
-  },
-  {
-    icon: <Plus size={size} className="rotate-45" />,
-    label: 'Failed',
-    onclick: () => {},
-  },
-  {
-    icon: <Trash2 size={size} className="text-destructive" />,
-    label: 'Delete',
-    onclick: () => {},
-  },
-];
+export const StateCell = ({ state, taskId }: Props) => {
+  const updateStatus = async (status: StateStatus) => {
+    if (!state) {
+      await StatesDal.createState({});
+    }
 
-export const StateCell = ({ state }: Props) => {
+    await StatesDal.updateState({
+      ...state,
+      status,
+    });
+  };
+
+  const statusItems = useMemo(
+    () => [
+      {
+        icon: <Square size={size} />,
+        label: 'Empty',
+        onclick: () => updateStatus(StateStatus.Empty),
+      },
+      {
+        icon: <Square size={size} color="green" />,
+        label: 'Full done',
+        onclick: () => updateStatus(StateStatus.FullDone),
+      },
+      {
+        icon: <Square size={size} color="blue" />,
+        label: 'Half done',
+        onclick: () => updateStatus(StateStatus.HalfDone),
+      },
+      {
+        icon: <Square size={size} color="orange" />,
+        label: 'Delay',
+        onclick: () => updateStatus(StateStatus.Delay),
+      },
+      {
+        icon: <Plus size={size} className="rotate-45" />,
+        label: 'Failed',
+        onclick: () => updateStatus(StateStatus.Failed),
+      },
+      ...(state
+        ? [
+            {
+              icon: <Trash2 size={size} className="text-destructive" />,
+              label: 'Delete',
+              onclick: () => updateStatus(StateStatus.Empty),
+            },
+          ]
+        : []),
+    ],
+    [],
+  );
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -67,7 +89,9 @@ export const StateCell = ({ state }: Props) => {
         <DropdownMenuGroup>
           {statusItems.map((item, index) => (
             <>
-              {index === statusItems.length - 1 && <DropdownMenuSeparator />}
+              {index === statusItems.length - 1 && state && (
+                <DropdownMenuSeparator />
+              )}
               <DropdownMenuItem
                 key={item.label}
                 onClick={item.onclick}

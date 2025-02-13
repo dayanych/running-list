@@ -62,6 +62,7 @@ export const useTasksTable = (tasks: TaskWithStates[], startWeekDate: Date) => {
 
         return {
           ...dayStatusClone,
+          taskId: task.id,
           taskTitle: task.title,
         };
       }),

@@ -10,8 +10,14 @@ import { TableCell } from '@/shared/ui/shadcn/table';
 import { DayNameCell } from '../ui/day-name-cell';
 import { StateCell } from '../ui/state-cell';
 
-const returnStateCell = (value: { date: Date; state: State }) => {
-  return <StateCell state={value.state} date={value.date} />;
+const returnStateCell = (value: {
+  date: Date;
+  state: State;
+  taskId: string;
+}) => {
+  return (
+    <StateCell state={value.state} date={value.date} taskId={value.taskId} />
+  );
 };
 
 export const getTasksColumns = (): ColumnDef<any, any>[] => [
