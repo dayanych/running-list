@@ -1,7 +1,6 @@
 import { Plus, Square, Trash2 } from 'lucide-react';
 import { useMemo } from 'react';
 
-import { StatesDal } from '@/entities/states';
 import { StateStatus } from '@/entities/states/model/constants/state-status';
 import { State } from '@/entities/states/model/types/state.type';
 import {
@@ -14,6 +13,8 @@ import {
 } from '@/shared/ui/shadcn/dropdown-menu';
 import { TableCell } from '@/shared/ui/shadcn/table';
 
+import { useStateCell } from '../lib/use-state-cell';
+
 interface Props {
   date: Date;
   state: State | null;
@@ -23,16 +24,7 @@ interface Props {
 const size = 16;
 
 export const StateCell = ({ state, taskId }: Props) => {
-  const updateStatus = async (status: StateStatus) => {
-    if (!state) {
-      await StatesDal.createState({});
-    }
-
-    await StatesDal.updateState({
-      ...state,
-      status,
-    });
-  };
+  const { updateStatus } = useStateCell(state, taskId);
 
   const statusItems = useMemo(
     () => [
