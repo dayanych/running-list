@@ -23,7 +23,11 @@ export const ReactQueryProvider = ({
 
             toast.error(`${error.message}. Try again later`);
           },
-          onSuccess: () => toast.success('Successfully'),
+          onSuccess: (_data, _variables, _context, mutation) => {
+            if (mutation.meta?.showToast === false) return;
+
+            toast.success('Successfully');
+          },
         }),
       }),
   );

@@ -31,6 +31,7 @@ export const useCreateTaskInput = () => {
         queryKey: ['getTasks', user.id, year, week],
       });
     },
+    meta: { showToast: false },
   });
 
   const handleTaskTitleChange = (

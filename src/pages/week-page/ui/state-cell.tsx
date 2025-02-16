@@ -23,8 +23,8 @@ interface Props {
 
 const size = 16;
 
-export const StateCell = ({ state, taskId }: Props) => {
-  const { updateStatus } = useStateCell(state, taskId);
+export const StateCell = ({ date, state, taskId }: Props) => {
+  const { updateStatus } = useStateCell(date, state, taskId);
 
   const statusItems = useMemo(
     () => [
@@ -63,7 +63,7 @@ export const StateCell = ({ state, taskId }: Props) => {
           ]
         : []),
     ],
-    [],
+    [state],
   );
 
   return (

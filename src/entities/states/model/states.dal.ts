@@ -30,13 +30,16 @@ export class StatesDal {
     return converterStateDtoToState(stateDto);
   }
 
-  public static async updateState(state: State) {
+  public static async updateState(state: State): Promise<State> {
     const stateDto = converterStateToStateDto(state);
-
     await StatesService.updateState(stateDto);
+
+    const updatedState = await StatesService.getStateById(state.id);
+
+    return converterStateDtoToState(updatedState);
   }
 
-  public static async deleteState(stateId: string) {
+  public static async deleteState(stateId: string): Promise<void> {
     await StatesService.deleteState(stateId);
   }
 }

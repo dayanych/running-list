@@ -6,6 +6,8 @@ import { TasksDal } from '@/entities/tasks';
 import { useUser } from '@/shared/lib/hooks/use-user';
 import { useYearWeekParams } from '@/shared/lib/hooks/use-year-week-params';
 
+import { TaskWithStates } from '../ui/tasks-table';
+
 const getStartDateOfWeek = (week: number, year: number) => {
   const firstDayOfYear = new Date(year, 0, 1);
   const firstDayOfWeek = firstDayOfYear.getDay();
@@ -37,7 +39,7 @@ export const useWeekPage = () => {
         year,
         week,
       );
-      const tasksWithStates = await Promise.all(
+      const tasksWithStates: TaskWithStates[] = await Promise.all(
         tasks.map(async (task) => {
           const states = await StatesDal.getStatesByTaskId(task.id);
           return { ...task, states };

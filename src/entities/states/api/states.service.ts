@@ -2,6 +2,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   query,
   setDoc,
@@ -17,6 +18,14 @@ import { StateDto } from './dto/state.dto';
 type StateDtoWithoutId = Omit<StateDto, 'id'>;
 
 export class StatesService {
+  public static getStateById = async (stateId: string) => {
+    const state = await getDoc(
+      doc(firebaseDb, PATH_TO_STATES_COLLECTION, stateId),
+    );
+
+    return state.data() as StateDto;
+  };
+
   public static getStatesByTaskId = async (
     taskId: string,
   ): Promise<StateDto[]> => {
