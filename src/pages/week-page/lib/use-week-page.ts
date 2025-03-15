@@ -12,8 +12,17 @@ const getStartDateOfWeek = (week: number, year: number) => {
   const firstDayOfYear = new Date(year, 0, 1);
   const firstDayOfWeek = firstDayOfYear.getDay();
   const dayOffset =
-    (week - 1) * 7 - firstDayOfWeek + (firstDayOfWeek === 0 ? -6 : 1);
+    (week - 1) * 7 - firstDayOfWeek + (firstDayOfWeek === 0 ? -6 : 1) + 1;
+
   return new Date(year, 0, dayOffset);
+};
+
+const getEndDateOfWeek = (week: number, year: number) => {
+  const startDate = getStartDateOfWeek(week, year);
+  const endDate = new Date(startDate);
+  endDate.setDate(endDate.getDate() + 6);
+
+  return endDate;
 };
 
 export const useWeekPage = () => {
@@ -26,7 +35,7 @@ export const useWeekPage = () => {
   }
 
   const startWeekDate = getStartDateOfWeek(week, year);
-
+  const endWeekDate = getEndDateOfWeek(week, year);
   const {
     data: tasksWithStates,
     isLoading,
@@ -52,6 +61,7 @@ export const useWeekPage = () => {
 
   return {
     startWeekDate,
+    endWeekDate,
     tasksWithStates,
     isLoading,
     isError,

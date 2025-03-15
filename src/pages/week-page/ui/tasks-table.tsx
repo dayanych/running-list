@@ -4,7 +4,7 @@ import { memo } from 'react';
 
 import { State } from '@/entities/states/model/types/state.type';
 import { Task } from '@/entities/tasks/model/types/task.type';
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@/shared/lib';
 import {
   Table,
   TableBody,

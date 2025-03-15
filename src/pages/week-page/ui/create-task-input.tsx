@@ -12,7 +12,7 @@ export const CreateTaskInput = () => {
   return (
     <form onSubmit={onSubmit} className="flex gap-2">
       <Input
-        placeholder="Add new habit..."
+        placeholder="Add new task..."
         value={taskTitle}
         onChange={handleTaskTitleChange}
         disabled={isLoading}
