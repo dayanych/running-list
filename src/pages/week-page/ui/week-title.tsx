@@ -1,5 +1,6 @@
 import { format } from 'date-fns';
 
+import { dateConfig } from '@/shared/config/date.config';
 import { WeekPicker } from '@/shared/ui/week-picker';
 
 interface Props {
@@ -11,7 +12,7 @@ export const WeekTitle = ({ startWeekDate, endWeekDate }: Props) => {
   return (
     <WeekPicker
       initialDate={startWeekDate}
-      title={`${format(startWeekDate, 'yyyy-MM-dd')} - ${format(endWeekDate, 'yyyy-MM-dd')}`}
+      title={`${format(startWeekDate, dateConfig.formatWeek)} - ${format(endWeekDate, dateConfig.formatWeek)}`}
     />
   );
 };

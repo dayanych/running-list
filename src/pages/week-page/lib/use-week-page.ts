@@ -1,28 +1,23 @@
 import { useQuery } from '@tanstack/react-query';
+import { addDays, setWeek, startOfWeek } from 'date-fns';
 import toast from 'react-hot-toast';
 
 import { StatesDal } from '@/entities/states';
 import { TasksDal } from '@/entities/tasks';
+import { dateConfig } from '@/shared/config/date.config';
 import { useUser } from '@/shared/lib/hooks/use-user';
 import { useYearWeekParams } from '@/shared/lib/hooks/use-year-week-params';
 
 import { TaskWithStates } from '../ui/tasks-table';
 
 const getStartDateOfWeek = (week: number, year: number) => {
-  const firstDayOfYear = new Date(year, 0, 1);
-  const firstDayOfWeek = firstDayOfYear.getDay();
-  const dayOffset =
-    (week - 1) * 7 - firstDayOfWeek + (firstDayOfWeek === 0 ? -6 : 1) + 1;
-
-  return new Date(year, 0, dayOffset);
+  const date = setWeek(new Date(year, 0, 1), week);
+  return startOfWeek(date, { weekStartsOn: dateConfig.weekStart });
 };
 
 const getEndDateOfWeek = (week: number, year: number) => {
   const startDate = getStartDateOfWeek(week, year);
-  const endDate = new Date(startDate);
-  endDate.setDate(endDate.getDate() + 6);
-
-  return endDate;
+  return addDays(startDate, 6);
 };
 
 export const useWeekPage = () => {

@@ -3,6 +3,7 @@ import { endOfWeek, format, isWithinInterval, startOfWeek } from 'date-fns';
 import { useEffect, useState } from 'react';
 import type { DateRange } from 'react-day-picker';
 
+import { dateConfig } from '@/shared/config/date.config';
 import { cn } from '@/shared/lib';
 import { Button } from '@/shared/ui/shadcn/button';
 import { Calendar } from '@/shared/ui/shadcn/calendar';
@@ -41,7 +42,7 @@ export function WeekPicker({ initialDate, title }: WeekPickerProps) {
   const getWeekTitle = () => {
     if (title) return title;
     if (date?.from && date?.to) {
-      return `${format(date.from, 'yyyy-MM-dd')} - ${format(date.to, 'yyyy-MM-dd')}`;
+      return `${format(date.from, dateConfig.formatWeek)} - ${format(date.to, dateConfig.formatWeek)}`;
     }
 
     return 'Pick a week';
@@ -50,8 +51,12 @@ export function WeekPicker({ initialDate, title }: WeekPickerProps) {
   const isInHoveredWeek = (day: Date) => {
     if (!hoveredDay) return false;
 
-    const hoveredWeekStart = startOfWeek(hoveredDay, { weekStartsOn: 1 });
-    const hoveredWeekEnd = endOfWeek(hoveredDay, { weekStartsOn: 1 });
+    const hoveredWeekStart = startOfWeek(hoveredDay, {
+      weekStartsOn: dateConfig.weekStart,
+    });
+    const hoveredWeekEnd = endOfWeek(hoveredDay, {
+      weekStartsOn: dateConfig.weekStart,
+    });
 
     return isWithinInterval(day, {
       start: hoveredWeekStart,
@@ -103,7 +108,7 @@ export function WeekPicker({ initialDate, title }: WeekPickerProps) {
           onSelect={handleSelect}
           modifiers={modifiers}
           modifiersStyles={modifiersStyles}
-          weekStartsOn={1}
+          weekStartsOn={dateConfig.weekStart}
           className="rounded-md border"
           onDayMouseEnter={(day) => setHoveredDay(day)}
           onDayMouseLeave={() => setHoveredDay(null)}
