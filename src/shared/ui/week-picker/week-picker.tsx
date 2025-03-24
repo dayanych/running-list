@@ -15,10 +15,11 @@ import {
 
 interface WeekPickerProps {
   initialDate?: Date;
-  title?: string;
+  formatTitle?: (date: DateRange) => string;
+  onChange: (date: DateRange) => void;
 }
 
-export function WeekPicker({ initialDate, title }: WeekPickerProps) {
+export function WeekPicker({ initialDate, formatTitle, onChange }: WeekPickerProps) {
   const [date, setDate] = useState<DateRange | null>(null);
   const [hoveredDay, setHoveredDay] = useState<Date | null>(null);
 
@@ -34,13 +35,17 @@ export function WeekPicker({ initialDate, title }: WeekPickerProps) {
       const start = startOfWeek(selectedDate, { weekStartsOn: 1 });
       const end = endOfWeek(selectedDate, { weekStartsOn: 1 });
       setDate({ from: start, to: end });
+      onChange({ from: start, to: end });
     } else {
       setDate(null);
     }
   };
 
   const getWeekTitle = () => {
-    if (title) return title;
+    if (formatTitle && date) {
+      return formatTitle(date);
+    }
+
     if (date?.from && date?.to) {
       return `${format(date.from, dateConfig.formatWeek)} - ${format(date.to, dateConfig.formatWeek)}`;
     }

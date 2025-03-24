@@ -1,18 +1,22 @@
-import { format } from 'date-fns';
+import { DateRange } from 'react-day-picker';
 
-import { dateConfig } from '@/shared/config/date.config';
 import { WeekPicker } from '@/shared/ui/week-picker';
+
+import { useWeekTitle } from '../lib/use-week-title';
 
 interface Props {
   startWeekDate: Date;
-  endWeekDate: Date;
+  onChange: (date: DateRange) => void;
 }
 
-export const WeekTitle = ({ startWeekDate, endWeekDate }: Props) => {
+export const WeekTitle = ({ startWeekDate, onChange }: Props) => {
+  const { formatTitle } = useWeekTitle();
+
   return (
     <WeekPicker
       initialDate={startWeekDate}
-      title={`${format(startWeekDate, dateConfig.formatWeek)} - ${format(endWeekDate, dateConfig.formatWeek)}`}
+      formatTitle={formatTitle}
+      onChange={onChange}
     />
   );
 };
