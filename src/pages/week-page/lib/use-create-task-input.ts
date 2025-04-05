@@ -43,6 +43,8 @@ export const useCreateTaskInput = () => {
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    if (taskTitle.trim() === '') return;
+
     createTask();
   };
 

@@ -3,6 +3,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { Trash2 } from 'lucide-react';
 
 import { State } from '@/entities/states/model/types/state.type';
+import { dateConfig } from '@/shared/config/date.config';
 import { EditableText } from '@/shared/ui/editable-text';
 import { Button } from '@/shared/ui/shadcn/button';
 import { TableCell } from '@/shared/ui/shadcn/table';
@@ -17,69 +18,42 @@ const returnStateCell = (
   return <StateCell state={value.state} date={value.date} taskId={taskId} />;
 };
 
-export const getTasksColumns = (): ColumnDef<any, any>[] => [
-  {
-    accessorKey: 'mo',
-    enableSorting: false,
-    header: () => <DayNameCell day="Mo" />,
-    cell: ({ row, getValue }) =>
-      returnStateCell(getValue(), row.original.taskId),
-  },
-  {
-    accessorKey: 'tu',
-    enableSorting: false,
-    header: () => <DayNameCell day="Tu" />,
-    cell: ({ row, getValue }) =>
-      returnStateCell(getValue(), row.original.taskId),
-  },
-  {
-    accessorKey: 'we',
-    enableSorting: false,
-    header: () => <DayNameCell day="We" />,
-    cell: ({ row, getValue }) =>
-      returnStateCell(getValue(), row.original.taskId),
-  },
-  {
-    accessorKey: 'th',
-    enableSorting: false,
-    header: () => <DayNameCell day="Th" />,
-    cell: ({ row, getValue }) =>
-      returnStateCell(getValue(), row.original.taskId),
-  },
-  {
-    accessorKey: 'fr',
-    enableSorting: false,
-    header: () => <DayNameCell day="Fr" />,
-    cell: ({ row, getValue }) =>
-      returnStateCell(getValue(), row.original.taskId),
-  },
-  {
-    accessorKey: 'sa',
-    enableSorting: false,
-    header: () => <DayNameCell day="Sa" />,
-    cell: ({ row, getValue }) =>
-      returnStateCell(getValue(), row.original.taskId),
-  },
-  {
-    accessorKey: 'su',
-    enableSorting: false,
-    header: () => <DayNameCell day="Su" />,
-    cell: ({ row, getValue }) =>
-      returnStateCell(getValue(), row.original.taskId),
-  },
-  {
-    accessorKey: 'taskList',
-    header: 'Task List',
-    enableSorting: false,
-    cell: ({ getValue }) => (
-      <TableCell className="cursor-pointer border-b">
-        <div className="flex items-center gap-2 px-2">
-          <EditableText title={getValue().title} onChangeFinish={() => ({})} />
-          <Button variant="ghost">
-            <Trash2 size={15} className="text-destructive" />
-          </Button>
-        </div>
-      </TableCell>
-    ),
-  },
-];
+export const getTasksColumns = (startWeekDate: Date): ColumnDef<any, any>[] => {
+  const weekDays = Array.from({ length: 7 }, (_, i) => {
+    const currentDate = new Date(startWeekDate);
+    currentDate.setDate(startWeekDate.getDate() + i);
+
+    return {
+      day: dateConfig.weekDays[(i + dateConfig.weekStart) % 7],
+      date: currentDate,
+    };
+  });
+
+  return [
+    ...weekDays.map((day) => ({
+      accessorKey: day.day,
+      enableSorting: false,
+      header: () => <DayNameCell day={day.day} date={day.date} />,
+      cell: ({ row, getValue }: any) =>
+        returnStateCell(getValue(), row.original.taskId),
+    })),
+    {
+      accessorKey: 'taskList',
+      header: '',
+      enableSorting: false,
+      cell: ({ getValue }) => (
+        <TableCell className="cursor-pointer border-b">
+          <div className="flex items-center gap-2 px-2">
+            <EditableText
+              title={getValue().title}
+              onChangeFinish={() => ({})}
+            />
+            <Button variant="ghost">
+              <Trash2 size={15} className="text-destructive" />
+            </Button>
+          </div>
+        </TableCell>
+      ),
+    },
+  ];
+};

@@ -41,7 +41,10 @@ const dayStatus: {
 };
 
 export const useTasksTable = (tasks: TaskWithStates[], startWeekDate: Date) => {
-  const columns = useMemo(getTasksColumns, []);
+  const columns = useMemo(
+    () => getTasksColumns(startWeekDate),
+    [startWeekDate],
+  );
   const data = useMemo(
     () =>
       tasks.map((task) => {

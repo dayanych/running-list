@@ -111,6 +111,5 @@ const TasksTable = ({ data, startWeekDate, loading, error }: Props) => {
 };
 
 const MemoizedTasksTable = memo(TasksTable);
-MemoizedTasksTable.displayName = 'TasksTable';
 
 export { MemoizedTasksTable as TasksTable };
