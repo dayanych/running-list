@@ -26,14 +26,14 @@ export function WeekPicker({ initialDate, formatTitle, onChange }: WeekPickerPro
   useEffect(() => {
     setDate({
       from: initialDate ?? new Date(),
-      to: endOfWeek(initialDate ?? new Date(), { weekStartsOn: 1 }),
+      to: endOfWeek(initialDate ?? new Date(), { weekStartsOn: dateConfig.weekStart }),
     });
   }, [initialDate]);
 
   const handleSelect = (selectedDate: Date | undefined) => {
     if (selectedDate) {
-      const start = startOfWeek(selectedDate, { weekStartsOn: 1 });
-      const end = endOfWeek(selectedDate, { weekStartsOn: 1 });
+      const start = startOfWeek(selectedDate, { weekStartsOn: dateConfig.weekStart });
+      const end = endOfWeek(selectedDate, { weekStartsOn: dateConfig.weekStart });
       setDate({ from: start, to: end });
       onChange({ from: start, to: end });
     } else {

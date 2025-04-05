@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getWeek, getYear, setWeek, startOfWeek } from 'date-fns';
 import { DateRange } from 'react-day-picker';
+import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 import { StatesDal } from '@/entities/states';
@@ -20,9 +20,7 @@ const getStartDateOfWeek = (week: number, year: number) => {
 export const useWeekPage = () => {
   const user = useUser();
   const { year, week } = useYearWeekParams();
-  const [startWeekDate, setStartWeekDate] = useState<Date>(
-    getStartDateOfWeek(week, year),
-  );
+  const navigate = useNavigate();
 
   if (!user || !year || !week) {
     toast.error('User, year, or week not provided');
@@ -56,14 +54,13 @@ export const useWeekPage = () => {
     if (!date.from || !date.to) return;
 
     const updatedWeek = getWeek(date.from);
-    const updatedYear = getYear(date.from); 
-    const updatedStartWeekDate = getStartDateOfWeek(updatedWeek, updatedYear);
+    const updatedYear = getYear(date.from);
 
-    setStartWeekDate(updatedStartWeekDate);
+    navigate(`/app/${updatedYear}/${updatedWeek}`);
   };
 
   return {
-    startWeekDate,
+    startWeekDate: getStartDateOfWeek(week, year),
     tasksWithStates,
     isLoading,
     isError,
