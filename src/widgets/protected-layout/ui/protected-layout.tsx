@@ -1,9 +1,16 @@
 import { Outlet } from 'react-router-dom';
 
+import { Header } from '@/widgets';
+
 import { useProtectedLayout } from '../lib/use-protected-layout';
 
 export const ProtectedLayout = () => {
   useProtectedLayout();
 
-  return <Outlet />;
+  return (
+    <div className="flex h-screen flex-col">
+      <Header />
+      <Outlet />
+    </div>
+  );
 };

@@ -4,22 +4,20 @@ import type { DateRange } from 'react-day-picker';
 
 import { dateConfig } from '@/shared/config/date.config';
 import { cn } from '@/shared/lib';
-import {
-  Button,
-  Calendar,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/shared/ui';
+import { Calendar, Popover, PopoverContent, PopoverTrigger } from '@/shared/ui';
 
 interface WeekPickerProps {
   initialDate?: Date;
-  formatTitle?: (date: DateRange) => string;
+  title?: string;
+  className?: string;
   onChange: (date: DateRange) => void;
+  formatTitle?: (date: DateRange) => string;
 }
 
 export function WeekPicker({
   initialDate,
+  title,
+  className,
   formatTitle,
   onChange,
 }: WeekPickerProps) {
@@ -27,11 +25,16 @@ export function WeekPicker({
   const [hoveredDay, setHoveredDay] = useState<Date | null>(null);
 
   useEffect(() => {
+    const start = startOfWeek(initialDate ?? new Date(), {
+      weekStartsOn: dateConfig.weekStart,
+    });
+    const end = endOfWeek(start, {
+      weekStartsOn: dateConfig.weekStart,
+    });
+
     setDate({
-      from: initialDate ?? new Date(),
-      to: endOfWeek(initialDate ?? new Date(), {
-        weekStartsOn: dateConfig.weekStart,
-      }),
+      from: start,
+      to: end,
     });
   }, [initialDate]);
 
@@ -51,6 +54,10 @@ export function WeekPicker({
   };
 
   const getWeekTitle = () => {
+    if (title) {
+      return title;
+    }
+
     if (formatTitle && date) {
       return formatTitle(date);
     }
@@ -105,15 +112,15 @@ export function WeekPicker({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button
-          variant="outline"
+        <span
           className={cn(
-            'w-[240px] justify-start text-left font-normal',
+            'cursor-pointer justify-start text-left font-normal text-foreground',
             !date && 'text-muted-foreground',
+            className,
           )}
         >
           {getWeekTitle()}
-        </Button>
+        </span>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar
