@@ -1,17 +1,16 @@
-/* eslint-disable quotes */
 import { endOfWeek, format, isWithinInterval, startOfWeek } from 'date-fns';
 import { useEffect, useState } from 'react';
 import type { DateRange } from 'react-day-picker';
 
 import { dateConfig } from '@/shared/config/date.config';
 import { cn } from '@/shared/lib';
-import { Button } from '@/shared/ui/shadcn/button';
-import { Calendar } from '@/shared/ui/shadcn/calendar';
 import {
+  Button,
+  Calendar,
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/shared/ui/shadcn/popover';
+} from '@/shared/ui';
 
 interface WeekPickerProps {
   initialDate?: Date;
@@ -19,21 +18,31 @@ interface WeekPickerProps {
   onChange: (date: DateRange) => void;
 }
 
-export function WeekPicker({ initialDate, formatTitle, onChange }: WeekPickerProps) {
+export function WeekPicker({
+  initialDate,
+  formatTitle,
+  onChange,
+}: WeekPickerProps) {
   const [date, setDate] = useState<DateRange | null>(null);
   const [hoveredDay, setHoveredDay] = useState<Date | null>(null);
 
   useEffect(() => {
     setDate({
       from: initialDate ?? new Date(),
-      to: endOfWeek(initialDate ?? new Date(), { weekStartsOn: dateConfig.weekStart }),
+      to: endOfWeek(initialDate ?? new Date(), {
+        weekStartsOn: dateConfig.weekStart,
+      }),
     });
   }, [initialDate]);
 
   const handleSelect = (selectedDate: Date | undefined) => {
     if (selectedDate) {
-      const start = startOfWeek(selectedDate, { weekStartsOn: dateConfig.weekStart });
-      const end = endOfWeek(selectedDate, { weekStartsOn: dateConfig.weekStart });
+      const start = startOfWeek(selectedDate, {
+        weekStartsOn: dateConfig.weekStart,
+      });
+      const end = endOfWeek(selectedDate, {
+        weekStartsOn: dateConfig.weekStart,
+      });
       setDate({ from: start, to: end });
       onChange({ from: start, to: end });
     } else {

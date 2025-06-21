@@ -12,7 +12,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/shared/ui/shadcn/table';
+} from '@/shared/ui';
 
 import { useTasksTable } from '../lib/use-tasks-table';
 

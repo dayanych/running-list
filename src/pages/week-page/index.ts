@@ -1,1 +1,2 @@
-export * from './ui/week-page';
+export * from './lib';
+export * from './ui';

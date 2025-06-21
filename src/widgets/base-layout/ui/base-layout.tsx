@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 
-import { CustomToaster } from '@/shared/ui/custom-toaster';
+import { CustomToaster } from '@/shared/ui';
 
 export const BaseLayout = () => {
   return (

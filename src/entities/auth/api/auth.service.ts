@@ -8,8 +8,7 @@ import {
 
 import { firebaseApp } from '@/shared/config/firebase.config';
 
-import { UserRegistrationDto } from './dto/user-login.dto';
-import { UserLoginDto } from './dto/user-registration.dto';
+import { UserLoginDto, UserRegistrationDto } from './';
 
 interface ListenAuthStateChangeParams {
   onLogin: (userId: string) => void;

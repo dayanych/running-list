@@ -1,7 +1,4 @@
-import { Button } from '@/shared/ui/shadcn/button';
-import { Form, FormField } from '@/shared/ui/shadcn/form';
-import { FormItem } from '@/shared/ui/shadcn/form-item';
-import { Input } from '@/shared/ui/shadcn/input';
+import { Button, Form, FormField, FormItem, Input } from '@/shared/ui';
 
 import { useSignUpPage } from '../lib/use-sign-up-page';
 import { AuthLayout } from './auth-layout';

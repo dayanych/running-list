@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 
-import { Loader } from '@/shared/ui/laoder';
+import { Loader } from '@/shared/ui';
 
 import { useAuthInjector } from '../lib/use-auth-injector';
 

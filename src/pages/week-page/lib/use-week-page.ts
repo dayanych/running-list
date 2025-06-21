@@ -1,14 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import { getWeek, getYear, setWeek, startOfWeek } from 'date-fns';
 import { DateRange } from 'react-day-picker';
-import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 import { StatesDal } from '@/entities/states';
 import { TasksDal } from '@/entities/tasks';
-import { dateConfig } from '@/shared/config/date.config';
-import { useUser } from '@/shared/lib/hooks/use-user';
-import { useYearWeekParams } from '@/shared/lib/hooks/use-year-week-params';
+import { dateConfig } from '@/shared/config';
+import { useUser, useYearWeekParams } from '@/shared/lib';
 
 import { TaskWithStates } from '../ui/tasks-table';
 

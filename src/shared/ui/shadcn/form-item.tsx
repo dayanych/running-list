@@ -1,10 +1,9 @@
-/* eslint-disable quotes */
 import { cn } from '@/shared/lib';
 
 import {
+  FItem,
   FormControl,
   FormDescription,
-  FormItem as FItem,
   FormLabel,
   FormMessage,
 } from './form';

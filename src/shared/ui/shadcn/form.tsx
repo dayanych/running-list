@@ -1,4 +1,3 @@
-/* eslint-disable object-curly-newline */
 import * as LabelPrimitive from '@radix-ui/react-label';
 import { Slot } from '@radix-ui/react-slot';
 import * as React from 'react';
@@ -12,7 +11,7 @@ import {
 } from 'react-hook-form';
 
 import { cn } from '@/shared/lib';
-import { Label } from '@/shared/ui/shadcn/label';
+import { Label } from '@/shared/ui';
 
 const Form = FormProvider;
 
@@ -171,7 +170,7 @@ FormMessage.displayName = 'FormMessage';
 export {
   useFormField,
   Form,
-  FormItem,
+  FormItem as FItem,
   FormLabel,
   FormControl,
   FormDescription,

@@ -7,7 +7,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/shared/ui/shadcn/card';
+} from '@/shared/ui';
 
 interface Props {
   state: 'signIn' | 'signUp';

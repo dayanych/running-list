@@ -4,9 +4,7 @@ import { Trash2 } from 'lucide-react';
 
 import { State } from '@/entities/states/model/types/state.type';
 import { dateConfig } from '@/shared/config/date.config';
-import { EditableText } from '@/shared/ui/editable-text';
-import { Button } from '@/shared/ui/shadcn/button';
-import { TableCell } from '@/shared/ui/shadcn/table';
+import { Button, EditableText, TableCell } from '@/shared/ui';
 
 import { DayNameCell } from '../ui/day-name-cell';
 import { StateCell } from '../ui/state-cell';

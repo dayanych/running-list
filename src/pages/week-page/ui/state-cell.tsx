@@ -10,8 +10,8 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/shared/ui/shadcn/dropdown-menu';
-import { TableCell } from '@/shared/ui/shadcn/table';
+  TableCell,
+} from '@/shared/ui';
 
 import { useStateCell } from '../lib/use-state-cell';
 

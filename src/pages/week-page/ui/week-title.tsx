@@ -1,6 +1,6 @@
 import { DateRange } from 'react-day-picker';
 
-import { WeekPicker } from '@/shared/ui/week-picker';
+import { WeekPicker } from '@/shared/ui';
 
 import { useWeekTitle } from '../lib/use-week-title';
 

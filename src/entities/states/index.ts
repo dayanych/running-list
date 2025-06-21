@@ -1,1 +1,2 @@
-export { StatesDal } from './model/states.dal';
+export * from './api';
+export * from './model';

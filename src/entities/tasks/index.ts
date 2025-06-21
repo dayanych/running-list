@@ -1,1 +1,2 @@
-export { TasksDal } from './model/tasks.dal';
+export * from './api';
+export * from './model';

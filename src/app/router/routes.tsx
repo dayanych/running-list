@@ -1,12 +1,12 @@
 import { Navigate, Outlet, RouteObject } from 'react-router-dom';
 
-import { SignInPage, SignUpPage } from '@/pages/auth';
-import { NotFoundPage } from '@/pages/not-found';
-import { WeekPage } from '@/pages/week-page';
-import { AuthInjector } from '@/widgets/auth-injector';
-import { BaseLayout } from '@/widgets/base-layout';
-import { ProtectedLayout } from '@/widgets/protected-layout';
-import { PublicLayout } from '@/widgets/public-layout';
+import { NotFoundPage, SignInPage, SignUpPage, WeekPage } from '@/pages';
+import {
+  AuthInjector,
+  BaseLayout,
+  ProtectedLayout,
+  PublicLayout,
+} from '@/widgets';
 
 const routes: RouteObject[] = [
   {

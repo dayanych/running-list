@@ -1,7 +1,6 @@
 import { Plus } from 'lucide-react';
 
-import { Button } from '@/shared/ui/shadcn/button';
-import { Input } from '@/shared/ui/shadcn/input';
+import { Button, Input } from '@/shared/ui';
 
 import { useCreateTaskInput } from '../lib/use-create-task-input';
 
