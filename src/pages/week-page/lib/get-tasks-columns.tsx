@@ -40,13 +40,17 @@ export const getTasksColumns = (startWeekDate: Date): ColumnDef<any, any>[] => {
       header: '',
       enableSorting: false,
       cell: ({ getValue }) => (
-        <TableCell className="cursor-pointer border-b">
-          <div className="flex items-center gap-2 px-2">
+        <TableCell className="cursor-pointer">
+          <div className="group flex items-center gap-2">
             <EditableText
               title={getValue().title}
               onChangeFinish={() => ({})}
+              className="cursor-pointerp-0 align-middle font-light"
             />
-            <Button variant="ghost">
+            <Button
+              variant="ghost"
+              className="opacity-0 transition-opacity group-hover:opacity-100"
+            >
               <Trash2 size={15} className="text-destructive" />
             </Button>
           </div>

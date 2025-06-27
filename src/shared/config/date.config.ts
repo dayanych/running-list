@@ -7,6 +7,7 @@ interface DateConfig {
   formatMonth: string;
   formatYear: string;
   formatWeekNumber: string;
+  formatWeekTitle: string;
 }
 
 export const dateConfig: DateConfig = {
@@ -18,4 +19,5 @@ export const dateConfig: DateConfig = {
   formatMonth: 'yyyy-MM',
   formatYear: 'yyyy',
   formatWeekNumber: 'yyyy-MM-dd',
+  formatWeekTitle: 'd MMMM',
 };

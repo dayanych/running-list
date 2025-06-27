@@ -1,61 +1,91 @@
-import { useState } from 'react';
+import { ChangeEvent, KeyboardEvent, useCallback, useState } from 'react';
+
+import { cn } from '@/shared/lib/cn';
 
 import { Input } from '../shadcn/input';
-
-const ENTER = 'Enter';
-
-const renderInput = (
-  text: string,
-  setValue: (event: React.ChangeEvent<HTMLInputElement>) => void,
-) => (
-  <Input
-    value={text}
-    autoFocus={true}
-    onChange={setValue}
-    className="h-full rounded-none border-x-transparent border-t-transparent px-0 py-1 text-[length:inherit] focus:outline-none focus:ring-0 disabled:opacity-50"
-  />
-);
-
-const renderText = (text: string) => {
-  const title = text === '' ? 'Task with empty title' : text;
-
-  return <div className="text">{title}</div>;
-};
 
 interface EditableTextProps {
   title: string;
   onChangeFinish: (value: string) => void;
+  className?: string;
+  disabled?: boolean;
+  placeholder?: string;
 }
 
-export const EditableText = ({ title, onChangeFinish }: EditableTextProps) => {
+export const EditableText = ({
+  title,
+  onChangeFinish,
+  className,
+  disabled = false,
+  placeholder = 'Empty title',
+}: EditableTextProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState(title);
 
-  const handleChangeFinish = () => {
-    onChangeFinish(text);
+  if (title !== text && !isEditing) {
+    setText(title);
+  }
+
+  const handleFinishEditing = useCallback(() => {
+    if (!isEditing) return;
+
+    const trimmedText = text.trim();
+    onChangeFinish(trimmedText);
     setIsEditing(false);
-  };
+  }, [isEditing, onChangeFinish, text]);
 
-  const handleEnter = (event: React.KeyboardEvent<HTMLElement>) => {
-    if (event.key === ENTER) {
-      handleChangeFinish();
-    }
-  };
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        handleFinishEditing();
+      } else if (event.key === 'Escape') {
+        event.preventDefault();
+        setText(title);
+        setIsEditing(false);
+      }
+    },
+    [handleFinishEditing, title],
+  );
 
-  const setValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setText(event.target.value);
-  };
+  }, []);
+
+  const handleClick = useCallback(() => {
+    if (!disabled && !isEditing) {
+      setIsEditing(true);
+    }
+  }, [disabled, isEditing]);
 
   return (
     <div
-      onClick={() => {
-        setIsEditing(true);
-      }}
-      onBlur={handleChangeFinish}
-      onKeyDown={handleEnter}
-      className="w-full"
+      className={cn(
+        'relative w-full pl-10',
+        disabled && 'cursor-not-allowed opacity-60',
+        !disabled && !isEditing && 'cursor-pointer',
+        className,
+      )}
+      onClick={handleClick}
+      role="textbox"
+      aria-label="Editable text"
+      aria-readonly={disabled}
     >
-      {isEditing ? renderInput(text, setValue) : renderText(text)}
+      {isEditing ? (
+        <Input
+          value={text}
+          onChange={handleChange}
+          onBlur={handleFinishEditing}
+          onKeyDown={handleKeyDown}
+          autoFocus
+          className="h-full rounded-none border-x-0 border-b border-t-0 p-0 py-2 text-[length:inherit] focus:outline-none focus:ring-0"
+          aria-label="Edit text"
+        />
+      ) : (
+        text.trim() || (
+          <span className="text-muted-foreground">{placeholder}</span>
+        )
+      )}
     </div>
   );
 };

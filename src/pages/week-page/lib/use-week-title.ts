@@ -7,7 +7,10 @@ export const useWeekTitle = () => {
   const formatTitle = (date: DateRange) => {
     if (!date.from || !date.to) return '';
 
-    return `${format(date.from, dateConfig.formatWeek)} - ${format(date.to, dateConfig.formatWeek)}`;
+    return `${format(date.from, dateConfig.formatWeekTitle)} - ${format(
+      date.to,
+      dateConfig.formatWeekTitle,
+    )}`;
   };
 
   return {

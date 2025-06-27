@@ -1,8 +1,16 @@
-import { Plus, Square, Trash2 } from 'lucide-react';
+import {
+  ArrowRight,
+  Plus,
+  Square,
+  SquareDashed,
+  SquareDashedTopSolid,
+  Trash2,
+} from 'lucide-react';
 import { useMemo } from 'react';
 
 import { StateStatus } from '@/entities/states/model/constants/state-status';
 import { State } from '@/entities/states/model/types/state.type';
+import { cn } from '@/shared/lib';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,7 +29,39 @@ interface Props {
   taskId: string;
 }
 
-const size = 16;
+const MENU_ICON_SIZE = 16;
+
+const getStateIcon = (status: StateStatus, size: number) => {
+  switch (status) {
+    case StateStatus.Empty:
+      return <SquareDashed size={size} />;
+    case StateStatus.FullDone:
+      return <Square size={size} color="black" fill="black" />;
+    case StateStatus.HalfDone:
+      return <SquareDashedTopSolid size={size} color="black" />;
+    case StateStatus.Delay:
+      return <ArrowRight size={size} />;
+    case StateStatus.Failed:
+      return <Plus size={size} className="rotate-45" />;
+  }
+};
+
+const getTableStateStyle = (status: StateStatus | null) => {
+  switch (status) {
+    case StateStatus.Empty:
+      return 'border border-dashed';
+    case StateStatus.FullDone:
+      return 'border';
+    case StateStatus.HalfDone:
+      return 'border';
+    case StateStatus.Delay:
+      return 'border';
+    case StateStatus.Failed:
+      return 'border';
+    default:
+      return '';
+  }
+};
 
 export const StateCell = ({ date, state, taskId }: Props) => {
   const { updateStatus } = useStateCell(date, state, taskId);
@@ -29,34 +69,36 @@ export const StateCell = ({ date, state, taskId }: Props) => {
   const statusItems = useMemo(
     () => [
       {
-        icon: <Square size={size} />,
+        icon: getStateIcon(StateStatus.Empty, MENU_ICON_SIZE),
         label: 'Empty',
         onclick: () => updateStatus(StateStatus.Empty),
       },
       {
-        icon: <Square size={size} color="green" />,
+        icon: getStateIcon(StateStatus.FullDone, MENU_ICON_SIZE),
         label: 'Full done',
         onclick: () => updateStatus(StateStatus.FullDone),
       },
       {
-        icon: <Square size={size} color="blue" />,
+        icon: getStateIcon(StateStatus.HalfDone, MENU_ICON_SIZE),
         label: 'Half done',
         onclick: () => updateStatus(StateStatus.HalfDone),
       },
       {
-        icon: <Square size={size} color="orange" />,
+        icon: getStateIcon(StateStatus.Delay, MENU_ICON_SIZE),
         label: 'Delay',
         onclick: () => updateStatus(StateStatus.Delay),
       },
       {
-        icon: <Plus size={size} className="rotate-45" />,
+        icon: getStateIcon(StateStatus.Failed, MENU_ICON_SIZE),
         label: 'Failed',
         onclick: () => updateStatus(StateStatus.Failed),
       },
       ...(state
         ? [
             {
-              icon: <Trash2 size={size} className="text-destructive" />,
+              icon: (
+                <Trash2 size={MENU_ICON_SIZE} className="text-destructive" />
+              ),
               label: 'Delete',
               onclick: () => updateStatus(StateStatus.Empty),
             },
@@ -70,12 +112,12 @@ export const StateCell = ({ date, state, taskId }: Props) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <TableCell
-          className={`cursor-pointer ${state ? 'border-2' : 'border border-dashed'}`}
-        >
-          <div className="h-state w-state flex items-center justify-center text-gray-500">
-            {state ? state.status : ''}
-          </div>
-        </TableCell>
+          // className={`cursor-pointer ${state ? 'border-2' : 'border border-dashed'}`}
+          className={cn(
+            'h-state w-state cursor-pointer',
+            getTableStateStyle(state?.status ?? null),
+          )}
+        />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuGroup>

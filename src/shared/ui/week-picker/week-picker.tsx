@@ -114,7 +114,7 @@ export function WeekPicker({
       <PopoverTrigger asChild>
         <span
           className={cn(
-            'cursor-pointer justify-start text-left font-normal text-foreground',
+            'w-fit cursor-pointer justify-start text-left font-normal text-foreground',
             !date && 'text-muted-foreground',
             className,
           )}
@@ -122,7 +122,7 @@ export function WeekPicker({
           {getWeekTitle()}
         </span>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start">
+      <PopoverContent className="w-auto p-0" align="center">
         <Calendar
           mode="single"
           selected={date?.from}

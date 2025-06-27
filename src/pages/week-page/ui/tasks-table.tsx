@@ -1,6 +1,7 @@
 import { flexRender } from '@tanstack/react-table';
 import { LoaderCircle } from 'lucide-react';
 import { memo } from 'react';
+import React from 'react';
 
 import { State } from '@/entities/states/model/types/state.type';
 import { Task } from '@/entities/tasks/model/types/task.type';
@@ -31,8 +32,8 @@ const TasksTable = ({ data, startWeekDate, loading, error }: Props) => {
   const { columns, table } = useTasksTable(data, startWeekDate);
 
   return (
-    <Table className="border-collapse border text-lg">
-      <TableHeader>
+    <Table className="text-lg">
+      <TableHeader className="border">
         {table.getHeaderGroups().map((headerGroup) => (
           <TableRow key={headerGroup.id}>
             {headerGroup.headers.map((header, headerIndex) => {
@@ -43,9 +44,9 @@ const TasksTable = ({ data, startWeekDate, loading, error }: Props) => {
                 <TableHead
                   key={header.id}
                   className={cn(
-                    'h-8 p-0',
+                    'h-12 p-0',
                     isLastChild && 'w-full text-center',
-                    'border-collapse border text-sm font-light',
+                    'text-sm font-light',
                   )}
                 >
                   {header.isPlaceholder
@@ -92,18 +93,24 @@ const TasksTable = ({ data, startWeekDate, loading, error }: Props) => {
           </TableRow>
         )}
         {table.getRowModel().rows?.length > 0 &&
-          table.getRowModel().rows.map((row) => (
-            <TableRow
-              key={row.id}
-              data-state={row.getIsSelected() && 'selected'}
-              className="border-b-0"
-            >
-              {row
-                .getVisibleCells()
-                .map((cell) =>
-                  flexRender(cell.column.columnDef.cell, cell.getContext()),
-                )}
-            </TableRow>
+          table.getRowModel().rows.map((row, index) => (
+            <React.Fragment key={row.id}>
+              {index === 0 && (
+                <TableRow className="border-b-0">
+                  <TableCell colSpan={columns.length} className="h-4" />
+                </TableRow>
+              )}
+              <TableRow
+                data-state={row.getIsSelected() && 'selected'}
+                className="border-b-0"
+              >
+                {row
+                  .getVisibleCells()
+                  .map((cell) =>
+                    flexRender(cell.column.columnDef.cell, cell.getContext()),
+                  )}
+              </TableRow>
+            </React.Fragment>
           ))}
       </TableBody>
     </Table>
