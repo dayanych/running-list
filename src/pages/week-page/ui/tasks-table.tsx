@@ -15,7 +15,7 @@ import {
   TableRow,
 } from '@/shared/ui';
 
-import { useTasksTable } from '../lib/use-tasks-table';
+import { getEmptyStateMessage, useTasksTable } from '../lib';
 
 export interface TaskWithStates extends Task {
   states: State[];
@@ -73,22 +73,21 @@ const TasksTable = ({ data, startWeekDate, loading, error }: Props) => {
         )}
         {error && (
           <TableRow>
-            <TableCell
-              colSpan={columns.length}
-              className="h-24 text-center font-semibold text-destructive"
-            >
-              An error occurred. Please try again.
+            <TableCell colSpan={columns.length} className="text-center">
+              <div className="flex w-full flex-col items-center justify-center gap-4 py-8">
+                <span className="font-light text-destructive">
+                  Oops! Something went wrong. Try again in a few seconds.
+                </span>
+              </div>
             </TableCell>
           </TableRow>
         )}
         {!loading && !error && table.getRowModel().rows?.length === 0 && (
           <TableRow>
             <TableCell colSpan={columns.length} className="text-center">
-              <div className="flex w-full flex-col items-center justify-center gap-4 py-8">
-                <span className="text-sm text-muted-foreground">
-                  Add the first task to get started
-                </span>
-              </div>
+              <p className="w-full py-8 font-light text-muted-foreground">
+                {getEmptyStateMessage()}
+              </p>
             </TableCell>
           </TableRow>
         )}

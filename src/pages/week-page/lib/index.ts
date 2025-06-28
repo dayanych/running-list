@@ -4,3 +4,4 @@ export * from './use-state-cell';
 export * from './use-tasks-table';
 export * from './use-week-page';
 export * from './use-week-title';
+export * from './get-empty-state-message';
