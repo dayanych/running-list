@@ -1,6 +1,12 @@
 import { Navigate, Outlet, RouteObject } from 'react-router-dom';
 
-import { NotFoundPage, SignInPage, SignUpPage, WeekPage } from '@/pages';
+import {
+  NotFoundPage,
+  ProfilePage,
+  SignInPage,
+  SignUpPage,
+  WeekPage,
+} from '@/pages';
 import {
   AuthInjector,
   BaseLayout,
@@ -48,6 +54,10 @@ const routes: RouteObject[] = [
                     element: <WeekPage />,
                   },
                 ],
+              },
+              {
+                path: 'profile',
+                element: <ProfilePage />,
               },
             ],
           },

@@ -100,6 +100,7 @@ export const StateCell = ({ date, state, taskId }: Props) => {
                 <Trash2 size={MENU_ICON_SIZE} className="text-destructive" />
               ),
               label: 'Delete',
+              danger: true,
               onclick: () => updateStatus(StateStatus.Empty),
             },
           ]
@@ -130,6 +131,7 @@ export const StateCell = ({ date, state, taskId }: Props) => {
                 key={item.label}
                 onClick={item.onclick}
                 className="cursor-pointer"
+                danger={item.danger}
               >
                 <div className="mr-2">{item.icon}</div>
                 <span>{item.label}</span>

@@ -1,7 +1,7 @@
 import { User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-import { WeekPicker } from '@/shared/ui';
+import { Logo, WeekPicker } from '@/shared/ui';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,8 +18,10 @@ const UserAvatar = () => {
         <User className="h-5 w-5" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onSelect={() => {}}>Profile</DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => {}}>Logout</DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link to="/app/profile">Profile</Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem danger>Logout</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -35,9 +37,15 @@ export const Header = () => {
   return (
     <header className="border-b">
       <div className="container mx-auto flex items-center justify-between py-4">
-        <Link className="text-xl font-bold" to="/">
-          Running List
-        </Link>
+        <div className="flex items-center gap-4">
+          <Logo />
+          <Link
+            className="text-xl font-bold leading-tight tracking-[-0.015em]"
+            to="/"
+          >
+            Running List
+          </Link>
+        </div>
         <div className="flex items-center gap-5">
           <Link to={todayLink}>Today</Link>
           <WeekPicker onChange={() => {}} title="Calendar" />
