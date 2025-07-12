@@ -2,7 +2,7 @@ import { Navigate, Outlet, RouteObject } from 'react-router-dom';
 
 import {
   NotFoundPage,
-  ProfilePage,
+  SettingsPage,
   SignInPage,
   SignUpPage,
   WeekPage,
@@ -56,8 +56,8 @@ const routes: RouteObject[] = [
                 ],
               },
               {
-                path: 'profile',
-                element: <ProfilePage />,
+                path: 'settings',
+                element: <SettingsPage />,
               },
             ],
           },

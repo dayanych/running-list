@@ -19,7 +19,7 @@ const UserAvatar = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem asChild>
-          <Link to="/app/profile">Profile</Link>
+          <Link to="/app/settings">Settings</Link>
         </DropdownMenuItem>
         <DropdownMenuItem danger>Logout</DropdownMenuItem>
       </DropdownMenuContent>
