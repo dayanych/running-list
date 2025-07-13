@@ -4,35 +4,35 @@
 
 @layer base {
   :root {
-    --background: #FFFFFF;
+    --background: #ffffff;
     --foreground: #020617;
 
-    --card: #FFFFFF;
+    --card: #ffffff;
     --card-foreground: #020617;
 
-    --popover: #FFFFFF;
+    --popover: #ffffff;
     --popover-foreground: #020617;
 
-    --primary: #0284C7;
-    --primary-foreground: #F8FAFC;
+    --primary: #0284c7;
+    --primary-foreground: #f8fafc;
 
-    --success: #22C55E;
-    --success-foreground: #F8FAFC;
+    --success: #22c55e;
+    --success-foreground: #f8fafc;
 
-    --secondary: #F1F5F9;
-    --secondary-foreground: #1E293B;
+    --secondary: #f1f5f9;
+    --secondary-foreground: #1e293b;
 
-    --muted: #FAFAFA;
-    --muted-foreground: #64748B;
+    --muted: #fafafa;
+    --muted-foreground: #64748b;
 
-    --accent: #F1F5F9;
-    --accent-foreground: #1E293B;
+    --accent: #f1f5f9;
+    --accent-foreground: #1e293b;
 
-    --destructive: #EF4444;
-    --destructive-foreground: #F8FAFC;
+    --destructive: #ef4444;
+    --destructive-foreground: #f8fafc;
 
-    --border: #E2E8F0;
-    --input: #E2E8F0;
+    --border: #e2e8f0;
+    --input: #e2e8f0;
     --ring: #020617;
 
     --radius: 0.5rem;
@@ -43,32 +43,32 @@
 
   .dark {
     --background: #020617;
-    --foreground: #F8FAFC;
+    --foreground: #f8fafc;
 
     --card: #020617;
-    --card-foreground: #F8FAFC;
+    --card-foreground: #f8fafc;
 
     --popover: #020617;
-    --popover-foreground: #F8FAFC;
+    --popover-foreground: #f8fafc;
 
-    --primary: #F8FAFC;
-    --primary-foreground: #1E293B;
+    --primary: #f8fafc;
+    --primary-foreground: #1e293b;
 
-    --secondary: #1E293B;
-    --secondary-foreground: #F8FAFC;
+    --secondary: #1e293b;
+    --secondary-foreground: #f8fafc;
 
-    --muted: #1E293B;
-    --muted-foreground: #94A3B8;
+    --muted: #1e293b;
+    --muted-foreground: #94a3b8;
 
-    --accent: #1E293B;
-    --accent-foreground: #F8FAFC;
+    --accent: #1e293b;
+    --accent-foreground: #f8fafc;
 
-    --destructive: #7F1D1D;
-    --destructive-foreground: #F8FAFC;
+    --destructive: #7f1d1d;
+    --destructive-foreground: #f8fafc;
 
-    --border: #1E293B;
-    --input: #1E293B;
-    --ring: #CBD5E1;
+    --border: #1e293b;
+    --input: #1e293b;
+    --ring: #cbd5e1;
   }
 }
 
@@ -122,4 +122,15 @@ input {
 
 .border-state {
   border: 1px dotted var(--muted);
+}
+
+.bg-radial-dots {
+  --d: 1.5px;
+
+  background: radial-gradient(
+      circle at var(--d) var(--d),
+      #000 calc(var(--d) - 0.5px),
+      #0000 var(--d)
+    )
+    0 0 / var(--state-block-width) var(--state-block-height);
 }

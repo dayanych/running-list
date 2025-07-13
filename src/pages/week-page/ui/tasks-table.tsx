@@ -61,7 +61,7 @@ const TasksTable = ({ data, startWeekDate, loading, error }: Props) => {
           </TableRow>
         ))}
       </TableHeader>
-      <TableBody>
+      <TableBody className="border border-transparent">
         {loading && (
           <TableRow>
             <TableCell colSpan={columns.length} className="h-24 text-center">

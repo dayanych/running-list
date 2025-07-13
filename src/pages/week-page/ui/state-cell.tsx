@@ -115,10 +115,15 @@ export const StateCell = ({ date, state, taskId }: Props) => {
         <TableCell
           // className={`cursor-pointer ${state ? 'border-2' : 'border border-dashed'}`}
           className={cn(
-            'h-state w-state cursor-pointer',
+            'h-state w-state bg-radial-dots relative cursor-pointer',
             getTableStateStyle(state?.status ?? null),
           )}
-        />
+        >
+          {/* <div className="absolute left-0 top-0 h-[2px] w-[2px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-black" />
+          <div className="absolute right-0 top-0 h-[2px] w-[2px] -translate-y-1/2 translate-x-1/2 rounded-full bg-black" />
+          <div className="absolute bottom-0 left-0 h-[2px] w-[2px] -translate-x-1/2 translate-y-1/2 rounded-full bg-black" />
+          <div className="absolute bottom-0 right-0 h-[2px] w-[2px] translate-x-1/2 translate-y-1/2 rounded-full bg-black" /> */}
+        </TableCell>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuGroup>
