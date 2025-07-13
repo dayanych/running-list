@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { getWeek, getYear, setWeek, startOfWeek } from 'date-fns';
 import { DateRange } from 'react-day-picker';
-import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 import { StatesDal } from '@/entities/states';
@@ -18,21 +17,18 @@ const getStartDateOfWeek = (week: number, year: number) => {
 
 export const useWeekPage = () => {
   const user = useUser();
-  const { year, week } = useYearWeekParams();
   const navigate = useNavigate();
-
-  if (!user || !year || !week) {
-    toast.error('User, year, or week not provided');
-    throw new Error('User, year, or week not provided');
-  }
+  const { year, week } = useYearWeekParams();
 
   const {
-    data: tasksWithStates,
+    data: tasksWithStates = [],
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ['getTasks', user.id, year, week],
+    queryKey: ['getTasks', user?.id, year, week],
     queryFn: async () => {
+      if (!user) return;
+
       const tasks = await TasksDal.getTasksByUserIdYearWeek(
         user.id,
         year,
@@ -55,7 +51,7 @@ export const useWeekPage = () => {
     const updatedWeek = getWeek(date.from);
     const updatedYear = getYear(date.from);
 
-    navigate(`/app/${updatedYear}/${updatedWeek}`);
+    navigate(`/${updatedYear}/${updatedWeek}`);
   };
 
   return {

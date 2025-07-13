@@ -11,24 +11,23 @@ export const useCreateTaskInput = () => {
   const { week, year } = useYearWeekParams();
   const [taskTitle, setTaskTitle] = useState('');
 
-  if (!user) {
-    throw new Error('User not provided');
-  }
-
   const { mutate: createTask, isPending: isLoading } = useMutation({
     mutationKey: ['createTask'],
-    mutationFn: async () =>
+    mutationFn: async () => {
+      if (!user) return;
+
       TasksDal.createTask({
         title: taskTitle.trim(),
         userId: user.id,
         color: '',
         week,
         year,
-      }),
+      });
+    },
     onSuccess: () => {
       setTaskTitle('');
       queryClient.invalidateQueries({
-        queryKey: ['getTasks', user.id, year, week],
+        queryKey: ['getTasks', user?.id, year, week],
       });
     },
     meta: { showToast: false },

@@ -1,9 +1,7 @@
-import { Outlet } from 'react-router-dom';
+interface PublicLayoutProps {
+  children: React.ReactNode;
+}
 
-import { usePublicLayout } from '../lib/use-public-layout';
-
-export const PublicLayout = () => {
-  usePublicLayout();
-
-  return <Outlet />;
+export const PublicLayout = ({ children }: PublicLayoutProps) => {
+  return children;
 };

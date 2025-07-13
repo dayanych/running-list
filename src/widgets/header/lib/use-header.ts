@@ -5,7 +5,7 @@ export const useHeader = () => {
   const currentYear = getCurrentYear();
   const currentWeek = getWeekNumber(new Date());
 
-  const todayLink = `/app/${currentYear}/${currentWeek}`;
+  const todayLink = `/${currentYear}/${currentWeek}`;
 
   return {
     user,

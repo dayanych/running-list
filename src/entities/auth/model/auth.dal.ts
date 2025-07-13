@@ -3,9 +3,7 @@ import { FirebaseError } from 'firebase/app';
 import { Dispatch } from 'react';
 import toast from 'react-hot-toast';
 
-import { setUser, unsetUser } from '@/entities/user/model/slice/user.slice';
-import { User } from '@/entities/user/model/types/user.type';
-import { UsersDal } from '@/entities/user/model/users.dal';
+import { setUser, unsetUser, User, UsersDal } from '@/entities/user';
 
 import { AuthService } from '../api/auth.service';
 import { UserRegistrationDto } from '../api/dto/user-login.dto';

@@ -1,4 +1,4 @@
-import { Navigate, Outlet, RouteObject } from 'react-router-dom';
+import { Outlet, RouteObject } from 'react-router-dom';
 
 import {
   NotFoundPage,
@@ -7,12 +7,7 @@ import {
   SignUpPage,
   WeekPage,
 } from '@/pages';
-import {
-  AuthInjector,
-  BaseLayout,
-  ProtectedLayout,
-  PublicLayout,
-} from '@/widgets';
+import { AuthInjector, BaseLayout } from '@/widgets';
 
 const routes: RouteObject[] = [
   {
@@ -23,43 +18,29 @@ const routes: RouteObject[] = [
         path: '/',
         element: <AuthInjector />,
         children: [
+          // Public routes
           {
-            path: '/',
-            element: <Navigate to="/app" />,
+            path: '/sign-in',
+            element: <SignInPage />,
           },
           {
-            path: '/',
-            element: <PublicLayout />,
+            path: '/sign-up',
+            element: <SignUpPage />,
+          },
+          // Protected routes
+          {
+            path: ':year',
+            element: <Outlet />,
             children: [
               {
-                path: '/sign-in',
-                element: <SignInPage />,
-              },
-              {
-                path: '/sign-up',
-                element: <SignUpPage />,
+                path: ':week',
+                element: <WeekPage />,
               },
             ],
           },
           {
-            path: '/app',
-            element: <ProtectedLayout />,
-            children: [
-              {
-                path: ':year',
-                element: <Outlet />,
-                children: [
-                  {
-                    path: ':week',
-                    element: <WeekPage />,
-                  },
-                ],
-              },
-              {
-                path: 'settings',
-                element: <SettingsPage />,
-              },
-            ],
+            path: 'settings',
+            element: <SettingsPage />,
           },
         ],
       },
