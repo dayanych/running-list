@@ -40,10 +40,14 @@ export class TasksDal {
     return converterTaskDtoToTask(task);
   }
 
-  public static async updateTask(task: Task): Promise<void> {
+  public static async updateTask(task: Task): Promise<Task> {
     const taskDto = convertedTaskToTaskDto(task);
 
     await TasksService.updateTask(taskDto);
+
+    const updatedTaskDto = await TasksService.getTaskById(task.id);
+
+    return converterTaskDtoToTask(updatedTaskDto);
   }
 
   // public static async deleteTask(taskId: string): Promise<void> {

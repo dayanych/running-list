@@ -45,10 +45,12 @@ export const useTasksTable = (tasks: TaskWithStates[], startWeekDate: Date) => {
     () => getTasksColumns(startWeekDate),
     [startWeekDate],
   );
+
   const data = useMemo(
     () =>
       tasks.map((task) => {
         const dayStatusClone = structuredClone(dayStatus);
+
         for (let i = 0; i < 7; i++) {
           const currentDate = new Date(startWeekDate);
           currentDate.setDate(startWeekDate.getDate() + i);
@@ -65,10 +67,7 @@ export const useTasksTable = (tasks: TaskWithStates[], startWeekDate: Date) => {
 
         return {
           ...dayStatusClone,
-          taskList: {
-            id: task.id,
-            title: task.title,
-          },
+          taskList: task,
           taskId: task.id,
         };
       }),

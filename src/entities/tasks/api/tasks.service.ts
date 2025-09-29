@@ -2,6 +2,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   getDocs,
   orderBy,
   query,
@@ -49,6 +50,13 @@ export class TasksService {
     await setDoc(docRef, taskDto);
 
     return taskDto;
+  }
+
+  public static async getTaskById(taskId: string): Promise<TaskDto> {
+    const taskDocRef = doc(firebaseDb, PATH_TO_TASKS_COLLECTION, taskId);
+    const taskDoc = await getDoc(taskDocRef);
+
+    return taskDoc.data() as TaskDto;
   }
 
   public static async updateTask(taskDto: TaskDto): Promise<void> {

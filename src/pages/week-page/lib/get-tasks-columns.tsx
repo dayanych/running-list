@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ColumnDef } from '@tanstack/react-table';
-import { Trash2 } from 'lucide-react';
 
 import { State } from '@/entities/states/model/types/state.type';
 import { dateConfig } from '@/shared/config/date.config';
-import { Button, EditableText, TableCell } from '@/shared/ui';
 
 import { DayNameCell } from '../ui/day-name-cell';
 import { StateCell } from '../ui/state-cell';
+import { TaskCell } from '../ui/task-cell';
 
 const returnStateCell = (
   value: { date: Date; state: State },
@@ -39,23 +38,7 @@ export const getTasksColumns = (startWeekDate: Date): ColumnDef<any, any>[] => {
       accessorKey: 'taskList',
       header: '',
       enableSorting: false,
-      cell: ({ getValue }) => (
-        <TableCell className="cursor-pointer">
-          <div className="group flex items-center gap-2">
-            <EditableText
-              title={getValue().title}
-              onChangeFinish={() => ({})}
-              className="cursor-pointerp-0 align-middle font-light"
-            />
-            <Button
-              variant="ghost"
-              className="opacity-0 transition-opacity group-hover:opacity-100"
-            >
-              <Trash2 size={15} className="text-destructive" />
-            </Button>
-          </div>
-        </TableCell>
-      ),
+      cell: ({ getValue }) => <TaskCell task={getValue()} />,
     },
   ];
 };

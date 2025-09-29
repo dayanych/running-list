@@ -115,7 +115,7 @@ export const StateCell = ({ date, state, taskId }: Props) => {
         <TableCell
           // className={`cursor-pointer ${state ? 'border-2' : 'border border-dashed'}`}
           className={cn(
-            'h-state w-state bg-radial-dots relative cursor-pointer',
+            'h-state w-state relative cursor-pointer',
             getTableStateStyle(state?.status ?? null),
           )}
         >

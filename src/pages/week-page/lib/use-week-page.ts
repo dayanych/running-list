@@ -34,6 +34,7 @@ export const useWeekPage = () => {
         year,
         week,
       );
+
       const tasksWithStates: TaskWithStates[] = await Promise.all(
         tasks.map(async (task) => {
           const states = await StatesDal.getStatesByTaskId(task.id);

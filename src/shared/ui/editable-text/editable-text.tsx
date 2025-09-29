@@ -10,6 +10,7 @@ interface EditableTextProps {
   className?: string;
   disabled?: boolean;
   placeholder?: string;
+  isLoading?: boolean;
 }
 
 export const EditableText = ({
@@ -17,6 +18,7 @@ export const EditableText = ({
   onChangeFinish,
   className,
   disabled = false,
+  // isLoading = false,
   placeholder = 'Empty title',
 }: EditableTextProps) => {
   const [isEditing, setIsEditing] = useState(false);
