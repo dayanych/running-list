@@ -1,6 +1,7 @@
-import { Trash2 } from 'lucide-react';
+import { LoaderCircle, Trash2 } from 'lucide-react';
 
 import { Task } from '@/entities/tasks';
+import { cn } from '@/shared/lib';
 import { Button, EditableText, TableCell } from '@/shared/ui';
 
 import { useTaskCell } from '../lib/use-task-cell';
@@ -13,21 +14,36 @@ export const TaskCell = ({ task }: Props) => {
   const { updateTaskTitle, isUpdatingTaskTitle } = useTaskCell();
 
   return (
-    <TableCell className="cursor-pointer">
+    <TableCell
+      className={cn(
+        'cursor-pointer',
+        isUpdatingTaskTitle && 'cursor-not-allowed',
+      )}
+    >
       <div className="group flex items-center gap-2">
         <EditableText
-          title={task.title}
+          value={task.title}
           onChangeFinish={(title) => {
             updateTaskTitle({ task, title });
           }}
-          isLoading={isUpdatingTaskTitle}
+          disabled={isUpdatingTaskTitle}
           className="cursor-pointerp-0 align-middle font-light"
         />
         <Button
           variant="ghost"
-          className="opacity-0 transition-opacity group-hover:opacity-100"
+          disabled={isUpdatingTaskTitle}
+          className={cn(
+            'transition-opacity',
+            isUpdatingTaskTitle
+              ? 'opacity-100'
+              : 'opacity-0 group-hover:opacity-100',
+          )}
         >
-          <Trash2 size={15} className="text-destructive" />
+          {isUpdatingTaskTitle ? (
+            <LoaderCircle className="h-4 w-4 animate-spin text-muted-foreground" />
+          ) : (
+            <Trash2 size={15} className="text-destructive" />
+          )}
         </Button>
       </div>
     </TableCell>

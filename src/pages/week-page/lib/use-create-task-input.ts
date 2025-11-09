@@ -24,11 +24,11 @@ export const useCreateTaskInput = () => {
         year,
       });
     },
-    onSuccess: () => {
-      setTaskTitle('');
-      queryClient.invalidateQueries({
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
         queryKey: ['getTasks', user?.id, year, week],
       });
+      setTaskTitle('');
     },
     meta: { showToast: false },
   });

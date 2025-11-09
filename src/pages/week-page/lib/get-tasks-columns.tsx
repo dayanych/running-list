@@ -12,7 +12,14 @@ const returnStateCell = (
   value: { date: Date; state: State },
   taskId: string,
 ) => {
-  return <StateCell state={value.state} date={value.date} taskId={taskId} />;
+  return (
+    <StateCell
+      key={value?.state?.id ?? `${taskId}-${value.date.toISOString()}`}
+      state={value.state}
+      date={value.date}
+      taskId={taskId}
+    />
+  );
 };
 
 export const getTasksColumns = (startWeekDate: Date): ColumnDef<any, any>[] => {
