@@ -4,3 +4,4 @@ export * from './laoder';
 export * from './shadcn';
 export * from './week-picker';
 export * from './logo';
+export * from './password-input';

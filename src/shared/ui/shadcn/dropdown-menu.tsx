@@ -6,7 +6,19 @@ import { cn } from '@/shared/lib';
 
 const DropdownMenu = DropdownMenuPrimitive.Root;
 
-const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger;
+const DropdownMenuTrigger = React.forwardRef<
+  React.ElementRef<typeof DropdownMenuPrimitive.Trigger>,
+  React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Trigger> & {
+    className?: string;
+  }
+>(({ className, ...props }, ref) => (
+  <DropdownMenuPrimitive.Trigger
+    ref={ref}
+    className={cn('focus-visible:outline-none focus-visible:ring-0', className)}
+    {...props}
+  />
+));
+DropdownMenuTrigger.displayName = DropdownMenuPrimitive.Trigger.displayName;
 
 const DropdownMenuGroup = DropdownMenuPrimitive.Group;
 
@@ -88,10 +100,12 @@ const DropdownMenuItem = React.forwardRef<
   <DropdownMenuPrimitive.Item
     ref={ref}
     className={cn(
-      'relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+      'relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+      danger
+        ? 'hover:bg-destructive/10 focus:bg-destructive/10 text-destructive hover:text-destructive focus:text-destructive data-[highlighted]:bg-destructive data-[highlighted]:text-destructive-foreground'
+        : 'focus:bg-accent focus:text-accent-foreground',
       inset && 'pl-8',
       className,
-      danger && 'hover:bg-destructive hover:text-destructive-foreground',
     )}
     {...props}
   />

@@ -1,4 +1,11 @@
-import { Button, Form, FormField, FormItem, Input } from '@/shared/ui';
+import {
+  Button,
+  Form,
+  FormField,
+  FormItem,
+  Input,
+  PasswordInput,
+} from '@/shared/ui';
 
 import { useSignInPage } from '../lib/use-sign-in-page';
 import { AuthLayout } from './auth-layout';
@@ -24,7 +31,7 @@ export const SignInPage = () => {
             name="password"
             render={({ field }) => (
               <FormItem required label="Password">
-                <Input {...field} />
+                <PasswordInput {...field} />
               </FormItem>
             )}
           />
