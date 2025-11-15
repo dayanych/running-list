@@ -1,7 +1,13 @@
-import { getCurrentYear, getWeekNumber, useUser } from '@/shared/lib';
+import {
+  getCurrentYear,
+  getWeekNumber,
+  useUser,
+  useWeekCalendarChange,
+} from '@/shared/lib';
 
 export const useHeader = () => {
   const user = useUser();
+  const { onWeekChange } = useWeekCalendarChange();
   const currentYear = getCurrentYear();
   const currentWeek = getWeekNumber(new Date());
 
@@ -10,5 +16,6 @@ export const useHeader = () => {
   return {
     user,
     todayLink,
+    onWeekChange,
   };
 };

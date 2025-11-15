@@ -28,7 +28,7 @@ const UserAvatar = () => {
 };
 
 export const Header = () => {
-  const { user, todayLink } = useHeader();
+  const { user, todayLink, onWeekChange } = useHeader();
 
   if (!user) {
     return null;
@@ -48,7 +48,7 @@ export const Header = () => {
         </div>
         <div className="flex items-center gap-5">
           <Link to={todayLink}>Today</Link>
-          <WeekPicker onChange={() => {}} title="Calendar" />
+          <WeekPicker onChange={onWeekChange} title="Calendar" />
           <UserAvatar />
         </div>
       </div>
