@@ -1,3 +1,5 @@
+import { LoaderCircle } from 'lucide-react';
+
 import {
   Button,
   Form,
@@ -11,7 +13,7 @@ import { useSignInPage } from '../lib/use-sign-in-page';
 import { AuthLayout } from './auth-layout';
 
 export const SignInPage = () => {
-  const { form, handleSubmit } = useSignInPage();
+  const { form, handleSubmit, isPending } = useSignInPage();
 
   return (
     <AuthLayout state="signIn">
@@ -35,8 +37,15 @@ export const SignInPage = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full">
-            Sign in
+          <Button type="submit" className="w-full" disabled={isPending}>
+            {isPending ? (
+              <>
+                <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+                Signing in...
+              </>
+            ) : (
+              'Sign in'
+            )}
           </Button>
         </form>
       </Form>

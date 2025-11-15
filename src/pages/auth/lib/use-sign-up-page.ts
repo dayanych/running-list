@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { z } from 'zod';
@@ -15,14 +16,24 @@ export const useSignUpPage = () => {
     resolver: zodResolver(CreateAccountShema),
   });
 
-  const handleSubmit = async (data: z.infer<typeof CreateAccountShema>) => {
-    const currentUser = await AuthDal.register({
-      email: data.email,
-      password: data.password,
-      name: data.username,
-    });
-    dispatch(setUser(currentUser));
-  };
+  const { mutateAsync: signUp, isPending } = useMutation({
+    mutationKey: ['sign-up'],
+    mutationFn: (data: z.infer<typeof CreateAccountShema>) =>
+      AuthDal.register({
+        email: data.email,
+        password: data.password,
+        name: data.username,
+      }),
+    onSuccess: (currentUser) => {
+      if (currentUser) {
+        dispatch(setUser(currentUser));
+      }
+    },
+    meta: { showToast: false },
+  });
 
-  return { form, handleSubmit };
+  const handleSubmit = (data: z.infer<typeof CreateAccountShema>) =>
+    signUp(data);
+
+  return { form, isPending, handleSubmit };
 };

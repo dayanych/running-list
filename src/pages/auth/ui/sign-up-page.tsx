@@ -1,10 +1,19 @@
-import { Button, Form, FormField, FormItem, Input } from '@/shared/ui';
+import { LoaderCircle } from 'lucide-react';
+
+import {
+  Button,
+  Form,
+  FormField,
+  FormItem,
+  Input,
+  PasswordInput,
+} from '@/shared/ui';
 
 import { useSignUpPage } from '../lib/use-sign-up-page';
 import { AuthLayout } from './auth-layout';
 
 export const SignUpPage = () => {
-  const { form, handleSubmit } = useSignUpPage();
+  const { form, handleSubmit, isPending } = useSignUpPage();
 
   return (
     <AuthLayout state="signUp">
@@ -33,7 +42,7 @@ export const SignUpPage = () => {
             name="password"
             render={({ field }) => (
               <FormItem required label="Password">
-                <Input {...field} />
+                <PasswordInput {...field} />
               </FormItem>
             )}
           />
@@ -42,12 +51,19 @@ export const SignUpPage = () => {
             name="confirmPassword"
             render={({ field }) => (
               <FormItem required label="Confirm password">
-                <Input {...field} />
+                <PasswordInput {...field} />
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full">
-            Registartion
+          <Button type="submit" className="w-full" disabled={isPending}>
+            {isPending ? (
+              <>
+                <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+                Processing...
+              </>
+            ) : (
+              'Registartion'
+            )}
           </Button>
         </form>
       </Form>
