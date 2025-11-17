@@ -50,9 +50,7 @@ export class TasksDal {
     return converterTaskDtoToTask(updatedTaskDto);
   }
 
-  // public static async deleteTask(taskId: string): Promise<void> {
-  //   await TasksService.deleteTask(taskId);
-  //   const states = await StatesDal.getStatesByTaskId(taskId);
-  //   states.forEach((state) => StatesDal.deleteState(state.id));
-  // }
+  public static async deleteTask(taskId: string): Promise<void> {
+    await TasksService.deleteTask(taskId);
+  }
 }

@@ -1,18 +1,21 @@
 import {
   collection,
-  deleteDoc,
   doc,
   getDoc,
   getDocs,
   orderBy,
   query,
+  runTransaction,
   setDoc,
   updateDoc,
   where,
 } from 'firebase/firestore';
 
 import { firebaseDb } from '@/shared/config/firebase.config';
-import { PATH_TO_TASKS_COLLECTION } from '@/shared/models/constants/firebase-paths';
+import {
+  PATH_TO_STATES_COLLECTION,
+  PATH_TO_TASKS_COLLECTION,
+} from '@/shared/models/constants/firebase-paths';
 
 import { TaskDto } from './dto/task.dto';
 
@@ -66,6 +69,21 @@ export class TasksService {
   }
 
   public static async deleteTask(taskId: string): Promise<void> {
-    await deleteDoc(doc(firebaseDb, PATH_TO_TASKS_COLLECTION, taskId));
+    const taskDocRef = doc(firebaseDb, PATH_TO_TASKS_COLLECTION, taskId);
+    const statesCollectionRef = collection(
+      firebaseDb,
+      PATH_TO_STATES_COLLECTION,
+    );
+    const statesSnapshots = await getDocs(
+      query(statesCollectionRef, where('task_id', '==', taskId)),
+    );
+
+    await runTransaction(firebaseDb, async (transaction) => {
+      statesSnapshots.docs.forEach((stateDoc) => {
+        transaction.delete(stateDoc.ref);
+      });
+
+      transaction.delete(taskDocRef);
+    });
   }
 }

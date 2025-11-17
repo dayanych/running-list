@@ -27,6 +27,7 @@ interface Props {
   date: Date;
   state: State | null;
   taskId: string;
+  isLoading?: boolean;
 }
 
 const MENU_ICON_SIZE = 16;
@@ -63,7 +64,7 @@ const getTableStateStyle = (status: StateStatus | null) => {
   }
 };
 
-export const StateCell = ({ date, state, taskId }: Props) => {
+export const StateCell = ({ date, state, taskId, isLoading }: Props) => {
   const { updateStatus } = useStateCell(date, state, taskId);
 
   const statusItems = useMemo(
@@ -111,7 +112,11 @@ export const StateCell = ({ date, state, taskId }: Props) => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+      <DropdownMenuTrigger
+        asChild
+        disabled={isLoading}
+        className={cn(isLoading && 'cursor-not-allowed')}
+      >
         <TableCell
           // className={`cursor-pointer ${state ? 'border-2' : 'border border-dashed'}`}
           className={cn(

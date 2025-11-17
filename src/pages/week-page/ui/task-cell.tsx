@@ -8,16 +8,19 @@ import { useTaskCell } from '../lib/use-task-cell';
 
 interface Props {
   task: Task;
+  deleteTask: (taskId: string) => void;
+  isDeletingTask: boolean;
 }
 
-export const TaskCell = ({ task }: Props) => {
+export const TaskCell = ({ task, deleteTask, isDeletingTask }: Props) => {
   const { updateTaskTitle, isUpdatingTaskTitle } = useTaskCell();
+  const isTaskActionInProgress = isUpdatingTaskTitle || isDeletingTask;
 
   return (
     <TableCell
       className={cn(
         'cursor-pointer',
-        isUpdatingTaskTitle && 'cursor-not-allowed',
+        isTaskActionInProgress && 'cursor-not-allowed',
       )}
     >
       <div className="group flex items-center gap-2">
@@ -26,20 +29,24 @@ export const TaskCell = ({ task }: Props) => {
           onChangeFinish={(title) => {
             updateTaskTitle({ task, title });
           }}
-          disabled={isUpdatingTaskTitle}
+          disabled={isTaskActionInProgress}
           className="cursor-pointerp-0 align-middle font-light"
         />
         <Button
           variant="ghost"
-          disabled={isUpdatingTaskTitle}
+          disabled={isTaskActionInProgress}
+          onClick={(event) => {
+            event.stopPropagation();
+            deleteTask(task.id);
+          }}
           className={cn(
             'transition-opacity',
-            isUpdatingTaskTitle
+            isTaskActionInProgress
               ? 'opacity-100'
               : 'opacity-0 group-hover:opacity-100',
           )}
         >
-          {isUpdatingTaskTitle ? (
+          {isTaskActionInProgress ? (
             <LoaderCircle className="h-4 w-4 animate-spin text-muted-foreground" />
           ) : (
             <Trash2 size={15} className="text-destructive" />

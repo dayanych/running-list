@@ -8,10 +8,11 @@ export const useTaskCell = () => {
   const queryClient = useQueryClient();
   const user = useUser();
   const { year, week } = useYearWeekParams();
+  const queryKey = ['getTasks', user?.id, year, week];
 
   const updateOldData = (updatedTask: Task) => {
     queryClient.setQueryData(
-      ['getTasks', user?.id, year, week],
+      queryKey,
       (oldData: TaskWithStates[] | undefined) => {
         if (!oldData) return oldData;
 

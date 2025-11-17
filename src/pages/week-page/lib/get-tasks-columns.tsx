@@ -11,6 +11,7 @@ import { TaskCell } from '../ui/task-cell';
 const returnStateCell = (
   value: { date: Date; state: State },
   taskId: string,
+  isTaskDeleting: (taskId: string) => boolean,
 ) => {
   return (
     <StateCell
@@ -18,11 +19,16 @@ const returnStateCell = (
       state={value.state}
       date={value.date}
       taskId={taskId}
+      isLoading={isTaskDeleting(taskId)}
     />
   );
 };
 
-export const getTasksColumns = (startWeekDate: Date): ColumnDef<any, any>[] => {
+export const getTasksColumns = (
+  startWeekDate: Date,
+  deleteTask: (taskId: string) => void,
+  isTaskDeleting: (taskId: string) => boolean,
+): ColumnDef<any, any>[] => {
   const weekDays = Array.from({ length: 7 }, (_, i) => {
     const currentDate = new Date(startWeekDate);
     currentDate.setDate(startWeekDate.getDate() + i);
@@ -39,13 +45,19 @@ export const getTasksColumns = (startWeekDate: Date): ColumnDef<any, any>[] => {
       enableSorting: false,
       header: () => <DayNameCell day={day.day} date={day.date} />,
       cell: ({ row, getValue }: any) =>
-        returnStateCell(getValue(), row.original.taskId),
+        returnStateCell(getValue(), row.original.taskId, isTaskDeleting),
     })),
     {
       accessorKey: 'taskList',
       header: '',
       enableSorting: false,
-      cell: ({ getValue }) => <TaskCell task={getValue()} />,
+      cell: ({ getValue, row }) => (
+        <TaskCell
+          task={getValue()}
+          deleteTask={deleteTask}
+          isDeletingTask={isTaskDeleting(row.original.taskId)}
+        />
+      ),
     },
   ];
 };

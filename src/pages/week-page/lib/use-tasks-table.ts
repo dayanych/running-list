@@ -1,7 +1,11 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { getCoreRowModel, useReactTable } from '@tanstack/react-table';
-import { useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { State } from '@/entities/states/model/types/state.type';
+import { TasksDal } from '@/entities/tasks';
+import { useUser } from '@/shared/lib/hooks/use-user';
+import { useYearWeekParams } from '@/shared/lib/hooks/use-year-week-params';
 
 import { TaskWithStates } from '../ui/tasks-table';
 import { getTasksColumns } from './get-tasks-columns';
@@ -41,9 +45,47 @@ const dayStatus: {
 };
 
 export const useTasksTable = (tasks: TaskWithStates[], startWeekDate: Date) => {
+  const queryClient = useQueryClient();
+  const user = useUser();
+  const { year, week } = useYearWeekParams();
+  const [deletingTaskId, setDeletingTaskId] = useState<string | null>(null);
+
+  const queryKey = ['getTasks', user?.id, year, week];
+
+  const removeTaskFromOldData = (taskId: string) => {
+    queryClient.setQueryData(
+      queryKey,
+      (oldData: TaskWithStates[] | undefined) => {
+        if (!oldData) return oldData;
+
+        return oldData.filter((task) => task.id !== taskId);
+      },
+    );
+  };
+
+  const { mutate: deleteTask, isPending: isDeletingTask } = useMutation({
+    mutationFn: async (taskId: string) => {
+      setDeletingTaskId(taskId);
+      await TasksDal.deleteTask(taskId);
+      return taskId;
+    },
+    onSuccess: (_, taskId) => {
+      removeTaskFromOldData(taskId);
+    },
+    onSettled: () => {
+      setDeletingTaskId(null);
+    },
+    meta: { showToast: false },
+  });
+
+  const isTaskDeleting = useCallback(
+    (taskId: string) => isDeletingTask && deletingTaskId === taskId,
+    [deletingTaskId, isDeletingTask],
+  );
+
   const columns = useMemo(
-    () => getTasksColumns(startWeekDate),
-    [startWeekDate],
+    () => getTasksColumns(startWeekDate, deleteTask, isTaskDeleting),
+    [startWeekDate, deleteTask, isTaskDeleting],
   );
 
   const data = useMemo(
@@ -71,7 +113,7 @@ export const useTasksTable = (tasks: TaskWithStates[], startWeekDate: Date) => {
           taskId: task.id,
         };
       }),
-    [tasks],
+    [tasks, startWeekDate],
   );
 
   const table = useReactTable({
