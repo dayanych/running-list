@@ -8,6 +8,7 @@ import {
 export const useHeader = () => {
   const user = useUser();
   const { onWeekChange } = useWeekCalendarChange();
+
   const currentYear = getCurrentYear();
   const currentWeek = getWeekNumber(new Date());
 

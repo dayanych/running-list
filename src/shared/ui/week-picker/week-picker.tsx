@@ -22,10 +22,13 @@ export function WeekPicker({
   onChange,
 }: WeekPickerProps) {
   const [date, setDate] = useState<DateRange | null>(null);
+  const [month, setMonth] = useState<Date>(() => initialDate ?? new Date());
   const [hoveredDay, setHoveredDay] = useState<Date | null>(null);
 
   useEffect(() => {
-    const start = startOfWeek(initialDate ?? new Date(), {
+    const baseDate = initialDate ?? new Date();
+
+    const start = startOfWeek(baseDate, {
       weekStartsOn: dateConfig.weekStart,
     });
     const end = endOfWeek(start, {
@@ -36,6 +39,7 @@ export function WeekPicker({
       from: start,
       to: end,
     });
+    setMonth(start);
   }, [initialDate]);
 
   const handleSelect = (selectedDate: Date | undefined) => {
@@ -47,6 +51,7 @@ export function WeekPicker({
         weekStartsOn: dateConfig.weekStart,
       });
       setDate({ from: start, to: end });
+      setMonth(start);
       onChange({ from: start, to: end });
     } else {
       setDate(null);
@@ -109,8 +114,15 @@ export function WeekPicker({
     },
   };
 
+  const handlePopoverOpenChange = (isOpen: boolean) => {
+    if (!isOpen) {
+      const resetDate = date?.from ?? initialDate ?? new Date();
+      setMonth(resetDate);
+    }
+  };
+
   return (
-    <Popover>
+    <Popover onOpenChange={handlePopoverOpenChange}>
       <PopoverTrigger asChild>
         <span
           className={cn(
@@ -126,6 +138,8 @@ export function WeekPicker({
         <Calendar
           mode="single"
           selected={date?.from}
+          month={month}
+          onMonthChange={setMonth}
           onSelect={handleSelect}
           modifiers={modifiers}
           modifiersStyles={modifiersStyles}
