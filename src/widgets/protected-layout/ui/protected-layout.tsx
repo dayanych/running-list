@@ -1,18 +1,16 @@
+import { Outlet } from 'react-router-dom';
+
 import { Header } from '@/widgets';
 
 import { useProtectedLayout } from '../lib/use-protected-layout';
 
-interface ProtectedLayoutProps {
-  children: React.ReactNode;
-}
-
-export const ProtectedLayout = ({ children }: ProtectedLayoutProps) => {
+export const ProtectedLayout = () => {
   useProtectedLayout();
 
   return (
     <div className="flex h-screen flex-col">
       <Header />
-      {children}
+      <Outlet />
     </div>
   );
 };

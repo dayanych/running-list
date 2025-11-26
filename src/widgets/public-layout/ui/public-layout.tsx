@@ -1,7 +1,5 @@
-interface PublicLayoutProps {
-  children: React.ReactNode;
-}
+import { Outlet } from 'react-router-dom';
 
-export const PublicLayout = ({ children }: PublicLayoutProps) => {
-  return children;
+export const PublicLayout = () => {
+  return <Outlet />;
 };

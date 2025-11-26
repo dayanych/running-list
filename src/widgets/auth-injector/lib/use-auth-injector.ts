@@ -21,10 +21,6 @@ export const useAuthInjector = () => {
     if (!user) {
       navigate('/sign-in', { replace: true });
     }
-
-    if (user) {
-      navigate('/', { replace: true });
-    }
   }, [user, navigate, isLoading]);
 
   return { isLoading, user };

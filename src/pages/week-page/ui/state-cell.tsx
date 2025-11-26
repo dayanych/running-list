@@ -97,9 +97,7 @@ export const StateCell = ({ date, state, taskId, isLoading }: Props) => {
       ...(state
         ? [
             {
-              icon: (
-                <Trash2 size={MENU_ICON_SIZE} className="text-destructive" />
-              ),
+              icon: <Trash2 size={MENU_ICON_SIZE} className="text-inherit" />,
               label: 'Delete',
               danger: true,
               onclick: () => updateStatus(StateStatus.Empty),

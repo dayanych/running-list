@@ -1,6 +1,7 @@
 import { User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+import { routesPaths } from '@/shared/config';
 import { Logo, WeekPicker } from '@/shared/ui';
 import {
   DropdownMenu,
@@ -19,7 +20,7 @@ const UserAvatar = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem asChild>
-          <Link to="/settings">Settings</Link>
+          <Link to={`/${routesPaths.settings}`}>Settings</Link>
         </DropdownMenuItem>
         <DropdownMenuItem danger>Logout</DropdownMenuItem>
       </DropdownMenuContent>

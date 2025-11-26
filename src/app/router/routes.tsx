@@ -1,51 +1,76 @@
-import { Outlet, RouteObject } from 'react-router-dom';
+import { RouteObject } from 'react-router-dom';
 
 import {
+  CurrentWeekRedirectPage,
   NotFoundPage,
   SettingsPage,
   SignInPage,
   SignUpPage,
   WeekPage,
+  YearPage,
 } from '@/pages';
-import { AuthInjector, BaseLayout } from '@/widgets';
+import { routesPaths } from '@/shared/config';
+import {
+  AuthInjector,
+  BaseLayout,
+  ProtectedLayout,
+  PublicLayout,
+} from '@/widgets';
 
 const publicRoutes = [
   {
-    path: '/sign-in',
+    path: routesPaths.signIn,
     element: <SignInPage />,
   },
   {
-    path: '/sign-up',
+    path: routesPaths.signUp,
     element: <SignUpPage />,
   },
 ];
 
 const protectedRoutes = [
   {
-    path: ':year',
-    element: <Outlet />,
+    index: true,
+    element: <CurrentWeekRedirectPage />,
+  },
+  {
+    path: routesPaths.settings,
+    element: <SettingsPage />,
+  },
+  {
+    path: routesPaths.year,
+    element: <YearPage />,
     children: [
       {
-        path: ':week',
+        path: routesPaths.week,
         element: <WeekPage />,
       },
     ],
-  },
-  {
-    path: 'settings',
-    element: <SettingsPage />,
   },
 ];
 
 const routes: RouteObject[] = [
   {
-    path: '/',
+    path: routesPaths.base,
     element: <BaseLayout />,
     children: [
       {
-        path: '/',
+        path: routesPaths.base,
         element: <AuthInjector />,
-        children: [...publicRoutes, ...protectedRoutes],
+        children: [
+          {
+            element: <ProtectedLayout />,
+            children: protectedRoutes,
+          },
+          {
+            element: <PublicLayout />,
+            children: publicRoutes,
+          },
+        ],
+      },
+      {
+        path: routesPaths.notFound,
+        element: <NotFoundPage />,
       },
       {
         path: '*',
