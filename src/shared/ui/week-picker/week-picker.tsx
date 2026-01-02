@@ -121,6 +121,8 @@ export function WeekPicker({
     }
   };
 
+  const weekTitle = getWeekTitle();
+
   return (
     <Popover onOpenChange={handlePopoverOpenChange}>
       <PopoverTrigger asChild>
@@ -131,7 +133,12 @@ export function WeekPicker({
             className,
           )}
         >
-          {getWeekTitle()}
+          <span
+            key={weekTitle}
+            className="inline-block duration-300 animate-in fade-in"
+          >
+            {weekTitle}
+          </span>
         </span>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="center">
