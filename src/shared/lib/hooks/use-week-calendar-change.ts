@@ -9,7 +9,7 @@ export const useWeekCalendarChange = () => {
     if (!date.from || !date.to) return;
 
     const updatedWeek = getWeek(date.from);
-    const updatedYear = getYear(date.from);
+    const updatedYear = getYear(date.to);
 
     navigate(`/${updatedYear}/${updatedWeek}`);
   };
