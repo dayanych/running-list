@@ -1,4 +1,4 @@
-import { LoaderCircle } from 'lucide-react';
+import { LuLoaderCircle } from 'react-icons/lu';
 
 import {
   Button,
@@ -58,7 +58,7 @@ export const SignUpPage = () => {
           <Button type="submit" className="w-full" disabled={isPending}>
             {isPending ? (
               <>
-                <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+                <LuLoaderCircle className="mr-2 h-4 w-4 animate-spin" />
                 Processing...
               </>
             ) : (

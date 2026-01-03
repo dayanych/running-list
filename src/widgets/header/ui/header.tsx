@@ -1,4 +1,4 @@
-import { User } from 'lucide-react';
+import { LuUser } from 'react-icons/lu';
 import { Link } from 'react-router-dom';
 
 import { routesPaths } from '@/shared/config';
@@ -16,7 +16,7 @@ const UserAvatar = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex h-9 w-9 items-center justify-center rounded-full border bg-muted">
-        <User className="h-5 w-5" />
+        <LuUser className="h-5 w-5" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem asChild>

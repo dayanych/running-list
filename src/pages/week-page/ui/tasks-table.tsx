@@ -1,7 +1,7 @@
 import { flexRender } from '@tanstack/react-table';
-import { LoaderCircle } from 'lucide-react';
 import { memo } from 'react';
 import React from 'react';
+import { LuLoaderCircle } from 'react-icons/lu';
 
 import { State } from '@/entities/states/model/types/state.type';
 import { Task } from '@/entities/tasks/model/types/task.type';
@@ -66,7 +66,7 @@ const TasksTable = ({ data, startWeekDate, loading, error }: Props) => {
           <TableRow>
             <TableCell colSpan={columns.length} className="h-24 text-center">
               <div className="flex h-full w-full items-center justify-center">
-                <LoaderCircle className="h-14 w-14 animate-spin text-primary" />
+                <LuLoaderCircle className="h-14 w-14 animate-spin text-primary" />
               </div>
             </TableCell>
           </TableRow>

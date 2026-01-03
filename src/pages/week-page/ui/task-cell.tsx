@@ -1,4 +1,4 @@
-import { LoaderCircle, Trash2 } from 'lucide-react';
+import { LuLoaderCircle, LuTrash2 } from 'react-icons/lu';
 
 import { Task } from '@/entities/tasks';
 import { cn } from '@/shared/lib';
@@ -47,9 +47,9 @@ export const TaskCell = ({ task, deleteTask, isDeletingTask }: Props) => {
           )}
         >
           {isTaskActionInProgress ? (
-            <LoaderCircle className="h-4 w-4 animate-spin text-muted-foreground" />
+            <LuLoaderCircle className="h-4 w-4 animate-spin text-muted-foreground" />
           ) : (
-            <Trash2 size={15} className="text-destructive" />
+            <LuTrash2 size={15} className="text-destructive" />
           )}
         </Button>
       </div>

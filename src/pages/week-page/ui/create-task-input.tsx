@@ -1,4 +1,4 @@
-import { LoaderCircle, Plus } from 'lucide-react';
+import { LuLoaderCircle, LuPlus } from 'react-icons/lu';
 
 import { cn } from '@/shared/lib';
 import { Button, Input } from '@/shared/ui';
@@ -30,9 +30,9 @@ export const CreateTaskInput = () => {
         )}
       >
         {isLoading ? (
-          <LoaderCircle className="h-4 w-4 animate-spin" />
+          <LuLoaderCircle className="h-4 w-4 animate-spin" />
         ) : (
-          <Plus className="h-4 w-4" />
+          <LuPlus className="h-4 w-4" />
         )}
       </Button>
     </form>

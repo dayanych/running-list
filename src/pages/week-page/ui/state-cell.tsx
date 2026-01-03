@@ -1,12 +1,12 @@
-import {
-  ArrowRight,
-  Plus,
-  Square,
-  SquareDashed,
-  SquareDashedTopSolid,
-  Trash2,
-} from 'lucide-react';
 import { useMemo } from 'react';
+import {
+  LuArrowRight,
+  LuPlus,
+  LuSquare,
+  LuSquareDashed,
+  LuSquareDashedBottom,
+  LuTrash2,
+} from 'react-icons/lu';
 
 import { StateStatus } from '@/entities/states/model/constants/state-status';
 import { State } from '@/entities/states/model/types/state.type';
@@ -35,15 +35,15 @@ const MENU_ICON_SIZE = 16;
 const getStateIcon = (status: StateStatus, size: number) => {
   switch (status) {
     case StateStatus.Empty:
-      return <SquareDashed size={size} />;
+      return <LuSquareDashed size={size} />;
     case StateStatus.FullDone:
-      return <Square size={size} color="black" fill="black" />;
+      return <LuSquare size={size} color="black" fill="black" />;
     case StateStatus.HalfDone:
-      return <SquareDashedTopSolid size={size} color="black" />;
+      return <LuSquareDashedBottom size={size} color="black" />;
     case StateStatus.Delay:
-      return <ArrowRight size={size} />;
+      return <LuArrowRight size={size} />;
     case StateStatus.Failed:
-      return <Plus size={size} className="rotate-45" />;
+      return <LuPlus size={size} className="rotate-45" />;
   }
 };
 
@@ -97,7 +97,7 @@ export const StateCell = ({ date, state, taskId, isLoading }: Props) => {
       ...(state
         ? [
             {
-              icon: <Trash2 size={MENU_ICON_SIZE} className="text-inherit" />,
+              icon: <LuTrash2 size={MENU_ICON_SIZE} className="text-inherit" />,
               label: 'Delete',
               danger: true,
               onclick: () => updateStatus(StateStatus.Empty),

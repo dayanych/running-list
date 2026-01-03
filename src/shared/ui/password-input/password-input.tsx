@@ -1,5 +1,5 @@
-import { Eye, EyeOff } from 'lucide-react';
 import * as React from 'react';
+import { LuEye, LuEyeOff } from 'react-icons/lu';
 
 import { cn } from '@/shared/lib';
 
@@ -33,14 +33,14 @@ export const PasswordInput = React.forwardRef<
         onClick={toggleVisibility}
       >
         <span className="relative flex h-4 w-4 items-center justify-center">
-          <Eye
+          <LuEye
             className={cn(
               'absolute h-4 w-4 transition-opacity duration-200',
               isVisible ? 'opacity-0' : 'opacity-100',
             )}
             aria-hidden="true"
           />
-          <EyeOff
+          <LuEyeOff
             className={cn(
               'absolute h-4 w-4 transition-opacity duration-200',
               isVisible ? 'opacity-100' : 'opacity-0',
