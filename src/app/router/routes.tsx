@@ -2,6 +2,8 @@ import { RouteObject } from 'react-router-dom';
 
 import {
   CurrentWeekRedirectPage,
+  EmailLinkHandlerPage,
+  EmailLinkRequestPage,
   NotFoundPage,
   SettingsPage,
   SignInPage,
@@ -18,6 +20,14 @@ import {
 } from '@/widgets';
 
 const publicRoutes = [
+  {
+    path: routesPaths.signInEmailLinkRequest,
+    element: <EmailLinkRequestPage />,
+  },
+  {
+    path: routesPaths.signInEmailLink,
+    element: <EmailLinkHandlerPage />,
+  },
   {
     path: routesPaths.signIn,
     element: <SignInPage />,

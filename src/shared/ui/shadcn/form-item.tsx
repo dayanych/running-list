@@ -34,7 +34,7 @@ export const FormItem = ({
   required,
 }: FormItemProps) => {
   return (
-    <FItem className={cn('flex flex-col', className)}>
+    <FItem className={cn('relative flex flex-col', className)}>
       {label && (
         <FormLabel
           className={cn(
@@ -51,7 +51,10 @@ export const FormItem = ({
       {!disableErrorMessage && (
         <FormMessage
           customErrorMessage={errorMessage}
-          className={errorClassName}
+          className={cn(
+            'absolute left-0 top-full translate-y-1 transform',
+            errorClassName,
+          )}
         />
       )}
     </FItem>

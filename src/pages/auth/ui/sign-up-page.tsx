@@ -16,7 +16,7 @@ export const SignUpPage = () => {
   const { form, handleSubmit, isPending } = useSignUpPage();
 
   return (
-    <AuthLayout state="signUp">
+    <AuthLayout>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
           <FormField

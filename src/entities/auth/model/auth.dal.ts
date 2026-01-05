@@ -11,6 +11,7 @@ import { UserLoginDto } from '../api/dto/user-registration.dto';
 import { getAuthErrorMessage } from '../lib/get-auth-error-message';
 
 export class AuthDal {
+  /** Depricated. Use sendEmailLink instead */
   public static async login(loginData: UserLoginDto): Promise<User | null> {
     try {
       const currentUser = await AuthService.signIn(loginData);
@@ -25,6 +26,7 @@ export class AuthDal {
     }
   }
 
+  /** Depricated. Use sendEmailLink instead */
   public static async register(
     registrationData: UserRegistrationDto,
   ): Promise<User | null> {
@@ -76,5 +78,36 @@ export class AuthDal {
     };
 
     AuthService.listenAuthStateChange(params);
+  }
+
+  public static async sendEmailLink(email: string): Promise<boolean> {
+    try {
+      await AuthService.sendEmailLink(email);
+      return true;
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        toast.error(getAuthErrorMessage(error));
+      }
+      return false;
+    }
+  }
+
+  public static isEmailLink(link: string): boolean {
+    return AuthService.isEmailLink(link);
+  }
+
+  public static async signInWithEmailLink(
+    email: string,
+    link: string,
+  ): Promise<User | null> {
+    try {
+      const currentUser = await AuthService.signInWithEmailLink(email, link);
+      return UsersDal.getUser(currentUser.uid);
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        toast.error(getAuthErrorMessage(error));
+      }
+      return null;
+    }
   }
 }

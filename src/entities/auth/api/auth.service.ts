@@ -1,12 +1,15 @@
 import {
   createUserWithEmailAndPassword,
   getAuth,
+  isSignInWithEmailLink,
   onAuthStateChanged,
+  sendSignInLinkToEmail,
   signInWithEmailAndPassword,
+  signInWithEmailLink,
   User,
 } from 'firebase/auth';
 
-import { firebaseApp } from '@/shared/config/firebase.config';
+import { firebaseActionCodeSettings, firebaseApp } from '@/shared/config';
 
 import { UserLoginDto, UserRegistrationDto } from './';
 
@@ -18,6 +21,7 @@ interface ListenAuthStateChangeParams {
 const auth = getAuth(firebaseApp);
 
 export class AuthService {
+  /** Depricated. Use sendEmailLink instead */
   static signUp = async ({
     email,
     password,
@@ -31,6 +35,7 @@ export class AuthService {
     return userCredential.user;
   };
 
+  /** Depricated. Use sendEmailLink instead */
   static signIn = async ({ email, password }: UserLoginDto): Promise<User> => {
     const userCredential = await signInWithEmailAndPassword(
       auth,
@@ -54,4 +59,20 @@ export class AuthService {
       }
     });
   }
+
+  static sendEmailLink = async (email: string): Promise<void> => {
+    await sendSignInLinkToEmail(auth, email, firebaseActionCodeSettings);
+  };
+
+  static isEmailLink = (link: string): boolean => {
+    return isSignInWithEmailLink(auth, link);
+  };
+
+  static signInWithEmailLink = async (
+    email: string,
+    link: string,
+  ): Promise<User> => {
+    const result = await signInWithEmailLink(auth, email, link);
+    return result.user;
+  };
 }

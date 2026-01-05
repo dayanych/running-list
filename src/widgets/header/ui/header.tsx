@@ -12,7 +12,11 @@ import {
 
 import { useHeader } from '..';
 
-const UserAvatar = () => {
+interface UserAvatarProps {
+  onLogout: () => void;
+}
+
+const UserAvatar = ({ onLogout }: UserAvatarProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex h-9 w-9 items-center justify-center rounded-full border bg-muted">
@@ -22,14 +26,16 @@ const UserAvatar = () => {
         <DropdownMenuItem asChild>
           <Link to={`/${routesPaths.settings}`}>Settings</Link>
         </DropdownMenuItem>
-        <DropdownMenuItem danger>Logout</DropdownMenuItem>
+        <DropdownMenuItem danger onSelect={() => onLogout()}>
+          Logout
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
 };
 
 export const Header = () => {
-  const { user, todayLink, onWeekChange } = useHeader();
+  const { user, todayLink, onWeekChange, onLogout } = useHeader();
 
   if (!user) {
     return null;
@@ -50,7 +56,7 @@ export const Header = () => {
         <div className="flex items-center gap-5">
           <Link to={todayLink}>Today</Link>
           <WeekPicker onChange={onWeekChange} title="Calendar" />
-          <UserAvatar />
+          <UserAvatar onLogout={onLogout} />
         </div>
       </div>
     </header>
