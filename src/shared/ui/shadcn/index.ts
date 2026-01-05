@@ -7,4 +7,5 @@ export * from './form-item';
 export * from './input';
 export * from './label';
 export * from './popover';
+export * from './scroll-area';
 export * from './table';
