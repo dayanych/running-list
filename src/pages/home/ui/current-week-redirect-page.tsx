@@ -1,7 +1,6 @@
+import { getWeek, getYear } from 'date-fns';
 import { Navigate } from 'react-router-dom';
 
-import { getCurrentYear } from '@/shared/lib/get-current-year';
-import { getWeekNumber } from '@/shared/lib/get-week-number';
 import { useUser } from '@/shared/lib/hooks/use-user';
 
 export const CurrentWeekRedirectPage = () => {
@@ -11,8 +10,8 @@ export const CurrentWeekRedirectPage = () => {
     return null;
   }
 
-  const currentYear = getCurrentYear();
-  const currentWeek = getWeekNumber(new Date());
+  const currentYear = getYear(new Date());
+  const currentWeek = getWeek(new Date());
 
   return <Navigate to={`/${currentYear}/${currentWeek}`} replace />;
 };

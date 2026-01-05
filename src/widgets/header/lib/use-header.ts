@@ -1,16 +1,13 @@
-import {
-  getCurrentYear,
-  getWeekNumber,
-  useUser,
-  useWeekCalendarChange,
-} from '@/shared/lib';
+import { getWeek, getYear } from 'date-fns';
+
+import { useUser, useWeekCalendarChange } from '@/shared/lib';
 
 export const useHeader = () => {
   const user = useUser();
   const { onWeekChange } = useWeekCalendarChange();
 
-  const currentYear = getCurrentYear();
-  const currentWeek = getWeekNumber(new Date());
+  const currentYear = getYear(new Date());
+  const currentWeek = getWeek(new Date());
 
   const todayLink = `/${currentYear}/${currentWeek}`;
 
