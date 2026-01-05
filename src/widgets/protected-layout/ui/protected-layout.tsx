@@ -8,7 +8,7 @@ export const ProtectedLayout = () => {
   useProtectedLayout();
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex h-full min-h-screen flex-col">
       <Header />
       <Outlet />
     </div>
