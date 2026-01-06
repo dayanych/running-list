@@ -102,7 +102,21 @@ export class AuthDal {
   ): Promise<User | null> {
     try {
       const currentUser = await AuthService.signInWithEmailLink(email, link);
-      return UsersDal.getUser(currentUser.uid);
+      const existingUser = await UsersDal.getUser(currentUser.uid);
+
+      if (existingUser) {
+        return existingUser;
+      }
+
+      const newUser: User = {
+        id: currentUser.uid,
+        email: currentUser.email ?? email,
+        name: currentUser.displayName ?? currentUser.email ?? null,
+        taskIds: [],
+      };
+
+      await UsersDal.createUser(newUser);
+      return newUser;
     } catch (error) {
       if (error instanceof FirebaseError) {
         toast.error(getAuthErrorMessage(error));

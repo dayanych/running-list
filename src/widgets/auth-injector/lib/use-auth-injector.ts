@@ -20,11 +20,17 @@ export const useAuthInjector = () => {
   useEffect(() => {
     if (isLoading) return;
 
+    // Redirect logic with public routes consideration
     if (
       location.pathname.includes(routesPaths.signInEmailLink) ||
       location.pathname.includes(routesPaths.signInEmailLinkRequest)
-    )
+    ) {
+      if (user) {
+        navigate(`/${routesPaths.base}`, { replace: true });
+      }
+
       return;
+    }
 
     if (!user) {
       navigate(`/${routesPaths.signInEmailLinkRequest}`, { replace: true });

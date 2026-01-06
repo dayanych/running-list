@@ -42,9 +42,6 @@ export const EmailLinkHandlerPage = () => {
   return (
     <AuthLayout>
       <div className="space-y-6">
-        <p className="text-center text-sm text-muted-foreground">
-          Confirm your email to finish signing in.
-        </p>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
@@ -59,8 +56,12 @@ export const EmailLinkHandlerPage = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full" disabled={isPending}>
-              {isPending ? (
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={isPending || hasFailed}
+            >
+              {isPending && !hasFailed ? (
                 <>
                   <LuLoaderCircle className="mr-2 h-4 w-4 animate-spin" />
                   Confirming...
@@ -73,18 +74,14 @@ export const EmailLinkHandlerPage = () => {
         </Form>
         {hasFailed && (
           <p className="text-sm text-destructive">
-            We couldn&apos;t finish signing you in. Request a new link.
+            We couldn&apos;t finish signing you in.{' '}
+            {
+              <Link to={`/${routesPaths.signInEmailLinkRequest}`}>
+                Request a new link.
+              </Link>
+            }
           </p>
         )}
-        <p className="text-center text-sm text-muted-foreground">
-          Need a new link?{' '}
-          <Link
-            to={`/${routesPaths.signInEmailLinkRequest}`}
-            className="text-primary"
-          >
-            Send another
-          </Link>
-        </p>
       </div>
     </AuthLayout>
   );
