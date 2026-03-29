@@ -3,17 +3,17 @@ import { useQuery } from '@tanstack/react-query';
 import { StatesDal } from '@/entities/states';
 import { TasksDal } from '@/entities/tasks';
 import {
-  getStartDateOfWeek,
+  getStartDateOfAppWeek,
   useUser,
   useWeekCalendarChange,
-  useYearWeekParams,
+  useWeeksParams,
 } from '@/shared/lib';
 
 import { TaskWithStates } from '../ui/tasks-table';
 
 export const useWeekPage = () => {
   const user = useUser();
-  const { year, week } = useYearWeekParams();
+  const { year, week } = useWeeksParams();
   const { onWeekChange } = useWeekCalendarChange();
 
   const {
@@ -43,7 +43,7 @@ export const useWeekPage = () => {
   });
 
   return {
-    startWeekDate: getStartDateOfWeek(week, year),
+    startWeekDate: getStartDateOfAppWeek(week, year),
     tasksWithStates,
     isLoading,
     isError,

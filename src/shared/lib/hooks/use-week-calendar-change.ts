@@ -1,6 +1,7 @@
-import { getWeek, getYear } from 'date-fns';
 import { DateRange } from 'react-day-picker';
 import { useNavigate } from 'react-router-dom';
+
+import { getAppWeek, getAppWeekYear } from '../week';
 
 export const useWeekCalendarChange = () => {
   const navigate = useNavigate();
@@ -8,8 +9,8 @@ export const useWeekCalendarChange = () => {
   const onWeekChange = (date: DateRange) => {
     if (!date.from || !date.to) return;
 
-    const updatedWeek = getWeek(date.from);
-    const updatedYear = getYear(date.to);
+    const updatedWeek = getAppWeek(date.from);
+    const updatedYear = getAppWeekYear(date.to);
 
     navigate(`/${updatedYear}/${updatedWeek}`);
   };

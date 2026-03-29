@@ -1,5 +1,6 @@
-import { getISOWeeksInYear } from 'date-fns';
 import { useParams } from 'react-router-dom';
+
+import { getAppWeeksInYear } from '@/shared/lib';
 
 const digitsOnlyRegExp = /^\d+$/;
 
@@ -9,9 +10,7 @@ export const useYearPage = () => {
   const isYearValid = Boolean(year && digitsOnlyRegExp.test(year));
   const numericYear = isYearValid ? Number(year) : null;
   const lastWeekOfYear =
-    numericYear !== null
-      ? getISOWeeksInYear(new Date(numericYear, 0, 1))
-      : null;
+    numericYear !== null ? getAppWeeksInYear(numericYear) : null;
 
   const isWeekMissing = !week;
   const numericWeek = week && digitsOnlyRegExp.test(week) ? Number(week) : null;

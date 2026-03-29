@@ -5,7 +5,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { State } from '@/entities/states/model/types/state.type';
 import { TasksDal } from '@/entities/tasks';
 import { useUser } from '@/shared/lib/hooks/use-user';
-import { useYearWeekParams } from '@/shared/lib/hooks/use-year-week-params';
+import { useWeeksParams } from '@/shared/lib/hooks/use-weeks-params';
 
 import { TaskWithStates } from '../ui/tasks-table';
 import { getTasksColumns } from './get-tasks-columns';
@@ -47,7 +47,7 @@ const dayStatus: {
 export const useTasksTable = (tasks: TaskWithStates[], startWeekDate: Date) => {
   const queryClient = useQueryClient();
   const user = useUser();
-  const { year, week } = useYearWeekParams();
+  const { year, week } = useWeeksParams();
   const [deletingTaskId, setDeletingTaskId] = useState<string | null>(null);
 
   const queryKey = ['getTasks', user?.id, year, week];

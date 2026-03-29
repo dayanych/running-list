@@ -2,12 +2,12 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { Task, TasksDal, TaskWithStates } from '@/entities/tasks';
 import { useUser } from '@/shared/lib/hooks/use-user';
-import { useYearWeekParams } from '@/shared/lib/hooks/use-year-week-params';
+import { useWeeksParams } from '@/shared/lib/hooks/use-weeks-params';
 
 export const useTaskCell = () => {
   const queryClient = useQueryClient();
   const user = useUser();
-  const { year, week } = useYearWeekParams();
+  const { year, week } = useWeeksParams();
   const queryKey = ['getTasks', user?.id, year, week];
 
   const updateOldData = (updatedTask: Task) => {

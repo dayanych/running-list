@@ -1,9 +1,9 @@
-import { endOfWeek, format, isWithinInterval, startOfWeek } from 'date-fns';
+import { format, isWithinInterval } from 'date-fns';
 import { useEffect, useState } from 'react';
 import type { DateRange } from 'react-day-picker';
 
 import { dateConfig } from '@/shared/config/date.config';
-import { cn } from '@/shared/lib';
+import { cn, getEndOfAppWeek, getStartOfAppWeek } from '@/shared/lib';
 import { Calendar, Popover, PopoverContent, PopoverTrigger } from '@/shared/ui';
 
 interface WeekPickerProps {
@@ -28,12 +28,8 @@ export function WeekPicker({
   useEffect(() => {
     const baseDate = initialDate ?? new Date();
 
-    const start = startOfWeek(baseDate, {
-      weekStartsOn: dateConfig.weekStart,
-    });
-    const end = endOfWeek(start, {
-      weekStartsOn: dateConfig.weekStart,
-    });
+    const start = getStartOfAppWeek(baseDate);
+    const end = getEndOfAppWeek(start);
 
     setDate({
       from: start,
@@ -44,12 +40,8 @@ export function WeekPicker({
 
   const handleSelect = (selectedDate: Date | undefined) => {
     if (selectedDate) {
-      const start = startOfWeek(selectedDate, {
-        weekStartsOn: dateConfig.weekStart,
-      });
-      const end = endOfWeek(selectedDate, {
-        weekStartsOn: dateConfig.weekStart,
-      });
+      const start = getStartOfAppWeek(selectedDate);
+      const end = getEndOfAppWeek(selectedDate);
       setDate({ from: start, to: end });
       setMonth(start);
       onChange({ from: start, to: end });
@@ -77,12 +69,8 @@ export function WeekPicker({
   const isInHoveredWeek = (day: Date) => {
     if (!hoveredDay) return false;
 
-    const hoveredWeekStart = startOfWeek(hoveredDay, {
-      weekStartsOn: dateConfig.weekStart,
-    });
-    const hoveredWeekEnd = endOfWeek(hoveredDay, {
-      weekStartsOn: dateConfig.weekStart,
-    });
+    const hoveredWeekStart = getStartOfAppWeek(hoveredDay);
+    const hoveredWeekEnd = getEndOfAppWeek(hoveredDay);
 
     return isWithinInterval(day, {
       start: hoveredWeekStart,

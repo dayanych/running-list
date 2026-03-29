@@ -5,7 +5,7 @@ import { StateStatus } from '@/entities/states/model/constants/state-status';
 import { State } from '@/entities/states/model/types/state.type';
 import { TaskWithStates } from '@/entities/tasks/model/types/task.type';
 import { useUser } from '@/shared/lib/hooks/use-user';
-import { useYearWeekParams } from '@/shared/lib/hooks/use-year-week-params';
+import { useWeeksParams } from '@/shared/lib/hooks/use-weeks-params';
 
 export const useStateCell = (
   date: Date,
@@ -14,7 +14,7 @@ export const useStateCell = (
 ) => {
   const queryClient = useQueryClient();
   const user = useUser();
-  const { year, week } = useYearWeekParams();
+  const { year, week } = useWeeksParams();
 
   const updateOldData = (updatedState: State) => {
     queryClient.setQueryData(

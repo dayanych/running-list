@@ -3,12 +3,12 @@ import { FormEvent, useState } from 'react';
 
 import { TasksDal } from '@/entities/tasks';
 import { useUser } from '@/shared/lib/hooks/use-user';
-import { useYearWeekParams } from '@/shared/lib/hooks/use-year-week-params';
+import { useWeeksParams } from '@/shared/lib/hooks/use-weeks-params';
 
 export const useCreateTaskInput = () => {
   const queryClient = useQueryClient();
   const user = useUser();
-  const { week, year } = useYearWeekParams();
+  const { week, year } = useWeeksParams();
   const [taskTitle, setTaskTitle] = useState('');
 
   const { mutate: createTask, isPending: isLoading } = useMutation({

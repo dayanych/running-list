@@ -1,7 +1,7 @@
 import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
 
-export const useYearWeekParams = () => {
+export const useWeeksParams = () => {
   const { week, year } = useParams();
 
   if (!week || !year) {
