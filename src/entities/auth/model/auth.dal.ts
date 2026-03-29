@@ -1,5 +1,6 @@
 import { UnknownAction } from '@reduxjs/toolkit';
 import { FirebaseError } from 'firebase/app';
+import type { User as FirebaseUser } from 'firebase/auth';
 import { Dispatch } from 'react';
 import toast from 'react-hot-toast';
 
@@ -96,27 +97,52 @@ export class AuthDal {
     return AuthService.isEmailLink(link);
   }
 
+  private static async getOrCreateUser(
+    currentUser: FirebaseUser,
+    fallbackEmail?: string,
+  ): Promise<User> {
+    const existingUser = await UsersDal.getUser(currentUser.uid);
+
+    if (existingUser) {
+      return existingUser;
+    }
+
+    const email =
+      currentUser.email ??
+      currentUser.providerData[0]?.email ??
+      fallbackEmail ??
+      '';
+
+    const newUser: User = {
+      id: currentUser.uid,
+      email,
+      name: currentUser.displayName ?? email ?? null,
+      taskIds: [],
+    };
+
+    await UsersDal.createUser(newUser);
+    return newUser;
+  }
+
   public static async signInWithEmailLink(
     email: string,
     link: string,
   ): Promise<User | null> {
     try {
       const currentUser = await AuthService.signInWithEmailLink(email, link);
-      const existingUser = await UsersDal.getUser(currentUser.uid);
-
-      if (existingUser) {
-        return existingUser;
+      return AuthDal.getOrCreateUser(currentUser, email);
+    } catch (error) {
+      if (error instanceof FirebaseError) {
+        toast.error(getAuthErrorMessage(error));
       }
+      return null;
+    }
+  }
 
-      const newUser: User = {
-        id: currentUser.uid,
-        email: currentUser.email ?? email,
-        name: currentUser.displayName ?? currentUser.email ?? null,
-        taskIds: [],
-      };
-
-      await UsersDal.createUser(newUser);
-      return newUser;
+  public static async signInWithGoogle(): Promise<User | null> {
+    try {
+      const currentUser = await AuthService.signInWithGoogle();
+      return AuthDal.getOrCreateUser(currentUser);
     } catch (error) {
       if (error instanceof FirebaseError) {
         toast.error(getAuthErrorMessage(error));

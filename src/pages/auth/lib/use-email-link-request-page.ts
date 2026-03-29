@@ -2,14 +2,17 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 import { z } from 'zod';
 
 import { AuthDal } from '@/entities/auth';
+import { setUser } from '@/entities/user/model/slice/user.slice';
 
 import { EmailLinkScheme } from '../model/schemes/email-link-scheme';
 import { saveEmailForSignIn } from './email-link-storage';
 
 export const useEmailLinkRequestPage = () => {
+  const dispatch = useDispatch();
   const [sentTo, setSentTo] = useState<string | null>(null);
   const form = useForm<z.infer<typeof EmailLinkScheme>>({
     resolver: zodResolver(EmailLinkScheme),
@@ -27,8 +30,29 @@ export const useEmailLinkRequestPage = () => {
     meta: { showToast: false },
   });
 
+  const { mutateAsync: signInWithGoogle, isPending: isGooglePending } =
+    useMutation({
+      mutationKey: ['sign-in-google'],
+      mutationFn: () => AuthDal.signInWithGoogle(),
+      onSuccess: (currentUser) => {
+        if (currentUser) {
+          dispatch(setUser(currentUser));
+        }
+      },
+      meta: { showToast: false },
+    });
+
   const handleSubmit = (data: z.infer<typeof EmailLinkScheme>) =>
     sendEmailLink(data);
 
-  return { form, handleSubmit, isPending, sentTo };
+  const handleGoogleSignIn = () => signInWithGoogle();
+
+  return {
+    form,
+    handleSubmit,
+    isPending,
+    sentTo,
+    handleGoogleSignIn,
+    isGooglePending,
+  };
 };

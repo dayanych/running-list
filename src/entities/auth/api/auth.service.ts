@@ -1,11 +1,13 @@
 import {
   createUserWithEmailAndPassword,
   getAuth,
+  GoogleAuthProvider,
   isSignInWithEmailLink,
   onAuthStateChanged,
   sendSignInLinkToEmail,
   signInWithEmailAndPassword,
   signInWithEmailLink,
+  signInWithPopup,
   User,
 } from 'firebase/auth';
 
@@ -73,6 +75,13 @@ export class AuthService {
     link: string,
   ): Promise<User> => {
     const result = await signInWithEmailLink(auth, email, link);
+    return result.user;
+  };
+
+  static signInWithGoogle = async (): Promise<User> => {
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
+    const result = await signInWithPopup(auth, provider);
     return result.user;
   };
 }

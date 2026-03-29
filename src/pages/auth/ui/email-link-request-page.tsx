@@ -6,11 +6,18 @@ import { useEmailLinkRequestPage } from '../lib/use-email-link-request-page';
 import { AuthLayout } from './auth-layout';
 
 export const EmailLinkRequestPage = () => {
-  const { form, handleSubmit, isPending, sentTo } = useEmailLinkRequestPage();
+  const {
+    form,
+    handleSubmit,
+    isPending,
+    sentTo,
+    handleGoogleSignIn,
+    isGooglePending,
+  } = useEmailLinkRequestPage();
 
   return (
     <AuthLayout>
-      <div className="space-y-2">
+      <div className="space-y-4">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
@@ -25,7 +32,11 @@ export const EmailLinkRequestPage = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full" disabled={isPending}>
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={isPending || isGooglePending}
+            >
               {isPending ? (
                 <>
                   <LuLoaderCircle className="mr-2 h-4 w-4 animate-spin" />
@@ -39,6 +50,27 @@ export const EmailLinkRequestPage = () => {
             </Button>
           </form>
         </Form>
+        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+          <div className="h-px flex-1 bg-border" />
+          <span>or</span>
+          <div className="h-px flex-1 bg-border" />
+        </div>
+        <Button
+          type="button"
+          variant="outline"
+          className="w-full"
+          onClick={handleGoogleSignIn}
+          disabled={isPending || isGooglePending}
+        >
+          {isGooglePending ? (
+            <>
+              <LuLoaderCircle className="mr-2 h-4 w-4 animate-spin" />
+              Signing in...
+            </>
+          ) : (
+            'Continue with Google'
+          )}
+        </Button>
         {sentTo && (
           <p className="text-sm text-muted-foreground">
             Link sent to{' '}

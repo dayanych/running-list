@@ -19,7 +19,7 @@ export const AuthLayout = ({ children }: Props) => {
     <div className="flex min-h-screen items-center justify-center">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle>Login with your email</CardTitle>
+          <CardTitle>Sign in to your account</CardTitle>
         </CardHeader>
         <CardContent>{children}</CardContent>
         <CardFooter>

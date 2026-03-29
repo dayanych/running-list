@@ -1,12 +1,5 @@
 import { useMemo } from 'react';
-import {
-  LuArrowRight,
-  LuPlus,
-  LuSquare,
-  LuSquareDashed,
-  LuSquareDashedBottom,
-  LuTrash2,
-} from 'react-icons/lu';
+import { LuTrash2 } from 'react-icons/lu';
 
 import { StateStatus } from '@/entities/states/model/constants/state-status';
 import { State } from '@/entities/states/model/types/state.type';
@@ -22,6 +15,7 @@ import {
 } from '@/shared/ui';
 
 import { useStateCell } from '../lib/use-state-cell';
+import { FilledIcon } from './filled-icon';
 
 interface Props {
   date: Date;
@@ -32,31 +26,17 @@ interface Props {
 
 const MENU_ICON_SIZE = 16;
 
-const getStateIcon = (status: StateStatus, size: number) => {
-  switch (status) {
-    case StateStatus.Empty:
-      return <LuSquareDashed size={size} />;
-    case StateStatus.FullDone:
-      return <LuSquare size={size} color="black" fill="black" />;
-    case StateStatus.HalfDone:
-      return <LuSquareDashedBottom size={size} color="black" />;
-    case StateStatus.Delay:
-      return <LuArrowRight size={size} />;
-    case StateStatus.Failed:
-      return <LuPlus size={size} className="rotate-45" />;
-  }
-};
+const getStateIcon = (_status: StateStatus, size: number) => (
+  <FilledIcon className="h-full w-full" size={size} />
+);
 
 const getTableStateStyle = (status: StateStatus | null) => {
   switch (status) {
     case StateStatus.Empty:
       return 'border border-dashed';
     case StateStatus.FullDone:
-      return 'border';
     case StateStatus.HalfDone:
-      return 'border';
     case StateStatus.Delay:
-      return 'border';
     case StateStatus.Failed:
       return 'border';
     default:
