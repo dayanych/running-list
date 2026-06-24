@@ -15,7 +15,6 @@ import {
 } from '@/shared/ui';
 
 import { useStateCell } from '../lib/use-state-cell';
-import { FilledIcon } from './filled-icon';
 
 interface Props {
   date: Date;
@@ -26,23 +25,23 @@ interface Props {
 
 const MENU_ICON_SIZE = 16;
 
-const getStateIcon = (_status: StateStatus, size: number) => (
-  <FilledIcon className="h-full w-full" size={size} />
-);
-
-const getTableStateStyle = (status: StateStatus | null) => {
-  switch (status) {
-    case StateStatus.Empty:
-      return 'border border-dashed';
-    case StateStatus.FullDone:
-    case StateStatus.HalfDone:
-    case StateStatus.Delay:
-    case StateStatus.Failed:
-      return 'border';
-    default:
-      return '';
-  }
+const STATE_ICON_SRC: Record<StateStatus, string> = {
+  [StateStatus.Empty]: '/icons/todo.svg',
+  [StateStatus.FullDone]: '/icons/finished.svg',
+  [StateStatus.HalfDone]: '/icons/started.svg',
+  [StateStatus.Delay]: '/icons/moved.svg',
+  [StateStatus.Failed]: '/icons/cancelled.svg',
 };
+
+const getStateIcon = (status: StateStatus, size: number) => (
+  <img
+    src={STATE_ICON_SRC[status]}
+    width={size}
+    height={size}
+    alt=""
+    aria-hidden="true"
+  />
+);
 
 export const StateCell = ({ date, state, taskId, isLoading }: Props) => {
   const { updateStatus } = useStateCell(date, state, taskId);
@@ -98,13 +97,12 @@ export const StateCell = ({ date, state, taskId, isLoading }: Props) => {
         <TableCell
           className={cn(
             'h-state w-state relative cursor-pointer',
-            state ? 'bg-background' : '',
-            getTableStateStyle(state?.status ?? null),
+            state && 'bg-background',
           )}
         >
           <div className="flex h-full w-full items-center justify-center">
             {/* TODO: Update loading state */}
-            {state?.status ? getStateIcon(state.status, 30) : ''}
+            {state ? getStateIcon(state.status, 39) : null}
           </div>
         </TableCell>
       </DropdownMenuTrigger>
