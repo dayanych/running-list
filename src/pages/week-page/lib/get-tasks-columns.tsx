@@ -26,6 +26,7 @@ const returnStateCell = (
 
 export const getTasksColumns = (
   startWeekDate: Date,
+  taskCount: number,
   deleteTask: (taskId: string) => void,
   isTaskDeleting: (taskId: string) => boolean,
 ): ColumnDef<any, any>[] => {
@@ -49,7 +50,10 @@ export const getTasksColumns = (
     })),
     {
       accessorKey: 'taskList',
-      header: '',
+      header:
+        taskCount > 0
+          ? `${taskCount} ${taskCount === 1 ? 'task' : 'tasks'}`
+          : '',
       enableSorting: false,
       cell: ({ getValue, row }) => (
         <TaskCell

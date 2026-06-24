@@ -59,7 +59,7 @@ const TasksTable = ({
                   key={header.id}
                   className={cn(
                     'h-12 p-0',
-                    isLastChild && 'w-full text-center',
+                    isLastChild && 'task-column-padding w-full text-left',
                     'text-sm font-light',
                   )}
                 >

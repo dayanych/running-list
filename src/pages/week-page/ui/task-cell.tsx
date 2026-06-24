@@ -19,7 +19,7 @@ export const TaskCell = ({ task, deleteTask, isDeletingTask }: Props) => {
   return (
     <TableCell
       className={cn(
-        'cursor-pointer',
+        'task-column-padding cursor-pointer',
         isTaskActionInProgress && 'cursor-not-allowed',
       )}
     >
@@ -30,7 +30,7 @@ export const TaskCell = ({ task, deleteTask, isDeletingTask }: Props) => {
             updateTaskTitle({ task, title });
           }}
           disabled={isTaskActionInProgress}
-          className="cursor-pointerp-0 align-middle font-light"
+          className="cursor-pointer p-0 align-middle font-light"
         />
         <Button
           variant="ghost"

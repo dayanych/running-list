@@ -84,8 +84,9 @@ export const useTasksTable = (tasks: TaskWithStates[], startWeekDate: Date) => {
   );
 
   const columns = useMemo(
-    () => getTasksColumns(startWeekDate, deleteTask, isTaskDeleting),
-    [startWeekDate, deleteTask, isTaskDeleting],
+    () =>
+      getTasksColumns(startWeekDate, tasks.length, deleteTask, isTaskDeleting),
+    [startWeekDate, tasks.length, deleteTask, isTaskDeleting],
   );
 
   const data = useMemo(

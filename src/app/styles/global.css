@@ -144,3 +144,7 @@ input {
   background-size: var(--size) var(--size);
   background-position: -1px -5px;
 }
+
+.task-column-padding {
+  @apply pl-14;
+}
