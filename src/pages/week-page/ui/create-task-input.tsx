@@ -1,3 +1,4 @@
+import { forwardRef } from 'react';
 import { LuLoaderCircle, LuPlus } from 'react-icons/lu';
 
 import { cn } from '@/shared/lib';
@@ -5,19 +6,20 @@ import { Button, Input } from '@/shared/ui';
 
 import { useCreateTaskInput } from '../lib/use-create-task-input';
 
-export const CreateTaskInput = () => {
+export const CreateTaskInput = forwardRef<HTMLInputElement>((_, ref) => {
   const { taskTitle, isLoading, onSubmit, handleTaskTitleChange } =
     useCreateTaskInput();
 
   return (
     <form onSubmit={onSubmit} className="relative flex max-w-[400px] gap-2">
       <Input
+        ref={ref}
         name="taskTitle"
         placeholder="Add new task..."
         value={taskTitle}
         onChange={handleTaskTitleChange}
         disabled={isLoading}
-        className="h-12 rounded-none pr-12"
+        className="h-12 rounded-none pr-12 transition-colors duration-200 hover:border-primary focus:border-primary disabled:hover:border-input"
       />
       <Button
         type="submit"
@@ -37,4 +39,6 @@ export const CreateTaskInput = () => {
       </Button>
     </form>
   );
-};
+});
+
+CreateTaskInput.displayName = 'CreateTaskInput';

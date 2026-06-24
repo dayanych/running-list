@@ -1,12 +1,19 @@
 import { flexRender } from '@tanstack/react-table';
 import { memo } from 'react';
 import React from 'react';
-import { LuLoaderCircle } from 'react-icons/lu';
+import { LuLoaderCircle, LuTarget } from 'react-icons/lu';
 
 import { State } from '@/entities/states/model/types/state.type';
 import { Task } from '@/entities/tasks/model/types/task.type';
 import { cn } from '@/shared/lib';
 import {
+  Button,
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
   Table,
   TableBody,
   TableCell,
@@ -26,9 +33,16 @@ interface Props {
   startWeekDate: Date;
   loading?: boolean;
   error?: boolean;
+  onCreateTaskClick: () => void;
 }
 
-const TasksTable = ({ data, startWeekDate, loading, error }: Props) => {
+const TasksTable = ({
+  data,
+  startWeekDate,
+  loading,
+  error,
+  onCreateTaskClick,
+}: Props) => {
   const { columns, table } = useTasksTable(data, startWeekDate);
 
   return (
@@ -85,9 +99,20 @@ const TasksTable = ({ data, startWeekDate, loading, error }: Props) => {
         {!loading && !error && table.getRowModel().rows?.length === 0 && (
           <TableRow>
             <TableCell colSpan={columns.length} className="text-center">
-              <p className="w-full py-8 font-light text-muted-foreground">
-                {getEmptyStateMessage()}
-              </p>
+              <Empty>
+                <EmptyHeader>
+                  <EmptyMedia variant="icon">
+                    <LuTarget aria-hidden="true" />
+                  </EmptyMedia>
+                  <EmptyTitle>Start your week</EmptyTitle>
+                  <EmptyDescription>{getEmptyStateMessage()}</EmptyDescription>
+                </EmptyHeader>
+                <EmptyContent>
+                  <Button type="button" onClick={onCreateTaskClick}>
+                    Add task
+                  </Button>
+                </EmptyContent>
+              </Empty>
             </TableCell>
           </TableRow>
         )}

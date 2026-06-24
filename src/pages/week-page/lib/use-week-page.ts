@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { useCallback, useRef } from 'react';
 
 import { StatesDal } from '@/entities/states';
 import { TasksDal } from '@/entities/tasks';
@@ -15,6 +16,8 @@ export const useWeekPage = () => {
   const user = useUser();
   const { year, week } = useWeeksParams();
   const { onWeekChange } = useWeekCalendarChange();
+
+  const taskInputRef = useRef<HTMLInputElement>(null);
 
   const {
     data: tasksWithStates = [],
@@ -42,11 +45,17 @@ export const useWeekPage = () => {
     },
   });
 
+  const handleCreateTaskClick = useCallback(() => {
+    taskInputRef.current?.focus();
+  }, []);
+
   return {
     startWeekDate: getStartDateOfAppWeek(week, year),
     tasksWithStates,
     isLoading,
     isError,
+    taskInputRef,
     handleWeekChange: onWeekChange,
+    handleCreateTaskClick,
   };
 };

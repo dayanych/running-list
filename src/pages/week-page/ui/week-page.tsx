@@ -7,7 +7,9 @@ export const WeekPage = () => {
     tasksWithStates,
     isLoading,
     isError,
+    taskInputRef,
     handleWeekChange,
+    handleCreateTaskClick,
   } = useWeekPage();
 
   return (
@@ -19,9 +21,10 @@ export const WeekPage = () => {
           startWeekDate={startWeekDate}
           loading={isLoading}
           error={isError}
+          onCreateTaskClick={handleCreateTaskClick}
         />
       </div>
-      <CreateTaskInput />
+      <CreateTaskInput ref={taskInputRef} />
     </div>
   );
 };
