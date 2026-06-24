@@ -125,24 +125,11 @@ input {
   border: 1px dotted var(--muted);
 }
 
-.bg-radial-dots {
-  --d: 1.5px;
-
-  background: radial-gradient(
-      circle at var(--d) var(--d),
-      #000 calc(var(--d) - 0.5px),
-      #0000 var(--d)
-    )
-    0 0 / var(--state-block-width) var(--state-block-height);
-}
-
-.dot-grid {
-  --size: 1.25rem;
-
-  inset: 0;
-  background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
-  background-size: var(--size) var(--size);
-  background-position: -1px -5px;
+.dot-bg {
+  background-color: var(--background);
+  background-image: radial-gradient(var(--border) 1px, transparent 1px);
+  background-position: -27px -30px;
+  background-size: var(--state-block-width) var(--state-block-height);
 }
 
 .task-column-padding {

@@ -42,7 +42,7 @@ export const Header = () => {
   }
 
   return (
-    <header className="border-b">
+    <header className="border-b bg-background">
       <div className="container mx-auto flex items-center justify-between py-4">
         <div className="flex items-center gap-4">
           <Logo />

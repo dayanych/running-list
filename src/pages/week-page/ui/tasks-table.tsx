@@ -47,7 +47,7 @@ const TasksTable = ({
 
   return (
     <Table className="text-lg">
-      <TableHeader className="border">
+      <TableHeader className="border bg-background">
         {table.getHeaderGroups().map((headerGroup) => (
           <TableRow key={headerGroup.id}>
             {headerGroup.headers.map((header, headerIndex) => {
