@@ -79,8 +79,10 @@ const TasksTable = ({
         {loading && (
           <TableRow>
             <TableCell colSpan={columns.length} className="h-24 text-center">
-              <div className="flex h-full w-full items-center justify-center">
-                <LuLoaderCircle className="h-14 w-14 animate-spin text-primary" />
+              <div className="flex h-full w-full items-center justify-center p-6 md:p-12">
+                <div>
+                  <LuLoaderCircle className="h-14 w-14 animate-spin text-primary" />
+                </div>
               </div>
             </TableCell>
           </TableRow>
