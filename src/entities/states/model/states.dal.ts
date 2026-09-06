@@ -8,14 +8,16 @@ import { State } from './types/state.type';
 export type StateWithoutId = Omit<State, 'id'>;
 
 export class StatesDal {
-  public static async getStatesByTaskId(taskId: string): Promise<State[]> {
-    const statesDto = await StatesService.getStatesByTaskId(taskId);
+  /**
+   * Loads states for several tasks in a single batched request
+   *
+   * @param taskIds - Ids of the tasks whose states are needed
+   * @returns Flat list of states belonging to any of the given tasks
+   */
+  public static async getStatesByTaskIds(taskIds: string[]): Promise<State[]> {
+    const statesDto = await StatesService.getStatesByTaskIds(taskIds);
 
-    const states = statesDto.map((stateDto) =>
-      converterStateDtoToState(stateDto),
-    );
-
-    return states;
+    return statesDto.map((stateDto) => converterStateDtoToState(stateDto));
   }
 
   public static async createState(state: StateWithoutId): Promise<State> {

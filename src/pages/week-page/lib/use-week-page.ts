@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useCallback, useRef } from 'react';
 
-import { StatesDal } from '@/entities/states';
+import { State, StatesDal } from '@/entities/states';
 import { TasksDal } from '@/entities/tasks';
 import {
   getStartDateOfAppWeek,
@@ -12,8 +12,32 @@ import {
 
 import { TaskWithStates } from '../ui/tasks-table';
 
+/**
+ * Groups a flat list of states by the task they belong to
+ *
+ * @param states - States loaded for every task of the week
+ * @returns Map from task id to the states of that task
+ */
+const groupStatesByTaskId = (states: State[]): Map<string, State[]> => {
+  const statesByTaskId = new Map<string, State[]>();
+
+  states.forEach((state) => {
+    const taskStates = statesByTaskId.get(state.taskId);
+
+    if (taskStates) {
+      taskStates.push(state);
+      return;
+    }
+
+    statesByTaskId.set(state.taskId, [state]);
+  });
+
+  return statesByTaskId;
+};
+
 export const useWeekPage = () => {
   const user = useUser();
+  const userId = user?.id;
   const { year, week } = useWeeksParams();
   const { onWeekChange } = useWeekCalendarChange();
 
@@ -21,28 +45,32 @@ export const useWeekPage = () => {
 
   const {
     data: tasksWithStates = [],
-    isLoading,
+    isLoading: isLoadingTasks,
     isError,
   } = useQuery({
-    queryKey: ['getTasks', user?.id, year, week],
-    queryFn: async () => {
-      if (!user) return;
+    queryKey: ['getTasks', userId, year, week],
+    queryFn: async (): Promise<TaskWithStates[]> => {
+      if (!userId) {
+        return [];
+      }
 
-      const tasks = await TasksDal.getTasksByUserIdYearWeek(
-        user.id,
-        year,
-        week,
+      const tasks = await TasksDal.getTasksByUserIdYearWeek(userId, year, week);
+
+      if (tasks.length === 0) {
+        return [];
+      }
+
+      const states = await StatesDal.getStatesByTaskIds(
+        tasks.map((task) => task.id),
       );
+      const statesByTaskId = groupStatesByTaskId(states);
 
-      const tasksWithStates: TaskWithStates[] = await Promise.all(
-        tasks.map(async (task) => {
-          const states = await StatesDal.getStatesByTaskId(task.id);
-          return { ...task, states };
-        }),
-      );
-
-      return tasksWithStates;
+      return tasks.map((task) => ({
+        ...task,
+        states: statesByTaskId.get(task.id) ?? [],
+      }));
     },
+    enabled: Boolean(userId),
   });
 
   const handleCreateTaskClick = useCallback(() => {
@@ -52,7 +80,9 @@ export const useWeekPage = () => {
   return {
     startWeekDate: getStartDateOfAppWeek(week, year),
     tasksWithStates,
-    isLoading,
+    // The query is disabled until the user is known, so a disabled-and-pending
+    // query must still read as loading rather than as an empty week
+    isLoading: isLoadingTasks || !userId,
     isError,
     taskInputRef,
     handleWeekChange: onWeekChange,
