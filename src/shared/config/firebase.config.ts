@@ -18,8 +18,6 @@ export const firebaseActionCodeSettings = {
   url: `${appConfig.appUrl}/sign-in/email-link`,
   // This must be true.
   handleCodeInApp: true,
-  // The domain must be configured in Firebase Hosting and owned by the project.
-  linkDomain: 'custom-domain.com',
 };
 
 export const firebaseApp = initializeApp(firebaseConfig);
