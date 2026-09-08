@@ -16,7 +16,7 @@ export const useCreateTaskInput = () => {
     mutationFn: async () => {
       if (!user) return;
 
-      TasksDal.createTask({
+      await TasksDal.createTask({
         title: taskTitle.trim(),
         userId: user.id,
         color: '',
