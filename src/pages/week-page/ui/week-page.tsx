@@ -13,7 +13,7 @@ export const WeekPage = () => {
   } = useWeekPage();
 
   return (
-    <div className="container relative my-3 flex flex-1 flex-col justify-between gap-4">
+    <div className="container relative mb-3 mt-10 flex flex-1 flex-col justify-between gap-4 sm:mt-14">
       <div className="flex flex-col gap-4">
         <WeekTitle startWeekDate={startWeekDate} onChange={handleWeekChange} />
         <TasksTable

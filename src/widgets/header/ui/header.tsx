@@ -2,7 +2,7 @@ import { LuUser } from 'react-icons/lu';
 import { Link } from 'react-router-dom';
 
 import { routesPaths } from '@/shared/config';
-import { Logo, WeekPicker } from '@/shared/ui';
+import { Logo } from '@/shared/ui';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -35,7 +35,7 @@ const UserAvatar = ({ onLogout }: UserAvatarProps) => {
 };
 
 export const Header = () => {
-  const { user, todayLink, onWeekChange, onLogout } = useHeader();
+  const { user, onLogout } = useHeader();
 
   if (!user) {
     return null;
@@ -50,15 +50,7 @@ export const Header = () => {
             Running List
           </Link>
         </div>
-        <div className="type-ui flex items-center gap-5">
-          <Link to={todayLink}>Today</Link>
-          <WeekPicker
-            onChange={onWeekChange}
-            title="Calendar"
-            className="type-ui"
-          />
-          <UserAvatar onLogout={onLogout} />
-        </div>
+        <UserAvatar onLogout={onLogout} />
       </div>
     </header>
   );
