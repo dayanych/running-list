@@ -211,6 +211,46 @@ input {
 }
 
 @layer utilities {
+  @keyframes task-title-shimmer {
+    from {
+      background-position: 200% 0;
+    }
+
+    to {
+      background-position: -200% 0;
+    }
+  }
+
+  @keyframes skeleton-soft-pulse {
+    0%,
+    100% {
+      opacity: 0.5;
+    }
+
+    50% {
+      opacity: 0.82;
+    }
+  }
+
+  .skeleton-soft {
+    animation: skeleton-soft-pulse 2.4s ease-in-out infinite;
+  }
+
+  .task-title-saving {
+    color: var(--ink-faint);
+    background-image: linear-gradient(
+      100deg,
+      var(--ink-faint) 30%,
+      var(--ink-muted) 50%,
+      var(--ink-faint) 70%
+    );
+    background-size: 250% 100%;
+    background-clip: text;
+    animation: task-title-shimmer 1.6s ease-in-out infinite;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
   .type-ui {
     font: var(--type-ui);
   }
@@ -278,6 +318,22 @@ input {
     font: var(--type-meta);
     letter-spacing: 0.09em;
     text-transform: uppercase;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .skeleton-soft,
+    .task-title-saving {
+      animation: none;
+    }
+
+    .skeleton-soft {
+      opacity: 0.65;
+    }
+
+    .task-title-saving {
+      background-image: none;
+      -webkit-text-fill-color: currentColor;
+    }
   }
 }
 

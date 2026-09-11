@@ -1,5 +1,5 @@
 import { KeyboardEvent, useEffect, useRef, useState } from 'react';
-import { LuEllipsis, LuLoaderCircle } from 'react-icons/lu';
+import { LuEllipsis } from 'react-icons/lu';
 
 import { Task } from '@/entities/tasks';
 import { cn } from '@/shared/lib';
@@ -109,7 +109,15 @@ export const TaskCell = ({ task, deleteTask, isDeletingTask }: Props) => {
             isRenaming ? 'pointer-events-none opacity-0' : 'opacity-100',
           )}
         >
-          <span className="type-task min-w-0 truncate">{displayTitle}</span>
+          <span
+            className={cn(
+              'type-task min-w-0 truncate transition-colors duration-200',
+              isUpdatingTaskTitle && 'task-title-saving',
+            )}
+            aria-busy={isUpdatingTaskTitle}
+          >
+            {displayTitle}
+          </span>
           <span
             aria-hidden="true"
             className="min-w-8 flex-1 border-t border-dashed border-rule-faint opacity-70 transition-[border-color,opacity] duration-200 ease-out group-hover:border-rule group-hover:opacity-100 motion-reduce:transition-none"
@@ -121,26 +129,14 @@ export const TaskCell = ({ task, deleteTask, isDeletingTask }: Props) => {
                 variant="ghost"
                 size="icon"
                 disabled={isTaskActionInProgress}
-                className={cn(
-                  'h-7 w-7 shrink-0 rounded-none text-ink-faint transition-[color,opacity,transform] duration-200 ease-out hover:bg-transparent hover:text-ink-secondary focus-visible:pointer-events-auto focus-visible:translate-x-0 focus-visible:opacity-100 data-[state=open]:pointer-events-auto data-[state=open]:translate-x-0 data-[state=open]:opacity-100 motion-reduce:transform-none motion-reduce:transition-none',
-                  isTaskActionInProgress
-                    ? 'opacity-100'
-                    : 'pointer-events-none translate-x-1 opacity-0 group-hover:pointer-events-auto group-hover:translate-x-0 group-hover:opacity-100',
-                )}
+                className="pointer-events-none h-7 w-7 shrink-0 translate-x-1 rounded-none text-ink-faint opacity-0 transition-[color,opacity,transform] duration-200 ease-out hover:bg-transparent hover:text-ink-secondary focus-visible:pointer-events-auto focus-visible:translate-x-0 focus-visible:opacity-100 group-hover:pointer-events-auto group-hover:translate-x-0 group-hover:opacity-100 data-[state=open]:pointer-events-auto data-[state=open]:translate-x-0 data-[state=open]:opacity-100 motion-reduce:transform-none motion-reduce:transition-none"
                 aria-label={`Actions for ${task.title}`}
               >
-                {isTaskActionInProgress ? (
-                  <LuLoaderCircle
-                    aria-hidden="true"
-                    className="h-4 w-4 animate-spin"
-                  />
-                ) : (
-                  <LuEllipsis
-                    aria-hidden="true"
-                    className="h-[17px] w-[17px]"
-                    strokeWidth={1.25}
-                  />
-                )}
+                <LuEllipsis
+                  aria-hidden="true"
+                  className="h-[17px] w-[17px]"
+                  strokeWidth={1.25}
+                />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent

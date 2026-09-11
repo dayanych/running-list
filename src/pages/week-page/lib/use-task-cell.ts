@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { addWeeks } from 'date-fns';
+import toast from 'react-hot-toast';
 
 import { Task, TasksDal, TaskWithStates } from '@/entities/tasks';
 import {
@@ -46,9 +47,9 @@ export const useTaskCell = () => {
       onSuccess: (updatedTask) => {
         updateOldData(updatedTask);
       },
-      // onError: (error) => {
-      //   console.error(error);
-      // },
+      onError: () => {
+        toast.error("Couldn't rename task. The previous title was restored");
+      },
       meta: { showToast: false },
     });
 
