@@ -65,8 +65,10 @@ export const useTasksTable = (tasks: TaskWithStates[], startWeekDate: Date) => {
 
   const { mutate: deleteTask, isPending: isDeletingTask } = useMutation({
     mutationFn: async (taskId: string) => {
+      if (!user) throw new Error('User is not loaded');
+
       setDeletingTaskId(taskId);
-      await TasksDal.deleteTask(taskId);
+      await TasksDal.deleteTask(taskId, user.id);
       return taskId;
     },
     onSuccess: (_, taskId) => {

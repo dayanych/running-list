@@ -5,4 +5,5 @@ export interface State {
   date: Date;
   status: StateStatus;
   taskId: string;
+  userId: string;
 }

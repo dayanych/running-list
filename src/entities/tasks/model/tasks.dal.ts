@@ -50,7 +50,10 @@ export class TasksDal {
     return converterTaskDtoToTask(updatedTaskDto);
   }
 
-  public static async deleteTask(taskId: string): Promise<void> {
-    await TasksService.deleteTask(taskId);
+  public static async deleteTask(
+    taskId: string,
+    userId: string,
+  ): Promise<void> {
+    await TasksService.deleteTask(taskId, userId);
   }
 }

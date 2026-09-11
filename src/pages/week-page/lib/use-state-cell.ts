@@ -59,12 +59,16 @@ export const useStateCell = (
     }: {
       taskId: string;
       status: StateStatus;
-    }) =>
-      StatesDal.createState({
+    }) => {
+      if (!user) throw new Error('User is not loaded');
+
+      return StatesDal.createState({
         taskId,
         status,
         date,
-      }),
+        userId: user.id,
+      });
+    },
     onSuccess: addNewState,
     meta: { showToast: false },
   });

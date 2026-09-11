@@ -54,15 +54,12 @@ export const useWeekPage = () => {
         return [];
       }
 
-      const tasks = await TasksDal.getTasksByUserIdYearWeek(userId, year, week);
-
-      if (tasks.length === 0) {
-        return [];
-      }
-
-      const states = await StatesDal.getStatesByTaskIds(
-        tasks.map((task) => task.id),
-      );
+      // States are selected by owner and day rather than by task id, so both
+      // queries run in parallel
+      const [tasks, states] = await Promise.all([
+        TasksDal.getTasksByUserIdYearWeek(userId, year, week),
+        StatesDal.getStatesByUserIdYearWeek(userId, year, week),
+      ]);
       const statesByTaskId = groupStatesByTaskId(states);
 
       return tasks.map((task) => ({

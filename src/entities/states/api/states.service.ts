@@ -17,25 +17,6 @@ import { StateDto } from './dto/state.dto';
 
 type StateDtoWithoutId = Omit<StateDto, 'id'>;
 
-/** Maximum number of values Firestore accepts in a single `in` filter */
-const IN_FILTER_CHUNK_SIZE = 30;
-
-/**
- * Splits ids into groups that fit into one Firestore `in` filter
- *
- * @param taskIds - Task ids to split
- * @returns Chunks of at most `IN_FILTER_CHUNK_SIZE` ids each
- */
-const chunkTaskIds = (taskIds: string[]): string[][] => {
-  const chunks: string[][] = [];
-
-  for (let i = 0; i < taskIds.length; i += IN_FILTER_CHUNK_SIZE) {
-    chunks.push(taskIds.slice(i, i + IN_FILTER_CHUNK_SIZE));
-  }
-
-  return chunks;
-};
-
 export class StatesService {
   public static getStateById = async (stateId: string) => {
     const state = await getDoc(
@@ -46,35 +27,32 @@ export class StatesService {
   };
 
   /**
-   * Loads states for several tasks at once
+   * Loads a user's states whose calendar day falls within a range
    *
-   * Firestore caps an `in` filter at 30 values, so larger id lists are fetched
-   * as parallel chunked queries instead of one request per task
+   * Needs the composite index `user_id ASC, date_key ASC` on `states` and
+   * never matches documents lacking either field; the `migrate:states` script
+   * creates that index and backfills legacy states
    *
-   * @param taskIds - Ids of the tasks whose states are needed
-   * @returns Flat list of states belonging to any of the given tasks
+   * @param userId - Owner of the states
+   * @param fromDateKey - First day, inclusive, in `yyyy-MM-dd` form
+   * @param toDateKey - Last day, inclusive, in `yyyy-MM-dd` form
+   * @returns States of the user within the range
    */
-  public static getStatesByTaskIds = async (
-    taskIds: string[],
+  public static getStatesByUserIdDateRange = async (
+    userId: string,
+    fromDateKey: string,
+    toDateKey: string,
   ): Promise<StateDto[]> => {
-    if (taskIds.length === 0) {
-      return [];
-    }
-
-    const statesCollectionRef = collection(
-      firebaseDb,
-      PATH_TO_STATES_COLLECTION,
-    );
-
-    const chunkSnapshots = await Promise.all(
-      chunkTaskIds(taskIds).map((chunk) =>
-        getDocs(query(statesCollectionRef, where('task_id', 'in', chunk))),
+    const statesSnapshots = await getDocs(
+      query(
+        collection(firebaseDb, PATH_TO_STATES_COLLECTION),
+        where('user_id', '==', userId),
+        where('date_key', '>=', fromDateKey),
+        where('date_key', '<=', toDateKey),
       ),
     );
 
-    return chunkSnapshots.flatMap((statesSnapshots) =>
-      statesSnapshots.docs.map((stateDoc) => stateDoc.data() as StateDto),
-    );
+    return statesSnapshots.docs.map((stateDoc) => stateDoc.data() as StateDto);
   };
 
   public static async createAndGetState(

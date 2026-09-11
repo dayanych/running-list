@@ -68,14 +68,23 @@ export class TasksService {
     });
   }
 
-  public static async deleteTask(taskId: string): Promise<void> {
+  public static async deleteTask(
+    taskId: string,
+    userId: string,
+  ): Promise<void> {
     const taskDocRef = doc(firebaseDb, PATH_TO_TASKS_COLLECTION, taskId);
     const statesCollectionRef = collection(
       firebaseDb,
       PATH_TO_STATES_COLLECTION,
     );
+    // The owner filter keeps this query valid under a rule that limits states
+    // to their user_id
     const statesSnapshots = await getDocs(
-      query(statesCollectionRef, where('task_id', '==', taskId)),
+      query(
+        statesCollectionRef,
+        where('task_id', '==', taskId),
+        where('user_id', '==', userId),
+      ),
     );
 
     await runTransaction(firebaseDb, async (transaction) => {
