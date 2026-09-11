@@ -40,7 +40,29 @@ export const getTasksColumns = (
     };
   });
 
+  const taskColumn: ColumnDef<any, any> = {
+    accessorKey: 'taskList',
+    header: () => (
+      <div className="flex items-center gap-4">
+        {taskCount > 0 && (
+          <span className="type-meta text-ink-muted">
+            {taskCount} {taskCount === 1 ? 'task' : 'tasks'}
+          </span>
+        )}
+      </div>
+    ),
+    enableSorting: false,
+    cell: ({ getValue, row }) => (
+      <TaskCell
+        task={getValue()}
+        deleteTask={deleteTask}
+        isDeletingTask={isTaskDeleting(row.original.taskId)}
+      />
+    ),
+  };
+
   return [
+    taskColumn,
     ...weekDays.map((day) => ({
       accessorKey: day.day,
       enableSorting: false,
@@ -48,20 +70,5 @@ export const getTasksColumns = (
       cell: ({ row, getValue }: any) =>
         returnStateCell(getValue(), row.original.taskId, isTaskDeleting),
     })),
-    {
-      accessorKey: 'taskList',
-      header:
-        taskCount > 0
-          ? `${taskCount} ${taskCount === 1 ? 'task' : 'tasks'}`
-          : '',
-      enableSorting: false,
-      cell: ({ getValue, row }) => (
-        <TaskCell
-          task={getValue()}
-          deleteTask={deleteTask}
-          isDeletingTask={isTaskDeleting(row.original.taskId)}
-        />
-      ),
-    },
   ];
 };

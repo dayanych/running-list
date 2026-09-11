@@ -97,7 +97,9 @@
     --type-help: 400 0.875rem/1.25rem var(--font-sans);
     --type-eyebrow: 500 0.75rem/1rem var(--font-mono);
     --type-weekday: 400 0.75rem/1rem var(--font-mono);
+    --type-weekday-current: 500 0.75rem/1rem var(--font-mono);
     --type-daynum: 500 0.875rem/1.25rem var(--font-sans);
+    --type-daynum-current: 600 0.875rem/1.25rem var(--font-sans);
     --type-key: 400 0.75rem/1rem var(--font-mono);
     --type-meta: 400 0.75rem/1rem var(--font-mono);
 
@@ -229,8 +231,18 @@ input {
     text-transform: uppercase;
   }
 
+  .type-weekday-current {
+    font: var(--type-weekday-current);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
   .type-daynum {
     font: var(--type-daynum);
+  }
+
+  .type-daynum-current {
+    font: var(--type-daynum-current);
   }
 
   .type-row {
@@ -286,8 +298,4 @@ input {
   background-image: radial-gradient(var(--rule-faint) 1px, transparent 1px);
   background-position: -27px -30px;
   background-size: var(--state-block-width) var(--state-block-height);
-}
-
-.task-column-padding {
-  @apply pl-14;
 }

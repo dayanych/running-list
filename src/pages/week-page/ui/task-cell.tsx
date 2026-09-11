@@ -1,8 +1,18 @@
-import { LuLoaderCircle, LuTrash2 } from 'react-icons/lu';
+import { KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { LuEllipsis, LuLoaderCircle } from 'react-icons/lu';
 
 import { Task } from '@/entities/tasks';
 import { cn } from '@/shared/lib';
-import { Button, EditableText, TableCell } from '@/shared/ui';
+import {
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  Input,
+  TableCell,
+} from '@/shared/ui';
 
 import { useTaskCell } from '../lib/use-task-cell';
 
@@ -13,45 +23,168 @@ interface Props {
 }
 
 export const TaskCell = ({ task, deleteTask, isDeletingTask }: Props) => {
-  const { updateTaskTitle, isUpdatingTaskTitle } = useTaskCell();
-  const isTaskActionInProgress = isUpdatingTaskTitle || isDeletingTask;
+  const {
+    updateTaskTitle,
+    isUpdatingTaskTitle,
+    copyTaskToNextWeek,
+    isCopyingTask,
+  } = useTaskCell();
+  const [isRenaming, setIsRenaming] = useState(false);
+  const [displayTitle, setDisplayTitle] = useState(task.title);
+  const [draftTitle, setDraftTitle] = useState(task.title);
+  const isFinishingRenameRef = useRef(false);
+  const renameInputRef = useRef<HTMLInputElement>(null);
+  const isTaskActionInProgress =
+    isUpdatingTaskTitle || isCopyingTask || isDeletingTask;
+
+  useEffect(() => {
+    if (!isRenaming) return;
+
+    const focusFrame = requestAnimationFrame(() => {
+      renameInputRef.current?.focus();
+      renameInputRef.current?.select();
+    });
+
+    return () => cancelAnimationFrame(focusFrame);
+  }, [isRenaming]);
+
+  useEffect(() => {
+    setDisplayTitle(task.title);
+  }, [task.title]);
+
+  const startRenaming = () => {
+    isFinishingRenameRef.current = false;
+    setDraftTitle(displayTitle);
+    setIsRenaming(true);
+  };
+
+  const finishRenaming = () => {
+    if (isFinishingRenameRef.current) return;
+    isFinishingRenameRef.current = true;
+
+    const title = draftTitle.trim();
+    setIsRenaming(false);
+
+    if (!title || title === displayTitle) {
+      setDraftTitle(displayTitle);
+      return;
+    }
+
+    const previousTitle = displayTitle;
+
+    setDisplayTitle(title);
+    setDraftTitle(title);
+    updateTaskTitle(
+      { task, title },
+      {
+        onError: () => {
+          setDisplayTitle(previousTitle);
+          setDraftTitle(previousTitle);
+        },
+      },
+    );
+  };
+
+  const handleRenameKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      finishRenaming();
+    }
+
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      isFinishingRenameRef.current = true;
+      setDraftTitle(displayTitle);
+      setIsRenaming(false);
+    }
+  };
 
   return (
-    <TableCell
-      className={cn(
-        'task-column-padding cursor-pointer',
-        isTaskActionInProgress && 'cursor-not-allowed',
-      )}
-    >
-      <div className="group flex items-center gap-2">
-        <EditableText
-          value={task.title}
-          onChangeFinish={(title) => {
-            updateTaskTitle({ task, title });
-          }}
-          disabled={isTaskActionInProgress}
-          className="type-task cursor-pointer p-0 align-middle"
-        />
-        <Button
-          variant="ghost"
-          disabled={isTaskActionInProgress}
-          onClick={(event) => {
-            event.stopPropagation();
-            deleteTask(task.id);
-          }}
+    <TableCell className={cn(isTaskActionInProgress && 'cursor-not-allowed')}>
+      <div className="h-state group relative flex min-w-0 items-center">
+        <div
+          aria-hidden={isRenaming}
           className={cn(
-            'transition-opacity',
-            isTaskActionInProgress
-              ? 'opacity-100'
-              : 'opacity-0 group-hover:opacity-100',
+            'flex min-w-0 flex-1 items-center gap-3 transition-opacity duration-200 ease-out motion-reduce:transition-none',
+            isRenaming ? 'pointer-events-none opacity-0' : 'opacity-100',
           )}
         >
-          {isTaskActionInProgress ? (
-            <LuLoaderCircle className="h-4 w-4 animate-spin text-muted-foreground" />
-          ) : (
-            <LuTrash2 size={15} className="text-destructive" />
+          <span className="type-task min-w-0 truncate">{displayTitle}</span>
+          <span
+            aria-hidden="true"
+            className="min-w-8 flex-1 border-t border-dashed border-rule-faint opacity-70 transition-[border-color,opacity] duration-200 ease-out group-hover:border-rule group-hover:opacity-100 motion-reduce:transition-none"
+          />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                disabled={isTaskActionInProgress}
+                className={cn(
+                  'h-7 w-7 shrink-0 rounded-none text-ink-faint transition-[color,opacity,transform] duration-200 ease-out hover:bg-transparent hover:text-ink-secondary focus-visible:pointer-events-auto focus-visible:translate-x-0 focus-visible:opacity-100 data-[state=open]:pointer-events-auto data-[state=open]:translate-x-0 data-[state=open]:opacity-100 motion-reduce:transform-none motion-reduce:transition-none',
+                  isTaskActionInProgress
+                    ? 'opacity-100'
+                    : 'pointer-events-none translate-x-1 opacity-0 group-hover:pointer-events-auto group-hover:translate-x-0 group-hover:opacity-100',
+                )}
+                aria-label={`Actions for ${task.title}`}
+              >
+                {isTaskActionInProgress ? (
+                  <LuLoaderCircle
+                    aria-hidden="true"
+                    className="h-4 w-4 animate-spin"
+                  />
+                ) : (
+                  <LuEllipsis
+                    aria-hidden="true"
+                    className="h-[17px] w-[17px]"
+                    strokeWidth={1.25}
+                  />
+                )}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="end"
+              className="w-52 rounded-none"
+              onCloseAutoFocus={(event) => {
+                if (!isRenaming) return;
+
+                event.preventDefault();
+                renameInputRef.current?.focus();
+              }}
+            >
+              <DropdownMenuItem onSelect={startRenaming}>
+                Rename
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => copyTaskToNextWeek(task)}>
+                Copy to next week
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem danger onSelect={() => deleteTask(task.id)}>
+                Delete task
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+
+        <Input
+          ref={renameInputRef}
+          value={draftTitle}
+          onChange={(event) => setDraftTitle(event.target.value)}
+          onBlur={() => {
+            if (isRenaming) finishRenaming();
+          }}
+          onKeyDown={handleRenameKeyDown}
+          className={cn(
+            'type-task absolute inset-x-0 top-0 z-10 h-full min-w-0 rounded-none border-x-0 border-b border-t-0 border-rule-faint bg-transparent p-0 transition-[border-color,opacity] duration-200 ease-out focus-visible:border-input focus-visible:ring-0 motion-reduce:transition-none',
+            isRenaming
+              ? 'pointer-events-auto opacity-100'
+              : 'pointer-events-none opacity-0',
           )}
-        </Button>
+          aria-label="Rename task"
+          aria-hidden={!isRenaming}
+          tabIndex={isRenaming ? 0 : -1}
+        />
       </div>
     </TableCell>
   );

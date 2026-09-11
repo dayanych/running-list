@@ -1,18 +1,13 @@
 import { flexRender } from '@tanstack/react-table';
 import { memo } from 'react';
 import React from 'react';
-import { LuLoaderCircle, LuTarget } from 'react-icons/lu';
+import { LuLoaderCircle } from 'react-icons/lu';
 
 import { State } from '@/entities/states/model/types/state.type';
 import { Task } from '@/entities/tasks/model/types/task.type';
 import { cn } from '@/shared/lib';
 import {
-  Button,
-  Empty,
-  EmptyContent,
   EmptyDescription,
-  EmptyHeader,
-  EmptyMedia,
   EmptyTitle,
   Table,
   TableBody,
@@ -33,33 +28,25 @@ interface Props {
   startWeekDate: Date;
   loading?: boolean;
   error?: boolean;
-  onCreateTaskClick: () => void;
 }
 
-const TasksTable = ({
-  data,
-  startWeekDate,
-  loading,
-  error,
-  onCreateTaskClick,
-}: Props) => {
+const TasksTable = ({ data, startWeekDate, loading, error }: Props) => {
   const { columns, table } = useTasksTable(data, startWeekDate);
 
   return (
     <Table>
-      <TableHeader className="border bg-background">
+      <TableHeader className="bg-background [&_tr]:border-rule">
         {table.getHeaderGroups().map((headerGroup) => (
           <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map((header, headerIndex) => {
-              const isLastChild =
-                headerIndex === headerGroup.headers.length - 1;
+            {headerGroup.headers.map((header) => {
+              const isTaskColumn = header.column.id === 'taskList';
 
               return (
                 <TableHead
                   key={header.id}
                   className={cn(
                     'type-eyebrow h-12 p-0 text-ink-muted',
-                    isLastChild && 'task-column-padding w-full text-left',
+                    isTaskColumn && 'w-full text-left',
                   )}
                 >
                   {header.isPlaceholder
@@ -98,23 +85,23 @@ const TasksTable = ({
           </TableRow>
         )}
         {!loading && !error && table.getRowModel().rows?.length === 0 && (
-          <TableRow>
-            <TableCell colSpan={columns.length} className="text-center">
-              <Empty>
-                <EmptyHeader>
-                  <EmptyMedia variant="icon">
-                    <LuTarget aria-hidden="true" />
-                  </EmptyMedia>
-                  <EmptyTitle>Start your week</EmptyTitle>
-                  <EmptyDescription>{getEmptyStateMessage()}</EmptyDescription>
-                </EmptyHeader>
-                <EmptyContent>
-                  <Button type="button" onClick={onCreateTaskClick}>
-                    Add task
-                  </Button>
-                </EmptyContent>
-              </Empty>
+          <TableRow className="border-rule hover:bg-transparent">
+            <TableCell className="h-64 align-top">
+              <div className="flex max-w-md flex-col items-start gap-2 pt-20 text-left">
+                <EmptyTitle>Nothing here yet</EmptyTitle>
+                <EmptyDescription>{getEmptyStateMessage()}</EmptyDescription>
+              </div>
             </TableCell>
+            {table
+              .getAllLeafColumns()
+              .slice(1)
+              .map((column) => (
+                <TableCell
+                  key={column.id}
+                  aria-hidden="true"
+                  className="h-64"
+                />
+              ))}
           </TableRow>
         )}
         {table.getRowModel().rows?.length > 0 &&

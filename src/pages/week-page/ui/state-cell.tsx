@@ -96,13 +96,20 @@ export const StateCell = ({ date, state, taskId, isLoading }: Props) => {
       >
         <TableCell
           className={cn(
-            'h-state w-state relative cursor-pointer',
+            'h-state w-state group relative cursor-pointer',
             state && 'bg-background',
           )}
         >
           <div className="flex h-full w-full items-center justify-center">
             {/* TODO: Update loading state */}
-            {state ? getStateIcon(state.status, 39) : null}
+            {state ? (
+              getStateIcon(state.status, 39)
+            ) : (
+              <span
+                aria-hidden="true"
+                className="h-[3px] w-[3px] rounded-full bg-anchor opacity-[0.35] transition-[opacity,transform] duration-200 ease-out group-hover:scale-110 group-hover:opacity-70 motion-reduce:transform-none motion-reduce:transition-none"
+              />
+            )}
           </div>
         </TableCell>
       </DropdownMenuTrigger>

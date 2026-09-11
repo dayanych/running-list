@@ -1,6 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { addWeeks } from 'date-fns';
 
 import { Task, TasksDal, TaskWithStates } from '@/entities/tasks';
+import {
+  getAppWeek,
+  getAppWeekYear,
+  getStartDateOfAppWeek,
+} from '@/shared/lib';
 import { useUser } from '@/shared/lib/hooks/use-user';
 import { useWeeksParams } from '@/shared/lib/hooks/use-weeks-params';
 
@@ -46,8 +52,37 @@ export const useTaskCell = () => {
       meta: { showToast: false },
     });
 
+  const { mutate: copyTaskToNextWeek, isPending: isCopyingTask } = useMutation({
+    mutationFn: async (task: Task) => {
+      const nextWeekDate = addWeeks(
+        getStartDateOfAppWeek(task.week, task.year),
+        1,
+      );
+
+      return TasksDal.createTask({
+        title: task.title,
+        userId: task.userId,
+        color: task.color,
+        week: getAppWeek(nextWeekDate),
+        year: getAppWeekYear(nextWeekDate),
+      });
+    },
+    onSuccess: async (copiedTask) => {
+      await queryClient.invalidateQueries({
+        queryKey: [
+          'getTasks',
+          copiedTask.userId,
+          copiedTask.year,
+          copiedTask.week,
+        ],
+      });
+    },
+  });
+
   return {
     updateTaskTitle,
     isUpdatingTaskTitle,
+    copyTaskToNextWeek,
+    isCopyingTask,
   };
 };

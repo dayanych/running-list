@@ -9,19 +9,17 @@ export const WeekPage = () => {
     isError,
     taskInputRef,
     handleWeekChange,
-    handleCreateTaskClick,
   } = useWeekPage();
 
   return (
     <div className="container relative mb-3 mt-10 flex flex-1 flex-col justify-between gap-4 sm:mt-14">
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-12 sm:gap-16">
         <WeekTitle startWeekDate={startWeekDate} onChange={handleWeekChange} />
         <TasksTable
           data={tasksWithStates ?? []}
           startWeekDate={startWeekDate}
           loading={isLoading}
           error={isError}
-          onCreateTaskClick={handleCreateTaskClick}
         />
       </div>
       <CreateTaskInput ref={taskInputRef} />
