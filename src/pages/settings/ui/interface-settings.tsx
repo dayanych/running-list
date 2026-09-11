@@ -1,3 +1,3 @@
 export const InterfaceSettings = () => {
-  return <div>InterfaceSettings</div>;
+  return <div className="type-row">InterfaceSettings</div>;
 };

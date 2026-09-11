@@ -80,7 +80,7 @@ export const EditableText = ({
           onKeyDown={handleKeyDown}
           autoFocus
           disabled={isInteractionDisabled}
-          className="h-full rounded-none border-x-0 border-b border-t-0 p-0 py-2 text-[length:inherit] focus:outline-none focus:ring-0"
+          className="type-task h-full rounded-none border-x-0 border-b border-t-0 p-0 py-2 focus:outline-none focus:ring-0"
           aria-label="Edit text"
         />
       ) : (

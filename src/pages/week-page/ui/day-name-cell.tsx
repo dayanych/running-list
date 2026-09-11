@@ -7,9 +7,9 @@ interface Props {
 
 export const DayNameCell = ({ day, date }: Props) => (
   <div className="w-state flex flex-col items-center justify-center text-center">
-    <span>{day}</span>
+    <span className="type-weekday text-ink-muted">{day}</span>
     {settingsConfig.showWeekDate && (
-      <span className="text-xs text-muted-foreground">
+      <span className="type-daynum text-ink-muted">
         {date.toLocaleDateString('en-US', { day: 'numeric' })}
       </span>
     )}

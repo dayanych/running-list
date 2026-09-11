@@ -1,3 +1,3 @@
 export const DatesSettings = () => {
-  return <div>DatesSettings</div>;
+  return <div className="type-row">DatesSettings</div>;
 };

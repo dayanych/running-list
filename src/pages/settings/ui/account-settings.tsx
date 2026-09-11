@@ -5,14 +5,13 @@ export const AccountSettings = () => {
 
   return (
     <div className="flex flex-col gap-4">
-      {/* <p className="text-2xl font-bold">Account</p> */}
       <div className="flex flex-col gap-1">
-        <p className="text-sm text-muted-foreground">Email</p>
-        <p className="text-sm font-medium">{user?.email}</p>
+        <p className="type-eyebrow text-ink-muted">Email</p>
+        <p className="type-row">{user?.email}</p>
       </div>
       <div className="flex flex-col gap-1">
-        <p className="text-sm text-muted-foreground">Name</p>
-        <p className="text-sm font-medium">{user?.name}</p>
+        <p className="type-eyebrow text-ink-muted">Name</p>
+        <p className="type-row">{user?.name}</p>
       </div>
     </div>
   );

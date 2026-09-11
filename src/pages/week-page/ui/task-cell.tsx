@@ -30,7 +30,7 @@ export const TaskCell = ({ task, deleteTask, isDeletingTask }: Props) => {
             updateTaskTitle({ task, title });
           }}
           disabled={isTaskActionInProgress}
-          className="cursor-pointer p-0 align-middle font-light"
+          className="type-task cursor-pointer p-0 align-middle"
         />
         <Button
           variant="ghost"

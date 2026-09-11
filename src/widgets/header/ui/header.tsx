@@ -46,16 +46,17 @@ export const Header = () => {
       <div className="container mx-auto flex items-center justify-between py-4">
         <div className="flex items-center gap-4">
           <Logo />
-          <Link
-            className="text-xl font-bold leading-tight tracking-[-0.015em]"
-            to="/"
-          >
+          <Link className="type-section" to="/">
             Running List
           </Link>
         </div>
-        <div className="flex items-center gap-5">
+        <div className="type-ui flex items-center gap-5">
           <Link to={todayLink}>Today</Link>
-          <WeekPicker onChange={onWeekChange} title="Calendar" />
+          <WeekPicker
+            onChange={onWeekChange}
+            title="Calendar"
+            className="type-ui"
+          />
           <UserAvatar onLogout={onLogout} />
         </div>
       </div>

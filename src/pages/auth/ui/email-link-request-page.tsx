@@ -50,7 +50,7 @@ export const EmailLinkRequestPage = () => {
             </Button>
           </form>
         </Form>
-        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+        <div className="type-meta flex items-center gap-3 text-ink-muted">
           <div className="h-px flex-1 bg-border" />
           <span>or</span>
           <div className="h-px flex-1 bg-border" />
@@ -72,9 +72,8 @@ export const EmailLinkRequestPage = () => {
           )}
         </Button>
         {sentTo && (
-          <p className="text-sm text-muted-foreground">
-            Link sent to{' '}
-            <span className="font-medium text-foreground">{sentTo}</span>.
+          <p className="type-help text-muted-foreground">
+            Link sent to <span className="text-foreground">{sentTo}</span>.
           </p>
         )}
       </div>

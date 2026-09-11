@@ -46,7 +46,7 @@ const TasksTable = ({
   const { columns, table } = useTasksTable(data, startWeekDate);
 
   return (
-    <Table className="text-lg">
+    <Table>
       <TableHeader className="border bg-background">
         {table.getHeaderGroups().map((headerGroup) => (
           <TableRow key={headerGroup.id}>
@@ -58,9 +58,8 @@ const TasksTable = ({
                 <TableHead
                   key={header.id}
                   className={cn(
-                    'h-12 p-0',
+                    'type-eyebrow h-12 p-0 text-ink-muted',
                     isLastChild && 'task-column-padding w-full text-left',
-                    'text-sm font-light',
                   )}
                 >
                   {header.isPlaceholder
@@ -91,7 +90,7 @@ const TasksTable = ({
           <TableRow>
             <TableCell colSpan={columns.length} className="text-center">
               <div className="flex w-full flex-col items-center justify-center gap-4 py-8">
-                <span className="font-light text-destructive">
+                <span className="type-help text-destructive">
                   Oops! Something went wrong. Try again in a few seconds.
                 </span>
               </div>

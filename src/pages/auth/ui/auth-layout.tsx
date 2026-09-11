@@ -23,7 +23,7 @@ export const AuthLayout = ({ children }: Props) => {
         </CardHeader>
         <CardContent>{children}</CardContent>
         <CardFooter>
-          <p className="w-full text-center text-sm text-muted-foreground">
+          <p className="type-help w-full text-center text-muted-foreground">
             Have a trouble? Write email to{' '}
             <Link
               to={`mailto:${appConfig.supportEmail}`}

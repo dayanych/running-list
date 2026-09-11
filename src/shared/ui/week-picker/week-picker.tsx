@@ -116,7 +116,7 @@ export function WeekPicker({
       <PopoverTrigger asChild>
         <span
           className={cn(
-            'w-fit cursor-pointer justify-start text-left font-normal text-foreground',
+            'w-fit cursor-pointer justify-start text-left text-foreground',
             !date && 'text-muted-foreground',
             className,
           )}

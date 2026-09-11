@@ -18,14 +18,45 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['Manrope', 'system-ui', 'sans-serif'],
+        mono: [
+          'IBM Plex Mono',
+          'ui-monospace',
+          'SFMono-Regular',
+          'Menlo',
+          'Monaco',
+          'Consolas',
+          'monospace',
+        ],
+      },
       colors: {
+        canvas: 'var(--canvas)',
+        surface: {
+          DEFAULT: 'var(--surface)',
+          raised: 'var(--surface-raised)',
+        },
         border: 'var(--border)',
+        rule: {
+          DEFAULT: 'var(--rule)',
+          faint: 'var(--rule-faint)',
+        },
+        'control-border': 'var(--control-border)',
         input: 'var(--input)',
         ring: 'var(--ring)',
+        ink: {
+          DEFAULT: 'var(--ink)',
+          secondary: 'var(--ink-secondary)',
+          muted: 'var(--ink-muted)',
+          faint: 'var(--ink-faint)',
+        },
+        anchor: 'var(--anchor)',
         background: 'var(--background)',
         foreground: 'var(--foreground)',
         primary: {
           DEFAULT: 'var(--primary)',
+          hover: 'var(--primary-hover)',
+          wash: 'var(--primary-wash)',
           foreground: 'var(--primary-foreground)',
         },
         secondary: {
@@ -34,6 +65,8 @@ const config = {
         },
         destructive: {
           DEFAULT: 'var(--destructive)',
+          hover: 'var(--destructive-hover)',
+          wash: 'var(--destructive-wash)',
           foreground: 'var(--destructive-foreground)',
         },
         muted: {

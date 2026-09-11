@@ -17,7 +17,7 @@ export const WeekTitle = ({ startWeekDate, onChange }: Props) => {
       initialDate={startWeekDate}
       formatTitle={formatTitle}
       onChange={onChange}
-      className="py-4 text-3xl font-bold"
+      className="type-week py-4"
     />
   );
 };

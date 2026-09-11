@@ -36,10 +36,8 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
       return (
         <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-background px-6 text-center">
           <div>
-            <h1 className="text-3xl font-semibold text-foreground">
-              Something went wrong
-            </h1>
-            <p className="mt-2 text-muted-foreground">
+            <h1 className="type-week text-foreground">Something went wrong</h1>
+            <p className="type-help mt-2 text-muted-foreground">
               We are already working on it. Try reloading the page.
             </p>
           </div>

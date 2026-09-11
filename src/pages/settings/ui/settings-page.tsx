@@ -7,7 +7,7 @@ export const SettingsPage = () => {
 
   return (
     <div className="container relative my-3 flex flex-col gap-4 pb-14">
-      <p className="py-4 text-3xl font-bold">Settings</p>
+      <h1 className="type-week py-4">Settings</h1>
       {/* <p className="text-muted-foreground">{user?.email}</p> */}
       <div className="flex gap-4">
         <SettingsSidebar

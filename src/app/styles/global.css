@@ -1,39 +1,135 @@
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/Manrope/Manrope-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/Manrope/Manrope-Medium.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/Manrope/Manrope-SemiBold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/Manrope/Manrope-Bold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/IBM_Plex_Mono/IBMPlexMono-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/IBM_Plex_Mono/IBMPlexMono-Medium.woff2') format('woff2');
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: #ffffff;
-    --foreground: #020617;
+    /* Surface */
+    --canvas: #e7eaee;
+    --surface: #f7f8fa;
+    --surface-raised: #ffffff;
 
-    --card: #ffffff;
-    --card-foreground: #020617;
+    /* Line */
+    --border: #d9dee4;
+    --rule: #e2e7ec;
+    --rule-faint: #e4e9ee;
+    --control-border: #cfd6de;
 
-    --popover: #ffffff;
-    --popover-foreground: #020617;
+    /* Ink */
+    --ink: #14181c;
+    --ink-secondary: #46505a;
+    --ink-muted: #5c6771;
+    --ink-faint: #7d8892;
+    --anchor: #bcc5ce;
 
-    --primary: #0284c7;
-    --primary-foreground: #f8fafc;
+    /* Primary */
+    --primary: #4e6175;
+    --primary-hover: #394a5d;
+    --primary-wash: rgba(78, 97, 117, 0.12);
+    --primary-foreground: #ffffff;
+
+    /* Danger */
+    --danger: #8a6567;
+    --danger-hover: #765455;
+    --danger-wash: rgba(138, 101, 103, 0.12);
+    --danger-foreground: #ffffff;
+
+    /* Type families */
+    --font-sans: 'Manrope', system-ui, sans-serif;
+    --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco,
+      Consolas, monospace;
+
+    /* Type scale */
+    --type-week: 700 2rem/2.5rem var(--font-sans);
+    --type-section: 700 1.5rem/2rem var(--font-sans);
+    --type-empty: 600 1.125rem/1.75rem var(--font-sans);
+    --type-task: 500 1rem/1.5rem var(--font-sans);
+    --type-row: 500 1rem/1.5rem var(--font-sans);
+    --type-ui: 500 0.875rem/1.25rem var(--font-sans);
+    --type-help: 400 0.875rem/1.25rem var(--font-sans);
+    --type-eyebrow: 500 0.75rem/1rem var(--font-mono);
+    --type-weekday: 400 0.75rem/1rem var(--font-mono);
+    --type-daynum: 500 0.875rem/1.25rem var(--font-sans);
+    --type-key: 400 0.75rem/1rem var(--font-mono);
+    --type-meta: 400 0.75rem/1rem var(--font-mono);
+
+    /* Component aliases */
+    --background: var(--surface);
+    --foreground: var(--ink);
+
+    --card: var(--surface-raised);
+    --card-foreground: var(--ink);
+
+    --popover: var(--surface-raised);
+    --popover-foreground: var(--ink);
 
     --success: #22c55e;
     --success-foreground: #f8fafc;
 
-    --secondary: #f1f5f9;
-    --secondary-foreground: #1e293b;
+    --secondary: var(--canvas);
+    --secondary-foreground: var(--ink-secondary);
 
-    --muted: #fafafa;
-    --muted-foreground: #64748b;
+    --muted: var(--canvas);
+    --muted-foreground: var(--ink-muted);
 
-    --accent: #f1f5f9;
-    --accent-foreground: #1e293b;
+    --accent: var(--primary-wash);
+    --accent-foreground: var(--ink);
 
-    --destructive: #ef4444;
-    --destructive-foreground: #f8fafc;
+    --destructive: var(--danger);
+    --destructive-hover: var(--danger-hover);
+    --destructive-wash: var(--danger-wash);
+    --destructive-foreground: var(--danger-foreground);
 
-    --border: #e2e8f0;
-    --input: #e2e8f0;
-    --ring: #020617;
+    --input: var(--control-border);
+    --ring: var(--primary);
 
     --radius: 0.5rem;
 
@@ -83,9 +179,8 @@
 }
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  font: var(--type-row);
+  font-synthesis: none;
 }
 
 *,
@@ -113,6 +208,67 @@ input {
   font-family: inherit;
 }
 
+@layer utilities {
+  .type-ui {
+    font: var(--type-ui);
+  }
+
+  .type-help {
+    font: var(--type-help);
+  }
+
+  .type-eyebrow {
+    font: var(--type-eyebrow);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .type-weekday {
+    font: var(--type-weekday);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .type-daynum {
+    font: var(--type-daynum);
+  }
+
+  .type-row {
+    font: var(--type-row);
+  }
+
+  .type-task {
+    font: var(--type-task);
+  }
+
+  .type-empty {
+    font: var(--type-empty);
+    letter-spacing: -0.015em;
+  }
+
+  .type-section {
+    font: var(--type-section);
+    letter-spacing: -0.02em;
+  }
+
+  .type-week {
+    font: var(--type-week);
+    letter-spacing: -0.025em;
+  }
+
+  .type-key {
+    font: var(--type-key);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .type-meta {
+    font: var(--type-meta);
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+}
+
 .w-state {
   width: var(--state-block-width);
 }
@@ -122,12 +278,12 @@ input {
 }
 
 .border-state {
-  border: 1px dotted var(--muted);
+  border: 1px dotted var(--rule-faint);
 }
 
 .dot-bg {
   background-color: var(--background);
-  background-image: radial-gradient(var(--border) 1px, transparent 1px);
+  background-image: radial-gradient(var(--rule-faint) 1px, transparent 1px);
   background-position: -27px -30px;
   background-size: var(--state-block-width) var(--state-block-height);
 }

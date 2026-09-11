@@ -15,7 +15,7 @@ export const EmailLinkHandlerPage = () => {
     return (
       <AuthLayout>
         <div className="space-y-6">
-          <p className="text-center text-sm text-muted-foreground">
+          <p className="type-help text-center text-muted-foreground">
             This sign-in link is invalid or expired.
           </p>
           <Button asChild className="w-full">
@@ -33,7 +33,7 @@ export const EmailLinkHandlerPage = () => {
       <AuthLayout>
         <div className="flex flex-col items-center gap-2 text-center">
           <LuLoaderCircle className="h-5 w-5 animate-spin" />
-          <p className="text-sm text-muted-foreground">Signing you in...</p>
+          <p className="type-help text-muted-foreground">Signing you in...</p>
         </div>
       </AuthLayout>
     );
@@ -73,7 +73,7 @@ export const EmailLinkHandlerPage = () => {
           </form>
         </Form>
         {hasFailed && (
-          <p className="text-sm text-destructive">
+          <p className="type-help text-destructive">
             We couldn&apos;t finish signing you in.{' '}
             {
               <Link to={`/${routesPaths.signInEmailLinkRequest}`}>

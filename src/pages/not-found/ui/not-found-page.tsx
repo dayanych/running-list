@@ -15,11 +15,7 @@ export const NotFoundPage = () => {
     <div className="flex min-h-screen items-center justify-center">
       <Empty>
         <EmptyHeader>
-          <EmptyTitle
-            className="text-9xl font-bold tracking-normal"
-            role="heading"
-            aria-level={1}
-          >
+          <EmptyTitle className="type-week" role="heading" aria-level={1}>
             404
           </EmptyTitle>
           <EmptyDescription>

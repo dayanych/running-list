@@ -31,7 +31,7 @@ export const SettingsSidebar = ({
           onClick={() => handleSidebarItemClick(item.id)}
           className={cn(
             item.isActive && 'bg-primary text-primary-foreground',
-            'w-full justify-start text-base font-medium',
+            'type-row w-full justify-start',
           )}
         >
           {item.label}
