@@ -1,3 +1,3 @@
 export const settingsConfig = {
-  showWeekDate: false,
+  showWeekDate: true,
 };

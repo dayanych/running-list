@@ -25,8 +25,8 @@ export const DayNameCell = ({ day, date }: Props) => {
         <span
           className={
             isCurrentDay
-              ? 'type-daynum-current text-primary'
-              : 'type-daynum text-ink-muted'
+              ? 'text-[0.625rem] font-medium leading-[0.875rem] text-ink-faint'
+              : 'text-[0.625rem] font-normal leading-[0.875rem] text-ink-faint'
           }
         >
           {date.toLocaleDateString('en-US', { day: 'numeric' })}
