@@ -17,6 +17,7 @@ import {
 } from '@/shared/ui';
 
 import { getEmptyStateMessage, useTasksTable } from '../lib';
+import type { WeekTransitionDirection } from '../lib/use-week-page';
 
 export interface TaskWithStates extends Task {
   states: State[];
@@ -25,6 +26,7 @@ export interface TaskWithStates extends Task {
 interface Props {
   data: TaskWithStates[];
   startWeekDate: Date;
+  transitionDirection: WeekTransitionDirection;
   loading?: boolean;
   error?: boolean;
 }
@@ -32,7 +34,13 @@ interface Props {
 const SKELETON_TASK_WIDTHS = ['42%', '58%', '36%', '51%', '45%'];
 const SKELETON_TRANSITION_MS = 320;
 
-const TasksTable = ({ data, startWeekDate, loading, error }: Props) => {
+const TasksTable = ({
+  data,
+  startWeekDate,
+  transitionDirection,
+  loading,
+  error,
+}: Props) => {
   const { columns, table } = useTasksTable(data, startWeekDate);
   const weekStartTimestamp = startWeekDate.getTime();
   const emptyStateMessage = useMemo(
@@ -69,7 +77,13 @@ const TasksTable = ({ data, startWeekDate, loading, error }: Props) => {
   }, [loading]);
 
   return (
-    <div className="relative">
+    <div
+      className={cn(
+        'relative',
+        transitionDirection === 'forward' && 'week-content-enter-forward',
+        transitionDirection === 'backward' && 'week-content-enter-backward',
+      )}
+    >
       <Table aria-busy={loading}>
         <TableHeader className="bg-background [&_tr]:border-rule">
           {table.getHeaderGroups().map((headerGroup) => (

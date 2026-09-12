@@ -1,5 +1,5 @@
 import { format, isWithinInterval } from 'date-fns';
-import { useEffect, useState } from 'react';
+import { type Key, useEffect, useState } from 'react';
 import type { DateRange } from 'react-day-picker';
 
 import { dateConfig } from '@/shared/config/date.config';
@@ -10,6 +10,8 @@ interface WeekPickerProps {
   initialDate?: Date;
   title?: string;
   className?: string;
+  contentKey?: Key;
+  contentClassName?: string;
   onChange: (date: DateRange) => void;
   formatTitle?: (date: DateRange) => string;
 }
@@ -18,35 +20,31 @@ export function WeekPicker({
   initialDate,
   title,
   className,
+  contentKey,
+  contentClassName,
   formatTitle,
   onChange,
 }: WeekPickerProps) {
-  const [date, setDate] = useState<DateRange | null>(null);
-  const [month, setMonth] = useState<Date>(() => initialDate ?? new Date());
+  const baseDate = initialDate ?? new Date();
+  const startDate = getStartOfAppWeek(baseDate);
+  const date: DateRange = {
+    from: startDate,
+    to: getEndOfAppWeek(startDate),
+  };
+  const startDateTimestamp = startDate.getTime();
+  const [month, setMonth] = useState<Date>(() => startDate);
   const [hoveredDay, setHoveredDay] = useState<Date | null>(null);
 
   useEffect(() => {
-    const baseDate = initialDate ?? new Date();
-
-    const start = getStartOfAppWeek(baseDate);
-    const end = getEndOfAppWeek(start);
-
-    setDate({
-      from: start,
-      to: end,
-    });
-    setMonth(start);
-  }, [initialDate]);
+    setMonth(new Date(startDateTimestamp));
+  }, [startDateTimestamp]);
 
   const handleSelect = (selectedDate: Date | undefined) => {
     if (selectedDate) {
       const start = getStartOfAppWeek(selectedDate);
       const end = getEndOfAppWeek(selectedDate);
-      setDate({ from: start, to: end });
       setMonth(start);
       onChange({ from: start, to: end });
-    } else {
-      setDate(null);
     }
   };
 
@@ -55,7 +53,7 @@ export function WeekPicker({
       return title;
     }
 
-    if (formatTitle && date) {
+    if (formatTitle) {
       return formatTitle(date);
     }
 
@@ -117,13 +115,12 @@ export function WeekPicker({
         <span
           className={cn(
             'w-fit cursor-pointer justify-start text-left text-foreground',
-            !date && 'text-muted-foreground',
             className,
           )}
         >
           <span
-            key={weekTitle}
-            className="inline-block duration-300 animate-in fade-in"
+            key={contentKey}
+            className={cn('inline-block', contentClassName)}
           >
             {weekTitle}
           </span>

@@ -278,6 +278,30 @@ input {
     }
   }
 
+  @keyframes week-content-enter-forward {
+    from {
+      opacity: 0.55;
+      transform: translate3d(0.75rem, 0, 0);
+    }
+
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  @keyframes week-content-enter-backward {
+    from {
+      opacity: 0.55;
+      transform: translate3d(-0.75rem, 0, 0);
+    }
+
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
   .route-loader-enter {
     animation: route-loader-enter 320ms cubic-bezier(0.16, 1, 0.3, 1) both;
   }
@@ -288,6 +312,16 @@ input {
 
   .route-page-enter {
     animation: route-page-enter 260ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .week-content-enter-forward {
+    animation: week-content-enter-forward 260ms cubic-bezier(0.16, 1, 0.3, 1)
+      both;
+  }
+
+  .week-content-enter-backward {
+    animation: week-content-enter-backward 260ms cubic-bezier(0.16, 1, 0.3, 1)
+      both;
   }
 
   .skeleton-soft {
@@ -383,7 +417,9 @@ input {
     .route-loader-enter,
     .route-page-enter,
     .skeleton-soft,
-    .task-title-saving {
+    .task-title-saving,
+    .week-content-enter-backward,
+    .week-content-enter-forward {
       animation: none;
     }
 

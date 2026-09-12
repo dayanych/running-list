@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 import { State, StatesDal } from '@/entities/states';
 import { TasksDal } from '@/entities/tasks';
@@ -10,7 +10,9 @@ import {
   useWeeksParams,
 } from '@/shared/lib';
 
-import { TaskWithStates } from '../ui/tasks-table';
+import type { TaskWithStates } from '../ui/tasks-table';
+
+export type WeekTransitionDirection = 'idle' | 'forward' | 'backward';
 
 /**
  * Groups a flat list of states by the task they belong to
@@ -42,6 +44,27 @@ export const useWeekPage = () => {
   const { onWeekChange } = useWeekCalendarChange();
 
   const taskInputRef = useRef<HTMLInputElement>(null);
+  const startWeekDate = getStartDateOfAppWeek(week, year);
+  const weekStartTimestamp = startWeekDate.getTime();
+  const [weekTransition, setWeekTransition] = useState<{
+    weekStartTimestamp: number;
+    direction: WeekTransitionDirection;
+  }>({ weekStartTimestamp, direction: 'idle' });
+
+  if (!Object.is(weekTransition.weekStartTimestamp, weekStartTimestamp)) {
+    const hasValidTimestamps =
+      Number.isFinite(weekStartTimestamp) &&
+      Number.isFinite(weekTransition.weekStartTimestamp);
+
+    setWeekTransition({
+      weekStartTimestamp,
+      direction: hasValidTimestamps
+        ? weekStartTimestamp > weekTransition.weekStartTimestamp
+          ? 'forward'
+          : 'backward'
+        : 'idle',
+    });
+  }
 
   const {
     data: tasksWithStates = [],
@@ -71,7 +94,8 @@ export const useWeekPage = () => {
   });
 
   return {
-    startWeekDate: getStartDateOfAppWeek(week, year),
+    startWeekDate,
+    transitionDirection: weekTransition.direction,
     tasksWithStates,
     // The query is disabled until the user is known, so a disabled-and-pending
     // query must still read as loading rather than as an empty week
