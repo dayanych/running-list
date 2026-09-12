@@ -131,11 +131,9 @@ export function WeekPicker({
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="center">
         <Calendar
-          mode="single"
-          selected={date?.from}
           month={month}
           onMonthChange={setMonth}
-          onSelect={handleSelect}
+          onDayClick={handleSelect}
           modifiers={modifiers}
           modifiersStyles={modifiersStyles}
           weekStartsOn={dateConfig.weekStart}
