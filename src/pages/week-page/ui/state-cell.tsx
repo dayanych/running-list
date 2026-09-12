@@ -26,11 +26,11 @@ interface Props {
 const MENU_ICON_SIZE = 16;
 
 const STATE_ICON_SRC: Record<StateStatus, string> = {
-  [StateStatus.Empty]: '/icons/todo.svg',
-  [StateStatus.FullDone]: '/icons/finished.svg',
-  [StateStatus.HalfDone]: '/icons/started.svg',
-  [StateStatus.Delay]: '/icons/moved.svg',
-  [StateStatus.Failed]: '/icons/cancelled.svg',
+  [StateStatus.Empty]: '/icons/01-empty.svg',
+  [StateStatus.FullDone]: '/icons/02-completed.svg',
+  [StateStatus.HalfDone]: '/icons/03-half-done.svg',
+  [StateStatus.Delay]: '/icons/04-moved.svg',
+  [StateStatus.Failed]: '/icons/05-cancelled.svg',
 };
 
 const getStateIcon = (status: StateStatus, size: number) => (

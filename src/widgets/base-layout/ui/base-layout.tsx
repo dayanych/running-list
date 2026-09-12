@@ -5,7 +5,7 @@ import { ErrorBoundary } from '@/widgets/error-boundary';
 
 export const BaseLayout = () => {
   return (
-    <div className="dot-bg min-h-screen w-screen font-sans antialiased">
+    <div className="min-h-screen w-screen font-sans antialiased">
       <CustomToaster />
       <ErrorBoundary>
         <Outlet />
