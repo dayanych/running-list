@@ -25,7 +25,6 @@ export const useSignInPage = () => {
         dispatch(setUser(currentUser));
       }
     },
-    meta: { showToast: false },
   });
 
   const handleSubmit = (data: z.infer<typeof LoginAccountShema>) =>

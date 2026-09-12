@@ -1,11 +1,12 @@
-import toast from 'react-hot-toast';
 import { useParams } from 'react-router-dom';
+
+import { notify } from '@/shared/ui/toaster/notify';
 
 export const useWeeksParams = () => {
   const { week, year } = useParams();
 
   if (!week || !year) {
-    toast.error('week and year params are not provided');
+    notify.error('This week could not be opened. The address is incomplete');
     throw new Error('Invalid params');
   }
 

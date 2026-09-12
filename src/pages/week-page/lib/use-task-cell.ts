@@ -1,6 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { addWeeks } from 'date-fns';
-import toast from 'react-hot-toast';
 
 import { Task, TasksDal, TaskWithStates } from '@/entities/tasks';
 import {
@@ -10,6 +9,7 @@ import {
 } from '@/shared/lib';
 import { useUser } from '@/shared/lib/hooks/use-user';
 import { useWeeksParams } from '@/shared/lib/hooks/use-weeks-params';
+import { notify } from '@/shared/ui/toaster/notify';
 
 export const useTaskCell = () => {
   const queryClient = useQueryClient();
@@ -48,9 +48,8 @@ export const useTaskCell = () => {
         updateOldData(updatedTask);
       },
       onError: () => {
-        toast.error("Couldn't rename task. The previous title was restored");
+        notify.error("Couldn't rename task. The previous title was restored");
       },
-      meta: { showToast: false },
     });
 
   const { mutate: copyTaskToNextWeek, isPending: isCopyingTask } = useMutation({
@@ -77,6 +76,8 @@ export const useTaskCell = () => {
           copiedTask.week,
         ],
       });
+
+      notify.success(`Task copied to week ${copiedTask.week}`);
     },
   });
 

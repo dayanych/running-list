@@ -1,4 +1,4 @@
-export * from './custom-toaster';
+export * from './toaster';
 export * from './editable-text';
 export * from './laoder';
 export * from './shadcn';

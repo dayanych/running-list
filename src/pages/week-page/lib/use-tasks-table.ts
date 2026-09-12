@@ -6,11 +6,26 @@ import { State } from '@/entities/states/model/types/state.type';
 import { TasksDal } from '@/entities/tasks';
 import { useUser } from '@/shared/lib/hooks/use-user';
 import { useWeeksParams } from '@/shared/lib/hooks/use-weeks-params';
+import { notify } from '@/shared/ui/toaster/notify';
 
 import { TaskWithStates } from '../ui/tasks-table';
 import { getTasksColumns } from './get-tasks-columns';
 
 const daysMap = ['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa'];
+
+const MAX_TITLE_LENGTH = 32;
+
+/**
+ * Clips a task title so that a long one cannot stretch a notification
+ *
+ * @param title - Task title as the user typed it
+ * @returns The title, cut short with an ellipsis when it runs past the limit
+ */
+const shortenTitle = (title: string) =>
+  title.length > MAX_TITLE_LENGTH
+    ? `${title.slice(0, MAX_TITLE_LENGTH).trimEnd()}…`
+    : title;
+
 const dayStatus: {
   [key: string]: { date: Date | null; state: State | null };
 } = {
@@ -67,17 +82,23 @@ export const useTasksTable = (tasks: TaskWithStates[], startWeekDate: Date) => {
     mutationFn: async (taskId: string) => {
       if (!user) throw new Error('User is not loaded');
 
+      const deletedTitle = tasks.find((task) => task.id === taskId)?.title;
+
       setDeletingTaskId(taskId);
       await TasksDal.deleteTask(taskId, user.id);
-      return taskId;
+      return deletedTitle;
     },
-    onSuccess: (_, taskId) => {
+    onSuccess: (deletedTitle, taskId) => {
       removeTaskFromOldData(taskId);
+      notify.success(
+        deletedTitle
+          ? `Deleted "${shortenTitle(deletedTitle)}"`
+          : 'Task deleted',
+      );
     },
     onSettled: () => {
       setDeletingTaskId(null);
     },
-    meta: { showToast: false },
   });
 
   const isTaskDeleting = useCallback(

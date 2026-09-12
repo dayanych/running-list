@@ -5,7 +5,8 @@ import {
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { useState } from 'react';
-import toast from 'react-hot-toast';
+
+import { notify } from '@/shared/ui/toaster/notify';
 
 const FIVE_MINUTES = 5 * 60 * 1000;
 const THIRTY_MINUTES = 30 * 60 * 1000;
@@ -38,12 +39,7 @@ export const ReactQueryProvider = ({
           onError: (error, _variables, _context, mutation) => {
             if (mutation.options.onError) return;
 
-            toast.error(`${error.message}. Try again later`);
-          },
-          onSuccess: (_data, _variables, _context, mutation) => {
-            if (mutation.meta?.showToast === false) return;
-
-            toast.success('Successfully');
+            notify.error(`${error.message}. Try again later`);
           },
         }),
       }),

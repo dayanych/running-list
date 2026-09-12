@@ -2,9 +2,9 @@ import { UnknownAction } from '@reduxjs/toolkit';
 import { FirebaseError } from 'firebase/app';
 import type { User as FirebaseUser } from 'firebase/auth';
 import { Dispatch } from 'react';
-import toast from 'react-hot-toast';
 
 import { setUser, unsetUser, User, UsersDal } from '@/entities/user';
+import { notify } from '@/shared/ui/toaster/notify';
 
 import { AuthService } from '../api/auth.service';
 import { UserRegistrationDto } from '../api/dto/user-login.dto';
@@ -20,7 +20,7 @@ export class AuthDal {
     } catch (error) {
       if (error instanceof FirebaseError) {
         const messageError = getAuthErrorMessage(error);
-        toast.error(messageError);
+        notify.error(messageError);
       }
 
       return null;
@@ -44,7 +44,7 @@ export class AuthDal {
     } catch (error) {
       if (error instanceof FirebaseError) {
         const messageError = getAuthErrorMessage(error);
-        toast.error(messageError);
+        notify.error(messageError);
       }
 
       return null;
@@ -52,7 +52,15 @@ export class AuthDal {
   }
 
   public static async logout(): Promise<void> {
-    await AuthService.logout();
+    try {
+      await AuthService.logout();
+    } catch (error) {
+      notify.error(
+        error instanceof FirebaseError
+          ? getAuthErrorMessage(error)
+          : 'Could not log out. Try again later',
+      );
+    }
   }
 
   public static listenAuthStateChange(
@@ -66,7 +74,7 @@ export class AuthDal {
           const user = await UsersDal.getUser(userId);
           dispatch(setUser(user));
         } catch {
-          toast.error('Failed to load user data');
+          notify.error('Could not load your account. Try reloading the page');
           dispatch(unsetUser());
         } finally {
           onLoad(false);
@@ -87,7 +95,7 @@ export class AuthDal {
       return true;
     } catch (error) {
       if (error instanceof FirebaseError) {
-        toast.error(getAuthErrorMessage(error));
+        notify.error(getAuthErrorMessage(error));
       }
       return false;
     }
@@ -133,7 +141,7 @@ export class AuthDal {
       return AuthDal.getOrCreateUser(currentUser, email);
     } catch (error) {
       if (error instanceof FirebaseError) {
-        toast.error(getAuthErrorMessage(error));
+        notify.error(getAuthErrorMessage(error));
       }
       return null;
     }
@@ -145,7 +153,7 @@ export class AuthDal {
       return AuthDal.getOrCreateUser(currentUser);
     } catch (error) {
       if (error instanceof FirebaseError) {
-        toast.error(getAuthErrorMessage(error));
+        notify.error(getAuthErrorMessage(error));
       }
       return null;
     }

@@ -29,7 +29,6 @@ export const useSignUpPage = () => {
         dispatch(setUser(currentUser));
       }
     },
-    meta: { showToast: false },
   });
 
   const handleSubmit = (data: z.infer<typeof CreateAccountShema>) =>

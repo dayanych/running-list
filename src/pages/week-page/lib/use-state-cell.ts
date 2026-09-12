@@ -70,7 +70,6 @@ export const useStateCell = (
       });
     },
     onSuccess: addNewState,
-    meta: { showToast: false },
   });
 
   const { mutate: updateStateCell } = useMutation({
@@ -78,7 +77,6 @@ export const useStateCell = (
     mutationFn: async ({ state }: { state: State }) =>
       StatesDal.updateState(state),
     onSuccess: updateOldData,
-    meta: { showToast: false },
   });
 
   const updateStatus = (status: StateStatus) => {

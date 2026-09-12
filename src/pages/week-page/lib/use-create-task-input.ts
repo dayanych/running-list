@@ -30,7 +30,6 @@ export const useCreateTaskInput = () => {
       });
       setTaskTitle('');
     },
-    meta: { showToast: false },
   });
 
   const handleTaskTitleChange = (

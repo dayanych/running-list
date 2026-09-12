@@ -27,7 +27,6 @@ export const useEmailLinkRequestPage = () => {
       saveEmailForSignIn(variables.email);
       setSentTo(variables.email);
     },
-    meta: { showToast: false },
   });
 
   const { mutateAsync: signInWithGoogle, isPending: isGooglePending } =
@@ -39,7 +38,6 @@ export const useEmailLinkRequestPage = () => {
           dispatch(setUser(currentUser));
         }
       },
-      meta: { showToast: false },
     });
 
   const handleSubmit = (data: z.infer<typeof EmailLinkScheme>) =>

@@ -42,7 +42,6 @@ export const useEmailLinkHandlerPage = () => {
         setHasFailed(true);
       }
     },
-    meta: { showToast: false },
   });
 
   useEffect(() => {

@@ -9,3 +9,5 @@ export * from './input';
 export * from './label';
 export * from './popover';
 export * from './table';
+export * from './toast';
+export * from './use-toast';
