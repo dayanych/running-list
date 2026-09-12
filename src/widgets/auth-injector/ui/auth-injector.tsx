@@ -8,7 +8,7 @@ export const AuthInjector = () => {
   const { isLoading } = useAuthInjector();
 
   if (isLoading) {
-    return <Loader />;
+    return <Loader fullScreen label="Loading account" />;
   }
 
   return <Outlet />;

@@ -1,17 +1,11 @@
+import { lazy, ReactNode, Suspense } from 'react';
 import { RouteObject } from 'react-router-dom';
 
-import {
-  CurrentWeekRedirectPage,
-  EmailLinkHandlerPage,
-  EmailLinkRequestPage,
-  NotFoundPage,
-  SettingsPage,
-  SignInPage,
-  SignUpPage,
-  WeekPage,
-  YearPage,
-} from '@/pages';
+import { CurrentWeekRedirectPage } from '@/pages/home';
+import { NotFoundPage } from '@/pages/not-found';
+import { YearPage } from '@/pages/year';
 import { routesPaths } from '@/shared/config';
+import { Loader } from '@/shared/ui';
 import {
   AuthInjector,
   BaseLayout,
@@ -19,22 +13,65 @@ import {
   PublicLayout,
 } from '@/widgets';
 
+const EmailLinkHandlerPage = lazy(() =>
+  import('@/pages/auth/ui/email-link-handler-page').then((module) => ({
+    default: module.EmailLinkHandlerPage,
+  })),
+);
+const EmailLinkRequestPage = lazy(() =>
+  import('@/pages/auth/ui/email-link-request-page').then((module) => ({
+    default: module.EmailLinkRequestPage,
+  })),
+);
+const SettingsPage = lazy(() =>
+  import('@/pages/settings/ui/settings-page').then((module) => ({
+    default: module.SettingsPage,
+  })),
+);
+const SignInPage = lazy(() =>
+  import('@/pages/auth/ui/sign-in-page').then((module) => ({
+    default: module.SignInPage,
+  })),
+);
+const SignUpPage = lazy(() =>
+  import('@/pages/auth/ui/sign-up-page').then((module) => ({
+    default: module.SignUpPage,
+  })),
+);
+const WeekPage = lazy(() =>
+  import('@/pages/week-page/ui/week-page').then((module) => ({
+    default: module.WeekPage,
+  })),
+);
+
+const withRouteLoader = (
+  element: ReactNode,
+  label: string,
+  fullScreen = false,
+) => (
+  <Suspense fallback={<Loader fullScreen={fullScreen} label={label} />}>
+    <div className="route-page-enter flex min-h-0 flex-1 flex-col">
+      {element}
+    </div>
+  </Suspense>
+);
+
 const publicRoutes = [
   {
     path: routesPaths.signInEmailLinkRequest,
-    element: <EmailLinkRequestPage />,
+    element: withRouteLoader(<EmailLinkRequestPage />, 'Loading sign in', true),
   },
   {
     path: routesPaths.signInEmailLink,
-    element: <EmailLinkHandlerPage />,
+    element: withRouteLoader(<EmailLinkHandlerPage />, 'Loading sign in', true),
   },
   {
     path: routesPaths.signIn,
-    element: <SignInPage />,
+    element: withRouteLoader(<SignInPage />, 'Loading sign in', true),
   },
   {
     path: routesPaths.signUp,
-    element: <SignUpPage />,
+    element: withRouteLoader(<SignUpPage />, 'Loading sign up', true),
   },
 ];
 
@@ -45,7 +82,7 @@ const protectedRoutes = [
   },
   {
     path: routesPaths.settings,
-    element: <SettingsPage />,
+    element: withRouteLoader(<SettingsPage />, 'Loading settings'),
   },
   {
     path: routesPaths.year,
@@ -53,7 +90,7 @@ const protectedRoutes = [
     children: [
       {
         path: routesPaths.week,
-        element: <WeekPage />,
+        element: withRouteLoader(<WeekPage />, 'Loading week'),
       },
     ],
   },
