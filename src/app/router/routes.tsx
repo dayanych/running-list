@@ -23,11 +23,6 @@ const EmailLinkRequestPage = lazy(() =>
     default: module.EmailLinkRequestPage,
   })),
 );
-const SettingsPage = lazy(() =>
-  import('@/pages/settings/ui/settings-page').then((module) => ({
-    default: module.SettingsPage,
-  })),
-);
 const SignInPage = lazy(() =>
   import('@/pages/auth/ui/sign-in-page').then((module) => ({
     default: module.SignInPage,
@@ -79,10 +74,6 @@ const protectedRoutes = [
   {
     index: true,
     element: <CurrentWeekRedirectPage />,
-  },
-  {
-    path: routesPaths.settings,
-    element: withRouteLoader(<SettingsPage />, 'Loading settings'),
   },
   {
     path: routesPaths.year,

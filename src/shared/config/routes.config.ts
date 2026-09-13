@@ -9,7 +9,6 @@ export const routesPaths = {
   signInEmailLink: 'sign-in/email-link',
 
   // Protected routes
-  settings: 'settings',
   year: ':year',
   week: ':week',
 } as const;

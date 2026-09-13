@@ -1,38 +1,8 @@
-import { LuUser } from 'react-icons/lu';
 import { Link } from 'react-router-dom';
 
-import { routesPaths } from '@/shared/config';
-import { Logo } from '@/shared/ui';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/shared/ui/shadcn';
+import { Button, Logo } from '@/shared/ui';
 
 import { useHeader } from '..';
-
-interface UserAvatarProps {
-  onLogout: () => void;
-}
-
-const UserAvatar = ({ onLogout }: UserAvatarProps) => {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger className="flex h-9 w-9 items-center justify-center rounded-full border bg-muted">
-        <LuUser className="h-5 w-5" />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem asChild>
-          <Link to={`/${routesPaths.settings}`}>Settings</Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem danger onSelect={() => onLogout()}>
-          Logout
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-};
 
 export const Header = () => {
   const { user, onLogout } = useHeader();
@@ -50,7 +20,14 @@ export const Header = () => {
             Running List
           </Link>
         </div>
-        <UserAvatar onLogout={onLogout} />
+        <Button
+          type="button"
+          variant="outline"
+          className="type-key h-9 rounded-none px-4 text-destructive hover:border-destructive hover:bg-destructive-wash hover:text-destructive"
+          onClick={onLogout}
+        >
+          Log out
+        </Button>
       </div>
     </header>
   );
