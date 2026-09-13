@@ -3,6 +3,7 @@ import { useRef, useState } from 'react';
 
 import { State, StatesDal } from '@/entities/states';
 import { TasksDal } from '@/entities/tasks';
+import { settingsConfig } from '@/shared/config/settings.config';
 import {
   getStartDateOfAppWeek,
   useUser,
@@ -97,6 +98,8 @@ export const useWeekPage = () => {
     startWeekDate,
     transitionDirection: weekTransition.direction,
     tasksWithStates,
+    isTaskLimitReached:
+      tasksWithStates.length >= settingsConfig.maxTasksPerWeek,
     // The query is disabled until the user is known, so a disabled-and-pending
     // query must still read as loading rather than as an empty week
     isLoading: isLoadingTasks || !userId,

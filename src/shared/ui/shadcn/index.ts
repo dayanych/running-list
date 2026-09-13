@@ -10,4 +10,5 @@ export * from './label';
 export * from './popover';
 export * from './table';
 export * from './toast';
+export * from './tooltip';
 export * from './use-toast';

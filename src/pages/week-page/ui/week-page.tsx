@@ -5,6 +5,7 @@ export const WeekPage = () => {
   const {
     startWeekDate,
     tasksWithStates,
+    isTaskLimitReached,
     isLoading,
     isError,
     taskInputRef,
@@ -29,7 +30,10 @@ export const WeekPage = () => {
           error={isError}
         />
       </div>
-      <CreateTaskInput ref={taskInputRef} />
+      <CreateTaskInput
+        ref={taskInputRef}
+        isTaskLimitReached={isTaskLimitReached}
+      />
     </div>
   );
 };
