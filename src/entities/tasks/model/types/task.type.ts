@@ -7,6 +7,7 @@ export interface Task {
   week: number;
   year: number;
   color: string;
+  order: number;
   createdAt: Date;
 }
 

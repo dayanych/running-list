@@ -1,3 +1,42 @@
+# Task order backfill
+
+Adds `order` to legacy task documents and creates the composite index used to
+load a user's weekly tasks in that order. Tasks are grouped by `user_id`,
+`year` and `week`, then missing values are assigned from zero in `created_at`
+order. The document id breaks ties deterministically. Existing values are
+preserved; missing tasks in a partially migrated group are appended after its
+greatest existing order.
+
+Run the migration with the project's supported Node.js version and installed
+dependencies:
+
+```sh
+npm run migrate:task-order -- --dry-run
+npm run migrate:task-order -- --apply
+npm run migrate:task-order -- --verify
+```
+
+- **Dry run**, the default, reports how many tasks lack `order` and whether the
+  index is `MISSING`, `CREATING`, `READY` or `NEEDS_REPAIR`. It writes nothing.
+- **Apply** validates every task before changing anything, writes only the
+  missing field, creates the index when necessary, waits for it to become ready
+  and verifies the result.
+- **Verify** exits unsuccessfully while any task lacks `order` or the index is
+  not ready.
+
+Each write requires the document's original `updateTime`, so a concurrent edit
+fails instead of being overwritten. The migration is safe to rerun after a
+partial failure. Authentication and project selection work as described below
+for the states migration.
+
+Roll out by running dry run, apply and verify before deploying the application.
+New application clients assign every newly created task the next order in its
+user/week group.
+
+If the data backfill was applied before index creation was added to this
+migration, rerun `--apply`. Existing task documents will remain unchanged and
+only the missing index will be created.
+
 # States backfill
 
 Prepares `states` for the week query the application runs:

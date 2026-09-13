@@ -10,6 +10,7 @@ export const convertedTaskToTaskDto = (task: Task): TaskDto => {
     week: task.week,
     year: task.year,
     color: task.color,
+    order: task.order,
     user_id: task.userId,
     created_at: Timestamp.fromDate(task.createdAt),
   };

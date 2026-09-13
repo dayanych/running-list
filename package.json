@@ -6,8 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "test": "node --experimental-strip-types --test",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
+    "migrate:task-order": "node firebase/scripts/migrate-task-order.mjs",
     "migrate:states": "node firebase/scripts/migrate-states.mjs",
     "format": "prettier --write src/ --no-error-on-unmatched-pattern",
     "prepare": "husky && husky install",

@@ -3,9 +3,10 @@ import { Timestamp } from 'firebase/firestore';
 import { converterTaskDtoToTask } from '../api/mappers/task-dto-to-task.mapper';
 import { convertedTaskToTaskDto } from '../api/mappers/task-to-task-dto.mapper';
 import { TasksService } from '../api/tasks.service';
+import { getNextTaskOrder } from './lib/get-next-task-order';
 import { Task } from './types/task.type';
 
-type TaskWithoutId = Omit<Task, 'id' | 'createdAt'>;
+type TaskWithoutId = Omit<Task, 'id' | 'createdAt' | 'order'>;
 
 export class TasksDal {
   public static async getTasksByUserIdYearWeek(
@@ -26,12 +27,18 @@ export class TasksDal {
   public static async createTask(
     taskDtoWithoutId: TaskWithoutId,
   ): Promise<Task> {
+    const existingTasks = await this.getTasksByUserIdYearWeek(
+      taskDtoWithoutId.userId,
+      taskDtoWithoutId.year,
+      taskDtoWithoutId.week,
+    );
     const taskDto = {
       title: taskDtoWithoutId.title,
       user_id: taskDtoWithoutId.userId,
       week: taskDtoWithoutId.week,
       year: taskDtoWithoutId.year,
       color: taskDtoWithoutId.color,
+      order: getNextTaskOrder(existingTasks),
       created_at: Timestamp.fromDate(new Date()),
     };
 

@@ -34,7 +34,7 @@ export class TasksService {
         where('user_id', '==', userId),
         where('year', '==', year),
         where('week', '==', week),
-        orderBy('created_at', 'asc'),
+        orderBy('order', 'asc'),
       ),
     );
 

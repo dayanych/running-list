@@ -7,5 +7,6 @@ export type TaskDto = {
   week: number;
   year: number;
   color: string;
+  order: number;
   created_at: Timestamp;
 };
