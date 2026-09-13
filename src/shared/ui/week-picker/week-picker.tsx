@@ -91,12 +91,10 @@ export function WeekPicker({
     weekHighlight: {
       backgroundColor: 'var(--accent)',
       color: 'var(--accent-foreground)',
-      borderRadius: 'var(--radius-sm)',
     },
     weekHover: {
       backgroundColor: 'var(--muted)',
       color: 'var(--muted-foreground)',
-      borderRadius: 'var(--radius-sm)',
     },
   };
 
@@ -126,7 +124,7 @@ export function WeekPicker({
           </span>
         </span>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="center">
+      <PopoverContent className="w-auto rounded-none p-0" align="center">
         <Calendar
           month={month}
           onMonthChange={setMonth}
@@ -134,7 +132,7 @@ export function WeekPicker({
           modifiers={modifiers}
           modifiersStyles={modifiersStyles}
           weekStartsOn={dateConfig.weekStart}
-          className="rounded-md border"
+          className="border"
           onDayMouseEnter={(day) => setHoveredDay(day)}
           onDayMouseLeave={() => setHoveredDay(null)}
         />
