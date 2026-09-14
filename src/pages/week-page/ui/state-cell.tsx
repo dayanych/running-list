@@ -44,7 +44,12 @@ const getStateIcon = (status: StateStatus, size: number) => (
 );
 
 export const StateCell = ({ date, state, taskId, isLoading }: Props) => {
-  const { updateStatus } = useStateCell(date, state, taskId);
+  const { updateStatus, deleteState, isStateMutationPending } = useStateCell(
+    date,
+    state,
+    taskId,
+  );
+  const isDisabled = isLoading || isStateMutationPending;
 
   const statusItems = useMemo(
     () => [
@@ -79,20 +84,20 @@ export const StateCell = ({ date, state, taskId, isLoading }: Props) => {
               icon: <LuTrash2 size={MENU_ICON_SIZE} className="text-inherit" />,
               label: 'Delete',
               danger: true,
-              onclick: () => updateStatus(StateStatus.Empty),
+              onclick: deleteState,
             },
           ]
         : []),
     ],
-    [state],
+    [state, updateStatus, deleteState],
   );
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
         asChild
-        disabled={isLoading}
-        className={cn(isLoading && 'cursor-not-allowed')}
+        disabled={isDisabled}
+        className={cn(isDisabled && 'cursor-not-allowed')}
       >
         <TableCell
           className={cn(

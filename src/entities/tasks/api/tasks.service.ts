@@ -1,14 +1,15 @@
 import {
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
   orderBy,
   query,
-  runTransaction,
   setDoc,
   updateDoc,
   where,
+  writeBatch,
 } from 'firebase/firestore';
 
 import { firebaseDb } from '@/shared/config/firebase.config';
@@ -20,6 +21,8 @@ import {
 import { TaskDto } from './dto/task.dto';
 
 type TaskDtoWithoutId = Omit<TaskDto, 'id'>;
+
+const MAX_BATCH_WRITES = 500;
 
 export class TasksService {
   public static getTasksByUserIdYearWeek = async (
@@ -68,31 +71,49 @@ export class TasksService {
     });
   }
 
+  /**
+   * Deletes a task and then every state that belongs to it
+   *
+   * The task goes first so the state-creation rule rejects new states for it
+   * before the states query runs; a retry after a failed state cleanup skips
+   * the missing task and finishes the cascade
+   *
+   * @param taskId - Task to delete
+   * @param userId - Owner of the task and its states
+   */
   public static async deleteTask(
     taskId: string,
     userId: string,
   ): Promise<void> {
     const taskDocRef = doc(firebaseDb, PATH_TO_TASKS_COLLECTION, taskId);
-    const statesCollectionRef = collection(
-      firebaseDb,
-      PATH_TO_STATES_COLLECTION,
-    );
+    const taskDoc = await getDoc(taskDocRef);
+
+    if (taskDoc.exists()) {
+      await deleteDoc(taskDocRef);
+    }
+
     // The owner filter keeps this query valid under a rule that limits states
     // to their user_id
     const statesSnapshots = await getDocs(
       query(
-        statesCollectionRef,
+        collection(firebaseDb, PATH_TO_STATES_COLLECTION),
         where('task_id', '==', taskId),
         where('user_id', '==', userId),
       ),
     );
 
-    await runTransaction(firebaseDb, async (transaction) => {
-      statesSnapshots.docs.forEach((stateDoc) => {
-        transaction.delete(stateDoc.ref);
-      });
+    for (
+      let index = 0;
+      index < statesSnapshots.docs.length;
+      index += MAX_BATCH_WRITES
+    ) {
+      const batch = writeBatch(firebaseDb);
 
-      transaction.delete(taskDocRef);
-    });
+      statesSnapshots.docs
+        .slice(index, index + MAX_BATCH_WRITES)
+        .forEach((stateDoc) => batch.delete(stateDoc.ref));
+
+      await batch.commit();
+    }
   }
 }

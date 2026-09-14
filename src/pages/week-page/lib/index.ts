@@ -1,4 +1,5 @@
 export * from './get-tasks-columns';
+export * from './remove-state-from-tasks';
 export * from './use-create-task-input';
 export * from './use-state-cell';
 export * from './use-tasks-table';

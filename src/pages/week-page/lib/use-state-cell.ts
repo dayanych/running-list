@@ -7,6 +7,8 @@ import { TaskWithStates } from '@/entities/tasks/model/types/task.type';
 import { useUser } from '@/shared/lib/hooks/use-user';
 import { useWeeksParams } from '@/shared/lib/hooks/use-weeks-params';
 
+import { removeStateFromTasks } from './remove-state-from-tasks';
+
 export const useStateCell = (
   date: Date,
   state: State | null,
@@ -51,32 +53,49 @@ export const useStateCell = (
     );
   };
 
-  const { mutate: createEmptyStateCell } = useMutation({
-    mutationKey: ['createEmptyStateTask'],
-    mutationFn: async ({
-      taskId,
-      status,
-    }: {
-      taskId: string;
-      status: StateStatus;
-    }) => {
-      if (!user) throw new Error('User is not loaded');
-
-      return StatesDal.createState({
+  const { mutate: createEmptyStateCell, isPending: isCreatingState } =
+    useMutation({
+      mutationKey: ['createEmptyStateTask'],
+      mutationFn: async ({
         taskId,
         status,
-        date,
-        userId: user.id,
-      });
-    },
-    onSuccess: addNewState,
-  });
+      }: {
+        taskId: string;
+        status: StateStatus;
+      }) => {
+        if (!user) throw new Error('User is not loaded');
 
-  const { mutate: updateStateCell } = useMutation({
+        return StatesDal.createState({
+          taskId,
+          status,
+          date,
+          userId: user.id,
+        });
+      },
+      onSuccess: addNewState,
+    });
+
+  const { mutate: updateStateCell, isPending: isUpdatingState } = useMutation({
     mutationKey: ['updateStateTask'],
     mutationFn: async ({ state }: { state: State }) =>
       StatesDal.updateState(state),
     onSuccess: updateOldData,
+  });
+
+  const { mutate: deleteStateCell, isPending: isDeletingState } = useMutation({
+    mutationKey: ['deleteStateTask'],
+    mutationFn: async (deletedState: State) => {
+      await StatesDal.deleteState(deletedState.id);
+
+      return deletedState;
+    },
+    onSuccess: (deletedState) => {
+      queryClient.setQueryData(
+        ['getTasks', user?.id, year, week],
+        (oldData: TaskWithStates[] | undefined) =>
+          removeStateFromTasks(oldData, deletedState.taskId, deletedState.id),
+      );
+    },
   });
 
   const updateStatus = (status: StateStatus) => {
@@ -96,7 +115,16 @@ export const useStateCell = (
     });
   };
 
+  const deleteState = () => {
+    if (!state) return;
+
+    deleteStateCell(state);
+  };
+
   return {
     updateStatus,
+    deleteState,
+    isStateMutationPending:
+      isCreatingState || isUpdatingState || isDeletingState,
   };
 };
