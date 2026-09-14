@@ -10,6 +10,12 @@ import {
 } from '@/shared/ui';
 
 import { useSignInPage } from '../lib/use-sign-in-page';
+import {
+  authButtonClassName,
+  authInputClassName,
+  authLabelClassName,
+  authPasswordInputClassName,
+} from './auth-form-classes';
 import { AuthLayout } from './auth-layout';
 
 export const SignInPage = () => {
@@ -18,13 +24,24 @@ export const SignInPage = () => {
   return (
     <AuthLayout>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+        <form
+          onSubmit={form.handleSubmit(handleSubmit)}
+          className="space-y-6"
+          noValidate
+        >
           <FormField
             control={form.control}
             name="email"
             render={({ field }) => (
-              <FormItem required label="Email">
-                <Input {...field} />
+              <FormItem label="Email" labelClassName={authLabelClassName}>
+                <Input
+                  {...field}
+                  type="email"
+                  autoComplete="username"
+                  placeholder="you@example.com"
+                  className={authInputClassName}
+                  required
+                />
               </FormItem>
             )}
           />
@@ -32,12 +49,21 @@ export const SignInPage = () => {
             control={form.control}
             name="password"
             render={({ field }) => (
-              <FormItem required label="Password">
-                <PasswordInput {...field} />
+              <FormItem label="Password" labelClassName={authLabelClassName}>
+                <PasswordInput
+                  {...field}
+                  autoComplete="current-password"
+                  className={authPasswordInputClassName}
+                  required
+                />
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full" disabled={isPending}>
+          <Button
+            type="submit"
+            className={authButtonClassName}
+            disabled={isPending}
+          >
             {isPending ? (
               <>
                 <LuLoaderCircle className="mr-2 h-4 w-4 animate-spin" />

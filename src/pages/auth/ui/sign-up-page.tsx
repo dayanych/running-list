@@ -10,6 +10,12 @@ import {
 } from '@/shared/ui';
 
 import { useSignUpPage } from '../lib/use-sign-up-page';
+import {
+  authButtonClassName,
+  authInputClassName,
+  authLabelClassName,
+  authPasswordInputClassName,
+} from './auth-form-classes';
 import { AuthLayout } from './auth-layout';
 
 export const SignUpPage = () => {
@@ -18,13 +24,22 @@ export const SignUpPage = () => {
   return (
     <AuthLayout>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+        <form
+          onSubmit={form.handleSubmit(handleSubmit)}
+          className="space-y-6"
+          noValidate
+        >
           <FormField
             control={form.control}
             name="username"
             render={({ field }) => (
-              <FormItem required label="Username">
-                <Input {...field} />
+              <FormItem label="Username" labelClassName={authLabelClassName}>
+                <Input
+                  {...field}
+                  autoComplete="name"
+                  className={authInputClassName}
+                  required
+                />
               </FormItem>
             )}
           />
@@ -32,8 +47,15 @@ export const SignUpPage = () => {
             control={form.control}
             name="email"
             render={({ field }) => (
-              <FormItem required label="Email">
-                <Input {...field} />
+              <FormItem label="Email" labelClassName={authLabelClassName}>
+                <Input
+                  {...field}
+                  type="email"
+                  autoComplete="username"
+                  placeholder="you@example.com"
+                  className={authInputClassName}
+                  required
+                />
               </FormItem>
             )}
           />
@@ -41,8 +63,13 @@ export const SignUpPage = () => {
             control={form.control}
             name="password"
             render={({ field }) => (
-              <FormItem required label="Password">
-                <PasswordInput {...field} />
+              <FormItem label="Password" labelClassName={authLabelClassName}>
+                <PasswordInput
+                  {...field}
+                  autoComplete="new-password"
+                  className={authPasswordInputClassName}
+                  required
+                />
               </FormItem>
             )}
           />
@@ -50,19 +77,31 @@ export const SignUpPage = () => {
             control={form.control}
             name="confirmPassword"
             render={({ field }) => (
-              <FormItem required label="Confirm password">
-                <PasswordInput {...field} />
+              <FormItem
+                label="Confirm password"
+                labelClassName={authLabelClassName}
+              >
+                <PasswordInput
+                  {...field}
+                  autoComplete="new-password"
+                  className={authPasswordInputClassName}
+                  required
+                />
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full" disabled={isPending}>
+          <Button
+            type="submit"
+            className={authButtonClassName}
+            disabled={isPending}
+          >
             {isPending ? (
               <>
                 <LuLoaderCircle className="mr-2 h-4 w-4 animate-spin" />
                 Processing...
               </>
             ) : (
-              'Registartion'
+              'Registration'
             )}
           </Button>
         </form>

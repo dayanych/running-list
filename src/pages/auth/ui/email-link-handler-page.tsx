@@ -5,6 +5,11 @@ import { routesPaths } from '@/shared/config';
 import { Button, Form, FormField, FormItem, Input } from '@/shared/ui';
 
 import { useEmailLinkHandlerPage } from '../lib/use-email-link-handler-page';
+import {
+  authButtonClassName,
+  authInputClassName,
+  authLabelClassName,
+} from './auth-form-classes';
 import { AuthLayout } from './auth-layout';
 
 export const EmailLinkHandlerPage = () => {
@@ -15,10 +20,10 @@ export const EmailLinkHandlerPage = () => {
     return (
       <AuthLayout>
         <div className="space-y-6">
-          <p className="type-help text-center text-muted-foreground">
-            This sign-in link is invalid or expired.
+          <p className="type-help text-ink-muted">
+            This sign-in link is invalid or expired
           </p>
-          <Button asChild className="w-full">
+          <Button asChild className={authButtonClassName}>
             <Link to={`/${routesPaths.signInEmailLinkRequest}`}>
               Request a new link
             </Link>
@@ -31,10 +36,13 @@ export const EmailLinkHandlerPage = () => {
   if (!needsEmail) {
     return (
       <AuthLayout>
-        <div className="flex flex-col items-center gap-2 text-center">
-          <LuLoaderCircle className="h-5 w-5 animate-spin" />
-          <p className="type-help text-muted-foreground">Signing you in...</p>
-        </div>
+        <p
+          role="status"
+          className="type-help flex items-center gap-3 text-ink-muted"
+        >
+          <LuLoaderCircle className="h-4 w-4 animate-spin" />
+          Signing you in...
+        </p>
       </AuthLayout>
     );
   }
@@ -46,19 +54,27 @@ export const EmailLinkHandlerPage = () => {
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
             className="space-y-6"
+            noValidate
           >
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
-                <FormItem required label="Email">
-                  <Input {...field} />
+                <FormItem label="Email" labelClassName={authLabelClassName}>
+                  <Input
+                    {...field}
+                    type="email"
+                    autoComplete="email"
+                    placeholder="you@example.com"
+                    className={authInputClassName}
+                    required
+                  />
                 </FormItem>
               )}
             />
             <Button
               type="submit"
-              className="w-full"
+              className={authButtonClassName}
               disabled={isPending || hasFailed}
             >
               {isPending && !hasFailed ? (
@@ -75,11 +91,12 @@ export const EmailLinkHandlerPage = () => {
         {hasFailed && (
           <p className="type-help text-destructive">
             We couldn&apos;t finish signing you in.{' '}
-            {
-              <Link to={`/${routesPaths.signInEmailLinkRequest}`}>
-                Request a new link.
-              </Link>
-            }
+            <Link
+              to={`/${routesPaths.signInEmailLinkRequest}`}
+              className="underline underline-offset-4"
+            >
+              Request a new link
+            </Link>
           </p>
         )}
       </div>

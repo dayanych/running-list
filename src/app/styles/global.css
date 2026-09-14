@@ -88,11 +88,14 @@
       Consolas, monospace;
 
     /* Type scale */
+    --type-hero: 700 clamp(2.25rem, 1.25rem + 1.8vw, 2.75rem) / 1.1
+      var(--font-sans);
     --type-week: 700 2rem/2.5rem var(--font-sans);
     --type-section: 700 1.5rem/2rem var(--font-sans);
     --type-empty: 600 1.125rem/1.75rem var(--font-sans);
     --type-task: 500 1rem/1.5rem var(--font-sans);
     --type-row: 500 1rem/1.5rem var(--font-sans);
+    --type-lead: 400 1rem/1.625rem var(--font-sans);
     --type-ui: 500 0.875rem/1.25rem var(--font-sans);
     --type-help: 400 0.875rem/1.25rem var(--font-sans);
     --type-eyebrow: 500 0.75rem/1rem var(--font-mono);
@@ -398,6 +401,15 @@ input {
   .type-week {
     font: var(--type-week);
     letter-spacing: -0.025em;
+  }
+
+  .type-hero {
+    font: var(--type-hero);
+    letter-spacing: -0.03em;
+  }
+
+  .type-lead {
+    font: var(--type-lead);
   }
 
   .type-key {
