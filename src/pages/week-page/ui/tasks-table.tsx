@@ -1,11 +1,13 @@
 import { flexRender } from '@tanstack/react-table';
 import { memo, useEffect, useMemo, useState } from 'react';
 import React from 'react';
+import { LuLoaderCircle, LuRotateCw } from 'react-icons/lu';
 
 import { State } from '@/entities/states/model/types/state.type';
 import { Task } from '@/entities/tasks/model/types/task.type';
 import { cn } from '@/shared/lib';
 import {
+  Button,
   EmptyDescription,
   EmptyTitle,
   Table,
@@ -29,6 +31,8 @@ interface Props {
   transitionDirection: WeekTransitionDirection;
   loading?: boolean;
   error?: boolean;
+  retrying?: boolean;
+  onRetry?: () => void;
 }
 
 const SKELETON_TASK_WIDTHS = ['42%', '58%', '36%', '51%', '45%'];
@@ -40,6 +44,8 @@ const TasksTable = ({
   transitionDirection,
   loading,
   error,
+  retrying,
+  onRetry,
 }: Props) => {
   const { columns, table } = useTasksTable(data, startWeekDate);
   const weekStartTimestamp = startWeekDate.getTime();
@@ -113,14 +119,50 @@ const TasksTable = ({
         </TableHeader>
         <TableBody className="border-none">
           {error && (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="text-center">
-                <div className="flex w-full flex-col items-center justify-center gap-4 py-8">
-                  <span className="type-help text-destructive">
-                    Oops! Something went wrong. Try again in a few seconds.
-                  </span>
+            <TableRow className="border-rule hover:bg-transparent">
+              <TableCell className="h-64 align-top">
+                <div
+                  role="alert"
+                  className="flex max-w-md flex-col items-start gap-2 pt-20 text-left"
+                >
+                  <EmptyTitle>Couldn&apos;t load this week</EmptyTitle>
+                  <EmptyDescription>
+                    Check your connection and try again
+                  </EmptyDescription>
+                  {onRetry && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="type-key mt-4 h-9 gap-2 rounded-none px-4 hover:border-primary"
+                      disabled={retrying}
+                      onClick={onRetry}
+                    >
+                      {retrying ? (
+                        <LuLoaderCircle
+                          className="h-3.5 w-3.5 animate-spin"
+                          aria-hidden="true"
+                        />
+                      ) : (
+                        <LuRotateCw
+                          className="h-3.5 w-3.5"
+                          aria-hidden="true"
+                        />
+                      )}
+                      {retrying ? 'Retrying' : 'Try again'}
+                    </Button>
+                  )}
                 </div>
               </TableCell>
+              {table
+                .getAllLeafColumns()
+                .slice(1)
+                .map((column) => (
+                  <TableCell
+                    key={column.id}
+                    aria-hidden="true"
+                    className="h-64"
+                  />
+                ))}
             </TableRow>
           )}
           {!loading && !error && table.getRowModel().rows?.length === 0 && (

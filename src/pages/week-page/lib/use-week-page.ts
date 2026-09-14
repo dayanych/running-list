@@ -71,6 +71,8 @@ export const useWeekPage = () => {
     data: tasksWithStates = [],
     isLoading: isLoadingTasks,
     isError,
+    isFetching,
+    refetch,
   } = useQuery({
     queryKey: ['getTasks', userId, year, week],
     queryFn: async (): Promise<TaskWithStates[]> => {
@@ -104,6 +106,8 @@ export const useWeekPage = () => {
     // query must still read as loading rather than as an empty week
     isLoading: isLoadingTasks || !userId,
     isError,
+    isRetrying: isError && isFetching,
+    handleRetry: () => void refetch(),
     taskInputRef,
     handleWeekChange: onWeekChange,
   };

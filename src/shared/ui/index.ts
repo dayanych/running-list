@@ -5,3 +5,4 @@ export * from './shadcn';
 export * from './week-picker';
 export * from './logo';
 export * from './password-input';
+export * from './status-screen';

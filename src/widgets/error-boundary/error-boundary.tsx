@@ -1,6 +1,6 @@
 import { Component, ErrorInfo, ReactNode } from 'react';
 
-import { Button } from '../../shared/ui/shadcn';
+import { Button, StatusScreen, statusScreenActionClassName } from '@/shared/ui';
 
 type ErrorBoundaryProps = {
   children: ReactNode;
@@ -34,15 +34,29 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-background px-6 text-center">
-          <div>
-            <h1 className="type-week text-foreground">Something went wrong</h1>
-            <p className="type-help mt-2 text-muted-foreground">
-              We are already working on it. Try reloading the page.
-            </p>
-          </div>
-          <Button onClick={this.handleReload}>Reload page</Button>
-        </div>
+        <StatusScreen
+          role="alert"
+          marker="broken"
+          title="Something went wrong"
+          description="The page hit an unexpected error. Reload it to try again"
+          actions={
+            <>
+              <Button
+                className={statusScreenActionClassName}
+                onClick={this.handleReload}
+              >
+                Reload page
+              </Button>
+              <Button
+                asChild
+                variant="outline"
+                className={statusScreenActionClassName}
+              >
+                <a href="/">Open this week</a>
+              </Button>
+            </>
+          }
+        />
       );
     }
 

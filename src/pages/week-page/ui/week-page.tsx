@@ -8,6 +8,8 @@ export const WeekPage = () => {
     isTaskLimitReached,
     isLoading,
     isError,
+    isRetrying,
+    handleRetry,
     taskInputRef,
     handleWeekChange,
     transitionDirection,
@@ -28,6 +30,8 @@ export const WeekPage = () => {
           transitionDirection={transitionDirection}
           loading={isLoading}
           error={isError}
+          retrying={isRetrying}
+          onRetry={handleRetry}
         />
       </div>
       <CreateTaskInput
