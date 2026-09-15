@@ -1,9 +1,9 @@
 import { ReactNode } from 'react';
 
-import { appConfig } from '@/shared/config';
-import { cn } from '@/shared/lib';
+import { appConfig } from '@/shared/config/app.config';
+import { cn } from '@/shared/lib/cn';
 
-type StatusScreenMarker = 'broken' | 'missing';
+type StatusScreenMarker = 'broken' | 'missing' | 'paused';
 
 interface Props {
   title: string;
@@ -20,6 +20,7 @@ const MARKED_DOT_INDEX = 4;
 const markedDotClassName: Record<StatusScreenMarker, string> = {
   broken: 'bg-destructive',
   missing: 'border border-anchor bg-background',
+  paused: 'bg-primary',
 };
 
 export const statusScreenActionClassName =

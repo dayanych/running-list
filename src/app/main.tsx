@@ -1,24 +1,30 @@
 import './styles/global.css';
 
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
-import { Provider } from 'react-redux';
-import { RouterProvider } from 'react-router-dom';
 
-import { TooltipProvider } from '@/shared/ui';
+import { UnavailablePage } from '@/pages/unavailable';
+import { appConfig } from '@/shared/config/app.config';
+import { Loader } from '@/shared/ui/laoder';
 
-import { ReactQueryProvider } from './providers';
-import { router } from './router';
-import { store } from './store';
+const Application = lazy(() =>
+  import('./application').then((module) => ({
+    default: module.Application,
+  })),
+);
+
+if (appConfig.isDisabled) {
+  document.title = 'Temporarily unavailable | Running List';
+}
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <Provider store={store}>
-      <ReactQueryProvider>
-        <TooltipProvider>
-          <RouterProvider router={router} />
-        </TooltipProvider>
-      </ReactQueryProvider>
-    </Provider>
+    {appConfig.isDisabled ? (
+      <UnavailablePage />
+    ) : (
+      <Suspense fallback={<Loader fullScreen label="Loading Running List" />}>
+        <Application />
+      </Suspense>
+    )}
   </React.StrictMode>,
 );
