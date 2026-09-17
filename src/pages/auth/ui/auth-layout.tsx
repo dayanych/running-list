@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 
-import { appConfig } from '@/shared/config';
+import { appConfig, routesPaths } from '@/shared/config';
 import { cn } from '@/shared/lib';
 
 interface Props {
@@ -66,6 +67,15 @@ export const AuthLayout = ({
           <h1 className="type-week mt-6 text-balance">{title}</h1>
           <p className="type-help mt-2 text-ink-muted">{description}</p>
           <div className="mt-10">{children}</div>
+          <p className="type-help mt-8 text-ink-muted">
+            New to Running List?{' '}
+            <Link
+              to={`/${routesPaths.guide}`}
+              className="underline decoration-border underline-offset-4 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-4"
+            >
+              Read the guide
+            </Link>
+          </p>
           {appConfig.supportEmail && (
             <p className="type-help mt-10 text-ink-muted">
               Trouble signing in? Email{' '}

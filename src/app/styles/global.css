@@ -205,6 +205,12 @@ body {
   flex-direction: column;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  html:has(#guide-content) {
+    scroll-behavior: smooth;
+  }
+}
+
 a {
   text-decoration: none;
 }
@@ -217,6 +223,33 @@ ol {
 
 input {
   font-family: inherit;
+}
+
+.header-action-label {
+  display: grid;
+  grid-template-columns: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-columns 200ms ease-out,
+    opacity 200ms ease-out;
+}
+
+.header-action:is(:hover, :focus-visible) .header-action-label {
+  grid-template-columns: 1fr;
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .header-action-label {
+    grid-template-columns: 1fr;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-action-label {
+    transition: none;
+  }
 }
 
 @layer utilities {

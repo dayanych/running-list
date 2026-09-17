@@ -1,8 +1,10 @@
-import { Link } from 'react-router-dom';
+import { LuBookOpen, LuLogOut } from 'react-icons/lu';
 
-import { Button, Logo } from '@/shared/ui';
+import { routesPaths } from '@/shared/config';
+import { PageHeader } from '@/shared/ui';
 
 import { useHeader } from '..';
+import { HeaderAction } from './header-action';
 
 export const Header = () => {
   const { user, onLogout } = useHeader();
@@ -12,23 +14,13 @@ export const Header = () => {
   }
 
   return (
-    <header className="border-b bg-background">
-      <div className="container mx-auto flex items-center justify-between py-4">
-        <div className="flex items-center gap-4">
-          <Logo />
-          <Link className="type-section" to="/">
-            Running List
-          </Link>
-        </div>
-        <Button
-          type="button"
-          variant="outline"
-          className="type-key h-9 rounded-none px-4 text-destructive hover:border-destructive hover:bg-destructive-wash hover:text-destructive"
-          onClick={onLogout}
-        >
-          Log out
-        </Button>
-      </div>
-    </header>
+    <PageHeader>
+      <HeaderAction
+        label="Guide"
+        icon={LuBookOpen}
+        to={`/${routesPaths.guide}`}
+      />
+      <HeaderAction label="Log out" icon={LuLogOut} danger onClick={onLogout} />
+    </PageHeader>
   );
 };

@@ -39,6 +39,12 @@ const WeekPage = lazy(() =>
   })),
 );
 
+const GuidePage = lazy(() =>
+  import('@/pages/guide/ui/guide-page').then((module) => ({
+    default: module.GuidePage,
+  })),
+);
+
 const withRouteLoader = (element: ReactNode, label: string) => (
   <Suspense fallback={<Loader label={label} />}>
     <div className="route-page-enter flex min-h-0 flex-1 flex-col">
@@ -88,6 +94,10 @@ const routes: RouteObject[] = [
     path: routesPaths.base,
     element: <BaseLayout />,
     children: [
+      {
+        path: routesPaths.guide,
+        element: withRouteLoader(<GuidePage />, 'Loading guide'),
+      },
       {
         path: routesPaths.base,
         element: <AuthInjector />,

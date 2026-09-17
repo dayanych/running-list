@@ -6,3 +6,5 @@ export * from './week-picker';
 export * from './logo';
 export * from './password-input';
 export * from './status-screen';
+export * from './footer';
+export * from './page-header';

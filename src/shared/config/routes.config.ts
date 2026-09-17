@@ -3,6 +3,7 @@ export const routesPaths = {
   notFound: '404',
 
   // Public routes
+  guide: 'guide',
   signIn: 'sign-in', // Deprecated
   signUp: 'sign-up', // Deprecated
   signInEmailLinkRequest: 'sign-in/email',
