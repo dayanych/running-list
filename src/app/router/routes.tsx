@@ -39,12 +39,8 @@ const WeekPage = lazy(() =>
   })),
 );
 
-const withRouteLoader = (
-  element: ReactNode,
-  label: string,
-  fullScreen = false,
-) => (
-  <Suspense fallback={<Loader fullScreen={fullScreen} label={label} />}>
+const withRouteLoader = (element: ReactNode, label: string) => (
+  <Suspense fallback={<Loader label={label} />}>
     <div className="route-page-enter flex min-h-0 flex-1 flex-col">
       {element}
     </div>
@@ -54,19 +50,19 @@ const withRouteLoader = (
 const publicRoutes = [
   {
     path: routesPaths.signInEmailLinkRequest,
-    element: withRouteLoader(<EmailLinkRequestPage />, 'Loading sign in', true),
+    element: withRouteLoader(<EmailLinkRequestPage />, 'Loading sign in'),
   },
   {
     path: routesPaths.signInEmailLink,
-    element: withRouteLoader(<EmailLinkHandlerPage />, 'Loading sign in', true),
+    element: withRouteLoader(<EmailLinkHandlerPage />, 'Loading sign in'),
   },
   {
     path: routesPaths.signIn,
-    element: withRouteLoader(<SignInPage />, 'Loading sign in', true),
+    element: withRouteLoader(<SignInPage />, 'Loading sign in'),
   },
   {
     path: routesPaths.signUp,
-    element: withRouteLoader(<SignUpPage />, 'Loading sign up', true),
+    element: withRouteLoader(<SignUpPage />, 'Loading sign up'),
   },
 ];
 

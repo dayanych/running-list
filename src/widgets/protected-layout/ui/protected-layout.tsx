@@ -5,7 +5,7 @@ import { Header } from '@/widgets';
 
 export const ProtectedLayout = () => {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-0 w-full flex-1 flex-col">
       <Header />
       <Outlet />
       {appConfig.supportEmail && (

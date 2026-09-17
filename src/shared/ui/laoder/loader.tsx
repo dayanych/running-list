@@ -15,7 +15,7 @@ export const Loader = ({
     <div
       className={cn(
         'route-loader-enter flex w-full flex-1 items-center justify-center px-6',
-        fullScreen ? 'min-h-screen' : 'min-h-[50vh]',
+        fullScreen ? 'min-h-screen' : 'min-h-0',
       )}
       role="status"
       aria-live="polite"

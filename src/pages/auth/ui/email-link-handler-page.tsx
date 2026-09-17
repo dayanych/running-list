@@ -2,7 +2,7 @@ import { LuLoaderCircle } from 'react-icons/lu';
 import { Link } from 'react-router-dom';
 
 import { routesPaths } from '@/shared/config';
-import { Button, Form, FormField, FormItem, Input } from '@/shared/ui';
+import { Button, Form, FormField, FormItem, Input, Loader } from '@/shared/ui';
 
 import { useEmailLinkHandlerPage } from '../lib/use-email-link-handler-page';
 import {
@@ -34,17 +34,7 @@ export const EmailLinkHandlerPage = () => {
   }
 
   if (!needsEmail) {
-    return (
-      <AuthLayout>
-        <p
-          role="status"
-          className="type-help flex items-center gap-3 text-ink-muted"
-        >
-          <LuLoaderCircle className="h-4 w-4 animate-spin" />
-          Signing you in...
-        </p>
-      </AuthLayout>
-    );
+    return <Loader label="Signing you in" />;
   }
 
   return (

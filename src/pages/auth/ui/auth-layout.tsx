@@ -28,7 +28,7 @@ export const AuthLayout = ({
   children,
 }: Props) => {
   return (
-    <main className="grid min-h-screen lg:grid-cols-[minmax(0,4fr)_minmax(0,3fr)]">
+    <main className="grid min-h-0 flex-1 lg:grid-cols-[minmax(0,4fr)_minmax(0,3fr)]">
       <div className="hidden flex-col justify-center px-12 py-16 lg:flex xl:px-16">
         <div className="max-w-[56rem]">
           <p className="type-hero max-w-[36rem] text-balance">
