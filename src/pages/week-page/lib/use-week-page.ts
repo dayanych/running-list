@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 
 import { State, StatesDal } from '@/entities/states';
 import { TasksDal } from '@/entities/tasks';
@@ -45,7 +45,10 @@ export const useWeekPage = () => {
   const { onWeekChange } = useWeekCalendarChange();
 
   const taskInputRef = useRef<HTMLInputElement>(null);
-  const startWeekDate = getStartDateOfAppWeek(week, year);
+  const startWeekDate = useMemo(
+    () => getStartDateOfAppWeek(week, year),
+    [week, year],
+  );
   const weekStartTimestamp = startWeekDate.getTime();
   const [weekTransition, setWeekTransition] = useState<{
     weekStartTimestamp: number;

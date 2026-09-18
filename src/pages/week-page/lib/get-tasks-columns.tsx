@@ -15,7 +15,7 @@ const returnStateCell = (
 ) => {
   return (
     <StateCell
-      key={value?.state?.id ?? `${taskId}-${value.date.toISOString()}`}
+      key={`${taskId}-${value.date.toISOString()}`}
       state={value.state}
       date={value.date}
       taskId={taskId}

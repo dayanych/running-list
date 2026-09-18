@@ -4,10 +4,9 @@ import { appConfig } from '@/shared/config/app.config';
 export const Footer = () => {
   return (
     <footer className="mt-auto border-t border-rule">
-      <div className="type-help container flex flex-wrap items-center justify-between gap-x-6 gap-y-1 py-3 text-ink-muted">
-        <p>Running List — your week in one table</p>
+      <div className="type-help container flex flex-wrap items-center justify-end gap-x-6 gap-y-1 py-3 text-ink-muted">
         {appConfig.supportEmail && (
-          <p className="min-w-0">
+          <p className="min-w-0 text-right">
             Questions or feedback? Email{' '}
             <a
               href={`mailto:${appConfig.supportEmail}`}

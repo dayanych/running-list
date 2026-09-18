@@ -253,6 +253,52 @@ input {
 }
 
 @layer utilities {
+  @keyframes state-icon-enter {
+    from {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  .state-icon-enter {
+    animation: state-icon-enter 220ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes state-icon-exit {
+    from {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    to {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+  }
+
+  .state-icon-exit {
+    animation: state-icon-exit 160ms ease-in both;
+  }
+
+  @keyframes state-dot-enter {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  .state-dot-enter {
+    animation: state-dot-enter 160ms ease-out both;
+  }
+
   @keyframes task-title-shimmer {
     from {
       background-position: 200% 0;
@@ -467,6 +513,9 @@ input {
     .route-loader-dot,
     .route-loader-enter,
     .route-page-enter,
+    .state-icon-enter,
+    .state-icon-exit,
+    .state-dot-enter,
     .skeleton-soft,
     .task-title-saving,
     .week-content-enter-backward,
