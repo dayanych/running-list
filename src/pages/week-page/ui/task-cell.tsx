@@ -141,7 +141,6 @@ export const TaskCell = ({ task, deleteTask, isDeletingTask }: Props) => {
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"
-              className="w-52 rounded-none"
               onCloseAutoFocus={(event) => {
                 if (!isRenaming) return;
 

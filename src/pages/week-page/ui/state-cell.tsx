@@ -121,7 +121,7 @@ export const StateCell = ({ date, state, taskId, isLoading }: Props) => {
       >
         <TableCell
           className={cn(
-            'h-state w-state group relative cursor-pointer focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ring data-[state=open]:bg-accent',
+            'h-state w-state group relative cursor-pointer data-[state=open]:bg-accent',
             state && 'bg-background',
           )}
         >
@@ -148,13 +148,7 @@ export const StateCell = ({ date, state, taskId, isLoading }: Props) => {
           </div>
         </TableCell>
       </DropdownMenuTrigger>
-      <DropdownMenuContent
-        align="start"
-        sideOffset={6}
-        collisionPadding={12}
-        className="w-44 max-w-[calc(100vw-24px)] rounded-none border-border p-1 shadow-lg motion-reduce:animate-none"
-        aria-label="Task state"
-      >
+      <DropdownMenuContent align="start" aria-label="Task state">
         <DropdownMenuRadioGroup value={state ? String(state.status) : ''}>
           {statusItems.map((item) => (
             <DropdownMenuRadioItem
@@ -162,7 +156,6 @@ export const StateCell = ({ date, state, taskId, isLoading }: Props) => {
               value={String(item.status)}
               onSelect={item.onclick}
               disabled={isDisabled}
-              className="h-9 cursor-pointer gap-2 rounded-none px-2 py-1.5 text-ink-secondary focus:bg-accent focus:text-foreground data-[highlighted]:bg-accent data-[state=checked]:bg-accent data-[state=checked]:text-foreground motion-reduce:transition-none [&>span]:hidden"
             >
               <div className="flex h-5 w-5 shrink-0 items-center justify-center">
                 {item.icon}
@@ -173,12 +166,11 @@ export const StateCell = ({ date, state, taskId, isLoading }: Props) => {
         </DropdownMenuRadioGroup>
         {state && (
           <>
-            <DropdownMenuSeparator className="mx-2 my-1 bg-border" />
+            <DropdownMenuSeparator />
             <DropdownMenuItem
               onSelect={deleteState}
               disabled={isDisabled}
               danger
-              className="h-9 gap-2 rounded-none px-2 py-1.5 data-[highlighted]:bg-destructive-wash data-[highlighted]:text-destructive motion-reduce:transition-none"
             >
               <div className="flex h-5 w-5 shrink-0 items-center justify-center">
                 <LuTrash2 size={16} strokeWidth={1.5} aria-hidden="true" />
