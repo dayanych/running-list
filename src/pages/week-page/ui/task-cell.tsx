@@ -105,7 +105,7 @@ export const TaskCell = ({ task, deleteTask, isDeletingTask }: Props) => {
         <div
           aria-hidden={isRenaming}
           className={cn(
-            'flex min-w-0 flex-1 items-center gap-3 transition-opacity duration-200 ease-out motion-reduce:transition-none',
+            'flex min-w-0 flex-1 items-center gap-3 pr-3 transition-opacity duration-200 ease-out motion-reduce:transition-none',
             isRenaming ? 'pointer-events-none opacity-0' : 'opacity-100',
           )}
         >
@@ -129,7 +129,7 @@ export const TaskCell = ({ task, deleteTask, isDeletingTask }: Props) => {
                 variant="ghost"
                 size="icon"
                 disabled={isTaskActionInProgress}
-                className="pointer-events-none h-7 w-7 shrink-0 translate-x-1 rounded-none text-ink-faint opacity-0 transition-[color,opacity,transform] duration-200 ease-out hover:bg-transparent hover:text-ink-secondary focus-visible:pointer-events-auto focus-visible:translate-x-0 focus-visible:opacity-100 group-hover:pointer-events-auto group-hover:translate-x-0 group-hover:opacity-100 data-[state=open]:pointer-events-auto data-[state=open]:translate-x-0 data-[state=open]:opacity-100 motion-reduce:transform-none motion-reduce:transition-none"
+                className="pointer-events-none h-7 w-7 shrink-0 rounded-none text-ink-faint opacity-0 transition-[color,opacity] duration-200 ease-out hover:bg-transparent hover:text-ink-secondary focus-visible:pointer-events-auto focus-visible:opacity-100 group-hover:pointer-events-auto group-hover:opacity-100 data-[state=open]:pointer-events-auto data-[state=open]:opacity-100 motion-reduce:transition-none"
                 aria-label={`Actions for ${task.title}`}
               >
                 <LuEllipsis
@@ -171,7 +171,7 @@ export const TaskCell = ({ task, deleteTask, isDeletingTask }: Props) => {
           }}
           onKeyDown={handleRenameKeyDown}
           className={cn(
-            'type-task absolute inset-x-0 top-0 z-10 h-full min-w-0 rounded-none border-x-0 border-b border-t-0 border-rule-faint bg-transparent p-0 transition-[border-color,opacity] duration-200 ease-out focus-visible:border-input focus-visible:ring-0 motion-reduce:transition-none',
+            'type-task absolute left-0 right-[3.25rem] top-0 z-10 h-full w-auto min-w-0 rounded-none border-x-0 border-y border-rule-faint border-t-transparent bg-transparent p-0 transition-[border-color,opacity] duration-200 ease-out focus-visible:border-b-input focus-visible:ring-0 motion-reduce:transition-none',
             isRenaming
               ? 'pointer-events-auto opacity-100'
               : 'pointer-events-none opacity-0',
