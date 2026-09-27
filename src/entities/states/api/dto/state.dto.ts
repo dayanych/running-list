@@ -1,12 +1,4 @@
-import { Timestamp } from 'firebase/firestore';
+import type { Database } from '@/shared/config/database.types';
 
-export type StateDto = {
-  id: string;
-  /** Still written for tabs running the old version; the app reads `date_key` */
-  date: Timestamp;
-  /** Calendar day independent of the device timezone, in `yyyy-MM-dd` form */
-  date_key: string;
-  status: number;
-  task_id: string;
-  user_id: string;
-};
+/** Database row whose `date_key` is a timezone-independent calendar day */
+export type StateDto = Database['public']['Tables']['states']['Row'];

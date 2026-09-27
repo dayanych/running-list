@@ -1,34 +1,35 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { z } from 'zod';
+import { useEffect } from 'react';
 
 import { AuthDal } from '@/entities/auth';
-import { setUser } from '@/entities/user/model/slice/user.slice';
-
-import { LoginAccountShema } from '../model/schemes/login-account-scheme';
 
 export const useSignInPage = () => {
-  const dispatch = useDispatch();
-
-  const form = useForm<z.infer<typeof LoginAccountShema>>({
-    resolver: zodResolver(LoginAccountShema),
+  const {
+    mutate: signInWithGoogle,
+    isPending,
+    data: isRedirecting,
+    reset,
+  } = useMutation({
+    mutationKey: ['sign-in-google'],
+    mutationFn: () => AuthDal.signInWithGoogle(),
   });
 
-  const { mutateAsync: signIn, isPending } = useMutation({
-    mutationKey: ['sign-in'],
-    mutationFn: (data: z.infer<typeof LoginAccountShema>) =>
-      AuthDal.login(data),
-    onSuccess: (currentUser) => {
-      if (currentUser) {
-        dispatch(setUser(currentUser));
-      }
-    },
-  });
+  // Going back from Google can restore this page from the back/forward cache
+  // with the redirect still marked as in progress
+  useEffect(() => {
+    const handlePageShow = (event: PageTransitionEvent) => {
+      if (event.persisted) reset();
+    };
 
-  const handleSubmit = (data: z.infer<typeof LoginAccountShema>) =>
-    signIn(data);
+    window.addEventListener('pageshow', handlePageShow);
+    return () => window.removeEventListener('pageshow', handlePageShow);
+  }, [reset]);
 
-  return { form, isPending, handleSubmit };
+  // The page stays on screen until the browser leaves for Google, so the
+  // button keeps its pending state instead of flashing back
+  const isGooglePending = isPending || Boolean(isRedirecting);
+
+  const handleGoogleSignIn = () => signInWithGoogle();
+
+  return { handleGoogleSignIn, isGooglePending };
 };

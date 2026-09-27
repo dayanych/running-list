@@ -1,10 +1,10 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import type { StateStatus } from '@/entities/states/model/constants/state-status';
 import type { State } from '@/entities/states/model/types/state.type';
 import type { TaskWithStates } from '@/entities/tasks/model/types/task.type';
 
+import { StateStatus } from '../../../entities/states/model/constants/state-status.ts';
 import { removeStateFromTasks } from './remove-state-from-tasks.ts';
 
 /**
@@ -19,7 +19,7 @@ const createState = (id: string, taskId: string): State => ({
   taskId,
   userId: 'user-1',
   date: new Date('2026-09-14T00:00:00'),
-  status: 1 as StateStatus,
+  status: StateStatus.Completed,
 });
 
 /**

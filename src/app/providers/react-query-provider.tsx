@@ -14,8 +14,8 @@ const THIRTY_MINUTES = 30 * 60 * 1000;
 /**
  * Week data only changes through the user's own mutations, which write straight
  * into the cache via `setQueryData`. Refetching on every window focus or remount
- * costs Firestore reads without ever producing new data, so both are disabled and
- * the data is kept fresh for a window long enough to cover normal navigation
+ * causes unnecessary network requests without producing new data, so both are
+ * disabled and the data is kept fresh long enough to cover normal navigation
  */
 const queryDefaultOptions = {
   staleTime: FIVE_MINUTES,

@@ -1,65 +1,17 @@
 import { UnknownAction } from '@reduxjs/toolkit';
-import { FirebaseError } from 'firebase/app';
-import type { User as FirebaseUser } from 'firebase/auth';
 import { Dispatch } from 'react';
 
-import { setUser, unsetUser, User, UsersDal } from '@/entities/user';
+import { setUser, unsetUser, UsersDal } from '@/entities/user';
 import { notify } from '@/shared/ui/toaster/notify';
 
 import { AuthService } from '../api/auth.service';
-import { UserRegistrationDto } from '../api/dto/user-login.dto';
-import { UserLoginDto } from '../api/dto/user-registration.dto';
-import { getAuthErrorMessage } from '../lib/get-auth-error-message';
 
 export class AuthDal {
-  /** Depricated. Use sendEmailLink instead */
-  public static async login(loginData: UserLoginDto): Promise<User | null> {
-    try {
-      const currentUser = await AuthService.signIn(loginData);
-      return UsersDal.getUser(currentUser.uid);
-    } catch (error) {
-      if (error instanceof FirebaseError) {
-        const messageError = getAuthErrorMessage(error);
-        notify.error(messageError);
-      }
-
-      return null;
-    }
-  }
-
-  /** Depricated. Use sendEmailLink instead */
-  public static async register(
-    registrationData: UserRegistrationDto,
-  ): Promise<User | null> {
-    try {
-      const currentUser = await AuthService.signUp(registrationData);
-      await UsersDal.createUser({
-        id: currentUser.uid,
-        email: registrationData.email,
-        name: registrationData.name,
-        taskIds: [],
-      });
-
-      return UsersDal.getUser(currentUser.uid);
-    } catch (error) {
-      if (error instanceof FirebaseError) {
-        const messageError = getAuthErrorMessage(error);
-        notify.error(messageError);
-      }
-
-      return null;
-    }
-  }
-
   public static async logout(): Promise<void> {
     try {
       await AuthService.logout();
-    } catch (error) {
-      notify.error(
-        error instanceof FirebaseError
-          ? getAuthErrorMessage(error)
-          : 'Could not log out. Try again later',
-      );
+    } catch {
+      notify.error('Could not log out. Try again later');
     }
   }
 
@@ -67,95 +19,69 @@ export class AuthDal {
     dispatch: Dispatch<UnknownAction>,
     onLoad: (value: boolean) => void,
   ) {
-    const params = {
-      onLogin: async (userId: string) => {
+    let authRevision = 0;
+    let profileLoadTimer: number | undefined;
+
+    /**
+     * Loads a profile outside the synchronous Supabase auth callback
+     *
+     * @param userId - Authenticated user identifier
+     * @param revision - Auth revision that started the request
+     */
+    const loadUserProfile = async (userId: string, revision: number) => {
+      try {
+        const user = await UsersDal.getUser(userId);
+
+        if (!user) throw new Error('User profile was not found');
+        if (revision !== authRevision) return;
+
+        dispatch(setUser(user));
+      } catch {
+        if (revision !== authRevision) return;
+
+        notify.error('Could not load your account. Try reloading the page');
+        dispatch(unsetUser());
+      } finally {
+        if (revision === authRevision) onLoad(false);
+      }
+    };
+
+    const unsubscribe = AuthService.listenAuthStateChange({
+      onLogin: (supabaseUser) => {
+        const revision = ++authRevision;
         onLoad(true);
-        try {
-          const user = await UsersDal.getUser(userId);
-          dispatch(setUser(user));
-        } catch {
-          notify.error('Could not load your account. Try reloading the page');
-          dispatch(unsetUser());
-        } finally {
-          onLoad(false);
-        }
+        window.clearTimeout(profileLoadTimer);
+        profileLoadTimer = window.setTimeout(() => {
+          void loadUserProfile(supabaseUser.id, revision);
+        }, 0);
       },
       onLogout: () => {
-        onLoad(false);
+        authRevision += 1;
+        window.clearTimeout(profileLoadTimer);
         dispatch(unsetUser());
+        onLoad(false);
       },
-    };
+    });
 
-    AuthService.listenAuthStateChange(params);
+    return () => {
+      authRevision += 1;
+      window.clearTimeout(profileLoadTimer);
+      unsubscribe();
+    };
   }
 
-  public static async sendEmailLink(email: string): Promise<boolean> {
+  /**
+   * Starts the Google sign-in redirect
+   *
+   * @returns Whether the browser is leaving for Google
+   */
+  public static async signInWithGoogle(): Promise<boolean> {
     try {
-      await AuthService.sendEmailLink(email);
+      await AuthService.signInWithGoogle();
       return true;
-    } catch (error) {
-      if (error instanceof FirebaseError) {
-        notify.error(getAuthErrorMessage(error));
-      }
+    } catch {
+      notify.error('Could not sign in with Google. Try again later');
       return false;
-    }
-  }
-
-  public static isEmailLink(link: string): boolean {
-    return AuthService.isEmailLink(link);
-  }
-
-  private static async getOrCreateUser(
-    currentUser: FirebaseUser,
-    fallbackEmail?: string,
-  ): Promise<User> {
-    const existingUser = await UsersDal.getUser(currentUser.uid);
-
-    if (existingUser) {
-      return existingUser;
-    }
-
-    const email =
-      currentUser.email ??
-      currentUser.providerData[0]?.email ??
-      fallbackEmail ??
-      '';
-
-    const newUser: User = {
-      id: currentUser.uid,
-      email,
-      name: currentUser.displayName ?? email ?? null,
-      taskIds: [],
-    };
-
-    await UsersDal.createUser(newUser);
-    return newUser;
-  }
-
-  public static async signInWithEmailLink(
-    email: string,
-    link: string,
-  ): Promise<User | null> {
-    try {
-      const currentUser = await AuthService.signInWithEmailLink(email, link);
-      return AuthDal.getOrCreateUser(currentUser, email);
-    } catch (error) {
-      if (error instanceof FirebaseError) {
-        notify.error(getAuthErrorMessage(error));
-      }
-      return null;
-    }
-  }
-
-  public static async signInWithGoogle(): Promise<User | null> {
-    try {
-      const currentUser = await AuthService.signInWithGoogle();
-      return AuthDal.getOrCreateUser(currentUser);
-    } catch (error) {
-      if (error instanceof FirebaseError) {
-        notify.error(getAuthErrorMessage(error));
-      }
-      return null;
     }
   }
 }

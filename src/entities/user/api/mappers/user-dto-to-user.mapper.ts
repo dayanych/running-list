@@ -6,6 +6,5 @@ export const convertUserDtoToUser = (userDto: UserDto): User => {
     id: userDto.id,
     email: userDto.email,
     name: userDto.name ?? null,
-    taskIds: userDto.task_ids ?? [],
   };
 };

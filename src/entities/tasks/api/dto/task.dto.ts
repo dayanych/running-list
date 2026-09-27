@@ -1,12 +1,3 @@
-import { Timestamp } from 'firebase/firestore';
+import type { Database } from '@/shared/config/database.types';
 
-export type TaskDto = {
-  id: string;
-  title: string;
-  user_id: string;
-  week: number;
-  year: number;
-  color: string;
-  order: number;
-  created_at: Timestamp;
-};
+export type TaskDto = Database['public']['Tables']['tasks']['Row'];

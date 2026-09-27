@@ -4,10 +4,9 @@ export const routesPaths = {
 
   // Public routes
   guide: 'guide',
-  signIn: 'sign-in', // Deprecated
-  signUp: 'sign-up', // Deprecated
-  signInEmailLinkRequest: 'sign-in/email',
-  signInEmailLink: 'sign-in/email-link',
+  privacy: 'privacy',
+  signIn: 'sign-in',
+  terms: 'terms',
 
   // Protected routes
   year: ':year',

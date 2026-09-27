@@ -13,24 +13,9 @@ import {
   PublicLayout,
 } from '@/widgets';
 
-const EmailLinkHandlerPage = lazy(() =>
-  import('@/pages/auth/ui/email-link-handler-page').then((module) => ({
-    default: module.EmailLinkHandlerPage,
-  })),
-);
-const EmailLinkRequestPage = lazy(() =>
-  import('@/pages/auth/ui/email-link-request-page').then((module) => ({
-    default: module.EmailLinkRequestPage,
-  })),
-);
 const SignInPage = lazy(() =>
   import('@/pages/auth/ui/sign-in-page').then((module) => ({
     default: module.SignInPage,
-  })),
-);
-const SignUpPage = lazy(() =>
-  import('@/pages/auth/ui/sign-up-page').then((module) => ({
-    default: module.SignUpPage,
   })),
 );
 const WeekPage = lazy(() =>
@@ -44,6 +29,16 @@ const GuidePage = lazy(() =>
     default: module.GuidePage,
   })),
 );
+const PrivacyPage = lazy(() =>
+  import('@/pages/legal/ui/privacy-page').then((module) => ({
+    default: module.PrivacyPage,
+  })),
+);
+const TermsPage = lazy(() =>
+  import('@/pages/legal/ui/terms-page').then((module) => ({
+    default: module.TermsPage,
+  })),
+);
 
 const withRouteLoader = (element: ReactNode, label: string) => (
   <Suspense fallback={<Loader label={label} />}>
@@ -55,20 +50,8 @@ const withRouteLoader = (element: ReactNode, label: string) => (
 
 const publicRoutes = [
   {
-    path: routesPaths.signInEmailLinkRequest,
-    element: withRouteLoader(<EmailLinkRequestPage />, 'Loading sign in'),
-  },
-  {
-    path: routesPaths.signInEmailLink,
-    element: withRouteLoader(<EmailLinkHandlerPage />, 'Loading sign in'),
-  },
-  {
     path: routesPaths.signIn,
     element: withRouteLoader(<SignInPage />, 'Loading sign in'),
-  },
-  {
-    path: routesPaths.signUp,
-    element: withRouteLoader(<SignUpPage />, 'Loading sign up'),
   },
 ];
 
@@ -97,6 +80,14 @@ const routes: RouteObject[] = [
       {
         path: routesPaths.guide,
         element: withRouteLoader(<GuidePage />, 'Loading guide'),
+      },
+      {
+        path: routesPaths.privacy,
+        element: withRouteLoader(<PrivacyPage />, 'Loading privacy policy'),
+      },
+      {
+        path: routesPaths.terms,
+        element: withRouteLoader(<TermsPage />, 'Loading terms of service'),
       },
       {
         path: routesPaths.base,

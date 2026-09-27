@@ -29,9 +29,9 @@ const ICON_EXIT_DURATION_MS = 160;
 
 const STATE_ICON_SRC: Record<StateStatus, string> = {
   [StateStatus.Empty]: '/icons/01-empty.svg',
-  [StateStatus.FullDone]: '/icons/02-completed.svg',
-  [StateStatus.HalfDone]: '/icons/03-half-done.svg',
-  [StateStatus.Delay]: '/icons/04-moved.svg',
+  [StateStatus.Completed]: '/icons/02-completed.svg',
+  [StateStatus.PartiallyCompleted]: '/icons/03-half-done.svg',
+  [StateStatus.Delayed]: '/icons/04-moved.svg',
   [StateStatus.Failed]: '/icons/05-cancelled.svg',
 };
 
@@ -85,22 +85,22 @@ export const StateCell = ({ date, state, taskId, isLoading }: Props) => {
         onclick: () => updateStatus(StateStatus.Empty),
       },
       {
-        status: StateStatus.FullDone,
-        icon: getStateIcon(StateStatus.FullDone, MENU_ICON_SIZE),
-        label: 'Full done',
-        onclick: () => updateStatus(StateStatus.FullDone),
+        status: StateStatus.Completed,
+        icon: getStateIcon(StateStatus.Completed, MENU_ICON_SIZE),
+        label: 'Completed',
+        onclick: () => updateStatus(StateStatus.Completed),
       },
       {
-        status: StateStatus.HalfDone,
-        icon: getStateIcon(StateStatus.HalfDone, MENU_ICON_SIZE),
-        label: 'Half done',
-        onclick: () => updateStatus(StateStatus.HalfDone),
+        status: StateStatus.PartiallyCompleted,
+        icon: getStateIcon(StateStatus.PartiallyCompleted, MENU_ICON_SIZE),
+        label: 'Partially completed',
+        onclick: () => updateStatus(StateStatus.PartiallyCompleted),
       },
       {
-        status: StateStatus.Delay,
-        icon: getStateIcon(StateStatus.Delay, MENU_ICON_SIZE),
-        label: 'Delay',
-        onclick: () => updateStatus(StateStatus.Delay),
+        status: StateStatus.Delayed,
+        icon: getStateIcon(StateStatus.Delayed, MENU_ICON_SIZE),
+        label: 'Delayed',
+        onclick: () => updateStatus(StateStatus.Delayed),
       },
       {
         status: StateStatus.Failed,

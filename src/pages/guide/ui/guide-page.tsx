@@ -1,7 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { LuArrowRight } from 'react-icons/lu';
 import { Link } from 'react-router-dom';
 
+import { routesPaths } from '@/shared/config';
 import { settingsConfig } from '@/shared/config/settings.config';
 import { Button, Footer, PageHeader } from '@/shared/ui';
 
@@ -25,19 +26,19 @@ const marks = [
   },
   {
     icon: '02-completed',
-    label: 'Full done',
+    label: 'Completed',
     description:
       'You finished what you intended to do that day. For example, the presentation is ready to send',
   },
   {
     icon: '03-half-done',
-    label: 'Half done',
+    label: 'Partially completed',
     description:
       'You made progress but still have something left to do. For example, the outline is ready and the slides need work',
   },
   {
     icon: '04-moved',
-    label: 'Delay',
+    label: 'Delayed',
     description:
       'You are putting the task off until another day. This mark does not move or copy the task automatically',
   },
@@ -53,6 +54,10 @@ const sectionClassName = 'scroll-mt-8 border-t border-rule pt-10 sm:pt-12';
 
 /** Explains weekly planning and daily marks without requiring an account */
 export const GuidePage = () => {
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, []);
+
   useEffect(() => {
     const previousTitle = document.title;
     document.title = 'How to use Running List';
@@ -149,10 +154,9 @@ export const GuidePage = () => {
             <section id="first-task" className={sectionClassName}>
               <h2 className="type-section">Start with a few tasks</h2>
               <p className="type-lead mt-4 text-ink-muted">
-                Sign in with Google or an email link. Running List opens your
-                current week. Choose a few concrete things you want to do:
-                prepare a presentation, book a dentist appointment, or sort out
-                paperwork
+                Sign in with Google. Running List opens your current week.
+                Choose a few concrete things you want to do: prepare a
+                presentation, book a dentist appointment, or sort out paperwork
               </p>
               <ol className="type-lead mt-6 list-decimal space-y-3 pl-6 marker:text-ink-muted">
                 <li>
@@ -208,7 +212,7 @@ export const GuidePage = () => {
               </p>
               <GuideFigure
                 name="choose-status"
-                alt="A day cell with the Empty, Full done, Half done, Delay, Failed, and Delete menu options"
+                alt="A day cell with the Empty, Completed, Partially completed, Delayed, Failed, and Delete menu options"
                 caption="These are the same symbols and labels you will find in the table"
               />
             </section>
@@ -233,7 +237,7 @@ export const GuidePage = () => {
               <p className="type-help mt-6 text-ink-muted">
                 The copy starts with no daily marks. Your original task and its
                 marks stay in the week you copied from. Copying is a separate
-                action from choosing Delay in a day cell
+                action from choosing Delayed in a day cell
               </p>
               <GuideFigure
                 name="next-week"
@@ -247,8 +251,8 @@ export const GuidePage = () => {
               <p className="type-lead mt-4 text-ink-muted">
                 A row can also hold something you want to do regularly. Add
                 “Read for 20 minutes” once, then mark each day you read. Use
-                Full done when you meet your intention and Half done when you
-                make some progress
+                Completed when you meet your intention and Partially completed
+                when you make some progress
               </p>
               <p className="type-lead mt-4 text-ink-muted">
                 Choose the days that make sense for you. Leave other days
@@ -316,6 +320,23 @@ export const GuidePage = () => {
                   <LuArrowRight aria-hidden="true" className="ml-3 size-4" />
                 </Link>
               </Button>
+              <nav
+                aria-label="Legal information"
+                className="type-help mt-8 flex flex-wrap gap-x-6 gap-y-3 text-ink-muted"
+              >
+                <Link
+                  to={`/${routesPaths.privacy}`}
+                  className="min-h-11 content-center underline decoration-border underline-offset-4 transition-colors hover:text-foreground focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                >
+                  Privacy Policy
+                </Link>
+                <Link
+                  to={`/${routesPaths.terms}`}
+                  className="min-h-11 content-center underline decoration-border underline-offset-4 transition-colors hover:text-foreground focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                >
+                  Terms of Service
+                </Link>
+              </nav>
             </div>
           </div>
         </div>

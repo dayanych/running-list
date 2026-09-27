@@ -17,7 +17,7 @@ const PREVIEW_PLACEHOLDER_SRC =
 
 const DEFAULT_DESCRIPTION = (
   <>
-    <span className="block sm:inline">Use your email or Google account.</span>{' '}
+    <span className="block sm:inline">Use your Google account.</span>{' '}
     <span className="block sm:inline">No password needed</span>
   </>
 );

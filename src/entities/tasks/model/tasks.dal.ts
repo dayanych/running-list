@@ -1,5 +1,3 @@
-import { Timestamp } from 'firebase/firestore';
-
 import { converterTaskDtoToTask } from '../api/mappers/task-dto-to-task.mapper';
 import { convertedTaskToTaskDto } from '../api/mappers/task-to-task-dto.mapper';
 import { TasksService } from '../api/tasks.service';
@@ -39,7 +37,7 @@ export class TasksDal {
       year: taskDtoWithoutId.year,
       color: taskDtoWithoutId.color,
       order: getNextTaskOrder(existingTasks),
-      created_at: Timestamp.fromDate(new Date()),
+      created_at: new Date().toISOString(),
     };
 
     const task = await TasksService.createAndGetTask(taskDto);
@@ -50,9 +48,7 @@ export class TasksDal {
   public static async updateTask(task: Task): Promise<Task> {
     const taskDto = convertedTaskToTaskDto(task);
 
-    await TasksService.updateTask(taskDto);
-
-    const updatedTaskDto = await TasksService.getTaskById(task.id);
+    const updatedTaskDto = await TasksService.updateTask(taskDto);
 
     return converterTaskDtoToTask(updatedTaskDto);
   }

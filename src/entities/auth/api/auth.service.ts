@@ -1,87 +1,51 @@
-import {
-  createUserWithEmailAndPassword,
-  getAuth,
-  GoogleAuthProvider,
-  isSignInWithEmailLink,
-  onAuthStateChanged,
-  sendSignInLinkToEmail,
-  signInWithEmailAndPassword,
-  signInWithEmailLink,
-  signInWithPopup,
-  User,
-} from 'firebase/auth';
+import type { User } from '@supabase/supabase-js';
 
-import { firebaseActionCodeSettings, firebaseApp } from '@/shared/config';
-
-import { UserLoginDto, UserRegistrationDto } from './';
+import { supabase } from '@/shared/config';
 
 interface ListenAuthStateChangeParams {
-  onLogin: (userId: string) => void;
+  onLogin: (user: User) => void;
   onLogout: () => void;
 }
 
-const auth = getAuth(firebaseApp);
-
 export class AuthService {
-  /** Depricated. Use sendEmailLink instead */
-  static signUp = async ({
-    email,
-    password,
-  }: UserRegistrationDto): Promise<User> => {
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password,
-    );
-
-    return userCredential.user;
-  };
-
-  /** Depricated. Use sendEmailLink instead */
-  static signIn = async ({ email, password }: UserLoginDto): Promise<User> => {
-    const userCredential = await signInWithEmailAndPassword(
-      auth,
-      email,
-      password,
-    );
-
-    return userCredential.user;
-  };
-
   static logout = async (): Promise<void> => {
-    await auth.signOut();
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
   };
 
+  /**
+   * Subscribes to session changes, including the initial session
+   *
+   * @param params - Handlers for a signed-in user and for a sign-out
+   * @returns Function that removes the subscription
+   */
   static listenAuthStateChange(params: ListenAuthStateChangeParams) {
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        params.onLogout();
+    const { data } = supabase.auth.onAuthStateChange((event, session) => {
+      // A refreshed token belongs to the same user, so there is nothing to reload
+      if (event === 'TOKEN_REFRESHED') return;
+
+      if (session) {
+        params.onLogin(session.user);
       } else {
-        params.onLogin(user.uid);
+        params.onLogout();
       }
     });
+
+    return () => data.subscription.unsubscribe();
   }
 
-  static sendEmailLink = async (email: string): Promise<void> => {
-    await sendSignInLinkToEmail(auth, email, firebaseActionCodeSettings);
-  };
-
-  static isEmailLink = (link: string): boolean => {
-    return isSignInWithEmailLink(auth, link);
-  };
-
-  static signInWithEmailLink = async (
-    email: string,
-    link: string,
-  ): Promise<User> => {
-    const result = await signInWithEmailLink(auth, email, link);
-    return result.user;
-  };
-
-  static signInWithGoogle = async (): Promise<User> => {
-    const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({ prompt: 'select_account' });
-    const result = await signInWithPopup(auth, provider);
-    return result.user;
+  /**
+   * Sends the browser to Google; the session arrives through
+   * listenAuthStateChange after Supabase redirects back to the app
+   */
+  static signInWithGoogle = async (): Promise<void> => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin,
+        queryParams: { prompt: 'select_account' },
+      },
+    });
+    if (error) throw error;
   };
 }

@@ -13,18 +13,13 @@ export const useAuthInjector = () => {
   const user = useUser();
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    AuthDal.listenAuthStateChange(dispatch, setIsLoading);
-  }, []);
+  useEffect(() => AuthDal.listenAuthStateChange(dispatch, setIsLoading), []);
 
   useEffect(() => {
     if (isLoading) return;
 
     // Redirect logic with public routes consideration
-    if (
-      location.pathname.includes(routesPaths.signInEmailLink) ||
-      location.pathname.includes(routesPaths.signInEmailLinkRequest)
-    ) {
+    if (location.pathname.includes(routesPaths.signIn)) {
       if (user) {
         navigate(`/${routesPaths.base}`, { replace: true });
       }
@@ -33,7 +28,7 @@ export const useAuthInjector = () => {
     }
 
     if (!user) {
-      navigate(`/${routesPaths.signInEmailLinkRequest}`, { replace: true });
+      navigate(`/${routesPaths.signIn}`, { replace: true });
     }
   }, [user, navigate, isLoading, location.pathname]);
 

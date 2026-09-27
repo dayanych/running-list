@@ -1,5 +1,3 @@
-import { Timestamp } from 'firebase/firestore';
-
 import { getEndOfAppWeek, getStartDateOfAppWeek } from '@/shared/lib/week';
 
 import { converterStateDtoToState } from '../api/mappers/state-dto-to-state';
@@ -36,7 +34,7 @@ export class StatesDal {
 
   public static async createState(state: StateWithoutId): Promise<State> {
     const stateDtoWithoutId = {
-      date: Timestamp.fromDate(state.date),
+      date: state.date.toISOString(),
       date_key: toDateKey(state.date),
       status: state.status,
       task_id: state.taskId,
@@ -50,9 +48,7 @@ export class StatesDal {
 
   public static async updateState(state: State): Promise<State> {
     const stateDto = converterStateToStateDto(state);
-    await StatesService.updateState(stateDto);
-
-    const updatedState = await StatesService.getStateById(state.id);
+    const updatedState = await StatesService.updateState(stateDto);
 
     return converterStateDtoToState(updatedState);
   }

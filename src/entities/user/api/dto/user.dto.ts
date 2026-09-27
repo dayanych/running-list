@@ -1,6 +1,3 @@
-export type UserDto = {
-  id: string;
-  name: string | null;
-  email: string;
-  task_ids: string[] | null;
-};
+import type { Database } from '@/shared/config/database.types';
+
+export type UserDto = Database['public']['Tables']['users']['Row'];
