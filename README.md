@@ -24,6 +24,15 @@ Run `supabase/migrations/20260925000000_create_running_list_schema.sql` in
 the Supabase SQL Editor. The migration creates the application tables, profile
 trigger, indexes, and Row Level Security policies.
 
+Deploy the authenticated account-deletion Edge Function:
+
+```bash
+supabase functions deploy delete-account
+```
+
+The function uses Supabase's built-in URL, anonymous key, and service-role key
+environment variables. Never expose the service-role key to the browser.
+
 In Supabase Auth, enable the Google provider and add both the local application
 URL and the production application URL to the allowed redirect URLs.
 

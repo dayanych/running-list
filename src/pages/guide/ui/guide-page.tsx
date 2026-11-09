@@ -1,9 +1,10 @@
-import { useEffect, useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { LuArrowRight } from 'react-icons/lu';
 import { Link } from 'react-router-dom';
 
 import { routesPaths } from '@/shared/config';
 import { settingsConfig } from '@/shared/config/settings.config';
+import { usePageMeta } from '@/shared/lib';
 import { Button, Footer, PageHeader } from '@/shared/ui';
 
 import { GuideFigure } from './guide-figure';
@@ -14,6 +15,7 @@ const sections = [
   ['daily-marks', 'Understand the marks'],
   ['next-week', 'Plan the next week'],
   ['habits', 'Track a habit'],
+  ['account', 'Manage your account'],
   ['quick-reference', 'Quick reference'],
 ] as const;
 
@@ -58,14 +60,11 @@ export const GuidePage = () => {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, []);
 
-  useEffect(() => {
-    const previousTitle = document.title;
-    document.title = 'How to use Running List';
-
-    return () => {
-      document.title = previousTitle;
-    };
-  }, []);
+  usePageMeta({
+    title: 'How to use Running List',
+    description:
+      'Learn how to plan a week in Running List, mark daily progress, track a habit, and decide what comes next',
+  });
 
   return (
     <>
@@ -264,6 +263,20 @@ export const GuidePage = () => {
                 alt="A Read for 20 minutes task with completed and partially completed marks on different days"
                 caption="One row is enough to follow a habit through the week"
               />
+            </section>
+
+            <section id="account" className={sectionClassName}>
+              <h2 className="type-section">Manage your account</h2>
+              <p className="type-lead mt-4 text-ink-muted">
+                Open Settings from the top-right corner when you want to review
+                your account information or log out
+              </p>
+              <p className="type-lead mt-4 text-ink-muted">
+                Settings also lets you permanently delete your account. You will
+                see a second confirmation before anything is removed. Deleting
+                the account erases your tasks and daily marks and cannot be
+                undone
+              </p>
             </section>
 
             <section id="quick-reference" className={sectionClassName}>

@@ -6,6 +6,8 @@ import { AuthDal } from '@/entities/auth';
 import { routesPaths } from '@/shared/config';
 import { useUser } from '@/shared/lib';
 
+import { shouldRedirectGuest } from './should-redirect-guest';
+
 export const useAuthInjector = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -18,17 +20,8 @@ export const useAuthInjector = () => {
   useEffect(() => {
     if (isLoading) return;
 
-    // Redirect logic with public routes consideration
-    if (location.pathname.includes(routesPaths.signIn)) {
-      if (user) {
-        navigate(`/${routesPaths.base}`, { replace: true });
-      }
-
-      return;
-    }
-
-    if (!user) {
-      navigate(`/${routesPaths.signIn}`, { replace: true });
+    if (shouldRedirectGuest(location.pathname, Boolean(user))) {
+      navigate(`/${routesPaths.base}`, { replace: true });
     }
   }, [user, navigate, isLoading, location.pathname]);
 

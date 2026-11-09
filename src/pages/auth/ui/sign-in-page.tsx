@@ -1,5 +1,6 @@
 import { LuLoaderCircle } from 'react-icons/lu';
 
+import { usePageMeta } from '@/shared/lib';
 import { Button } from '@/shared/ui';
 
 import { useSignInPage } from '../lib/use-sign-in-page';
@@ -8,6 +9,12 @@ import { AuthLayout } from './auth-layout';
 
 export const SignInPage = () => {
   const { handleGoogleSignIn, isGooglePending } = useSignInPage();
+
+  usePageMeta({
+    title: 'Running List | Your week in one table',
+    description:
+      'Plan your week in one table. Tasks in rows, days in columns, with simple marks for what happened each day',
+  });
 
   return (
     <AuthLayout>

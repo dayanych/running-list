@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom';
 
+import { usePageMeta } from '@/shared/lib';
 import { Button, StatusScreen, statusScreenActionClassName } from '@/shared/ui';
 
 export const NotFoundPage = () => {
+  usePageMeta({ title: 'Page not found | Running List', noindex: true });
+
   return (
     <StatusScreen
       marker="missing"

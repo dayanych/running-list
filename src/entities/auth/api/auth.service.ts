@@ -13,6 +13,18 @@ export class AuthService {
     if (error) throw error;
   };
 
+  /** Permanently deletes the authenticated account through the server */
+  static deleteAccount = async (): Promise<void> => {
+    const { error } = await supabase.functions.invoke('delete-account');
+    if (error) throw error;
+  };
+
+  /** Removes the deleted account session from this browser */
+  static clearLocalSession = async (): Promise<void> => {
+    const { error } = await supabase.auth.signOut({ scope: 'local' });
+    if (error) throw error;
+  };
+
   /**
    * Subscribes to session changes, including the initial session
    *

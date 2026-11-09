@@ -9,22 +9,13 @@ interface Props {
   icon: IconType;
   to?: string;
   onClick?: () => void;
-  danger?: boolean;
 }
 
 /** Renders a header icon action with a label revealed on hover or focus */
-export const HeaderAction = ({
-  label,
-  icon: Icon,
-  to,
-  onClick,
-  danger = false,
-}: Props) => {
+export const HeaderAction = ({ label, icon: Icon, to, onClick }: Props) => {
   const className = cn(
     'header-action h-11 min-w-11 rounded-none px-2.5 duration-200 motion-reduce:transition-none',
-    danger
-      ? 'border-destructive text-destructive hover:border-destructive hover:bg-destructive-wash hover:text-destructive focus-visible:ring-destructive'
-      : 'text-ink-secondary hover:border-primary',
+    'text-ink-secondary hover:border-primary',
   );
   const content = (
     <>

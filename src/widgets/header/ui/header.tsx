@@ -1,4 +1,4 @@
-import { LuBookOpen, LuLogOut } from 'react-icons/lu';
+import { LuBookOpen, LuSettings } from 'react-icons/lu';
 
 import { routesPaths } from '@/shared/config';
 import { PageHeader } from '@/shared/ui';
@@ -7,7 +7,7 @@ import { useHeader } from '..';
 import { HeaderAction } from './header-action';
 
 export const Header = () => {
-  const { user, onLogout } = useHeader();
+  const { user } = useHeader();
 
   if (!user) {
     return null;
@@ -20,7 +20,11 @@ export const Header = () => {
         icon={LuBookOpen}
         to={`/${routesPaths.guide}`}
       />
-      <HeaderAction label="Log out" icon={LuLogOut} danger onClick={onLogout} />
+      <HeaderAction
+        label="Settings"
+        icon={LuSettings}
+        to={`/${routesPaths.settings}`}
+      />
     </PageHeader>
   );
 };

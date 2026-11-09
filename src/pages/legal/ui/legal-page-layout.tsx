@@ -1,7 +1,8 @@
-import { ReactNode, useEffect, useLayoutEffect } from 'react';
+import { ReactNode, useLayoutEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import { routesPaths } from '@/shared/config';
+import { usePageMeta } from '@/shared/lib';
 import { Button, Footer, PageHeader } from '@/shared/ui';
 
 interface LegalSection {
@@ -34,14 +35,7 @@ export const LegalPageLayout = ({
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [title]);
 
-  useEffect(() => {
-    const previousTitle = document.title;
-    document.title = `${title} | Running List`;
-
-    return () => {
-      document.title = previousTitle;
-    };
-  }, [title]);
+  usePageMeta({ title: `${title} | Running List`, description: summary });
 
   return (
     <>

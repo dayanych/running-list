@@ -1,5 +1,5 @@
 import { lazy, ReactNode, Suspense } from 'react';
-import { RouteObject } from 'react-router-dom';
+import { Navigate, RouteObject } from 'react-router-dom';
 
 import { CurrentWeekRedirectPage } from '@/pages/home';
 import { NotFoundPage } from '@/pages/not-found';
@@ -23,7 +23,11 @@ const WeekPage = lazy(() =>
     default: module.WeekPage,
   })),
 );
-
+const SettingsPage = lazy(() =>
+  import('@/pages/settings/ui/settings-page').then((module) => ({
+    default: module.SettingsPage,
+  })),
+);
 const GuidePage = lazy(() =>
   import('@/pages/guide/ui/guide-page').then((module) => ({
     default: module.GuidePage,
@@ -50,15 +54,23 @@ const withRouteLoader = (element: ReactNode, label: string) => (
 
 const publicRoutes = [
   {
+    index: true,
+    element: (
+      <CurrentWeekRedirectPage
+        guestElement={withRouteLoader(<SignInPage />, 'Loading sign in')}
+      />
+    ),
+  },
+  {
     path: routesPaths.signIn,
-    element: withRouteLoader(<SignInPage />, 'Loading sign in'),
+    element: <Navigate to={`/${routesPaths.base}`} replace />,
   },
 ];
 
 const protectedRoutes = [
   {
-    index: true,
-    element: <CurrentWeekRedirectPage />,
+    path: routesPaths.settings,
+    element: withRouteLoader(<SettingsPage />, 'Loading settings'),
   },
   {
     path: routesPaths.year,

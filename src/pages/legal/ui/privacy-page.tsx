@@ -2,7 +2,7 @@ import { appConfig, routesPaths } from '@/shared/config';
 
 import { LegalPageLayout } from './legal-page-layout';
 
-const UPDATED_AT = 'September 25, 2026';
+const UPDATED_AT = 'September 28, 2026';
 
 const contact = appConfig.supportEmail ? (
   <a href={`mailto:${appConfig.supportEmail}`}>{appConfig.supportEmail}</a>
@@ -110,8 +110,9 @@ const sections = [
           tasks and daily marks in the application.
         </p>
         <p>
-          To request a copy of your information, correct account information, or
-          delete your account and its associated content, email {contact}. We
+          You can permanently delete your account and its associated content
+          from Settings. Account deletion cannot be undone. To request a copy of
+          your information or correct account information, email {contact}. We
           may need to verify that the request comes from the account owner.
           Limited information may remain temporarily in backups, security
           records, or logs when required for legitimate operational or legal

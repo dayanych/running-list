@@ -9,6 +9,7 @@ export const routesPaths = {
   terms: 'terms',
 
   // Protected routes
+  settings: 'settings',
   year: ':year',
   week: ':week',
 } as const;

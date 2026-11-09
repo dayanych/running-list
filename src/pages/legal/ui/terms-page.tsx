@@ -2,7 +2,7 @@ import { appConfig, routesPaths } from '@/shared/config';
 
 import { LegalPageLayout } from './legal-page-layout';
 
-const UPDATED_AT = 'September 25, 2026';
+const UPDATED_AT = 'September 28, 2026';
 
 const contact = appConfig.supportEmail ? (
   <a href={`mailto:${appConfig.supportEmail}`}>{appConfig.supportEmail}</a>
@@ -112,8 +112,9 @@ const sections = [
     content: (
       <>
         <p>
-          You may stop using Running List at any time. To request deletion of
-          your account and associated content, email {contact}.
+          You may stop using Running List or log out at any time. You can also
+          permanently delete your account and associated content from Settings.
+          Account deletion cannot be undone.
         </p>
         <p>
           We may restrict or terminate access when reasonably necessary to

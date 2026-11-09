@@ -5,6 +5,7 @@ import { setUser, unsetUser, UsersDal } from '@/entities/user';
 import { notify } from '@/shared/ui/toaster/notify';
 
 import { AuthService } from '../api/auth.service';
+import { runAccountDeletion } from './lib/delete-account';
 
 export class AuthDal {
   public static async logout(): Promise<void> {
@@ -12,6 +13,20 @@ export class AuthDal {
       await AuthService.logout();
     } catch {
       notify.error('Could not log out. Try again later');
+    }
+  }
+
+  /** Permanently deletes the current account and clears its browser session */
+  public static async deleteAccount(): Promise<boolean> {
+    try {
+      await runAccountDeletion({
+        deleteAccount: AuthService.deleteAccount,
+        clearLocalSession: AuthService.clearLocalSession,
+      });
+      return true;
+    } catch {
+      notify.error('Could not delete your account. Try again later');
+      return false;
     }
   }
 
