@@ -120,6 +120,11 @@ export const GuidePage = () => {
                 A mark at their intersection tells you what happened with that
                 task on that day
               </p>
+              <GuideFigure
+                name="week-overview"
+                alt="Seven tasks on the left and daily marks for Monday through Sunday on the right"
+                caption="The marks show how each task went over the week"
+              />
               <dl className="mt-8 space-y-6">
                 <div>
                   <dt className="type-task">See the whole week together</dt>
@@ -143,11 +148,6 @@ export const GuidePage = () => {
                   </dd>
                 </div>
               </dl>
-              <GuideFigure
-                name="week-overview"
-                alt="A Running List week with example tasks in rows and daily marks across seven day columns"
-                caption="One task per row. One day per column. A week you can read at a glance"
-              />
             </section>
 
             <section id="first-task" className={sectionClassName}>
@@ -166,16 +166,16 @@ export const GuidePage = () => {
                 <li>Type a task name, such as “Prepare a presentation”</li>
                 <li>Press Enter or the plus button to add it to the week</li>
               </ol>
+              <GuideFigure
+                name="add-task"
+                alt="The Add new task field with a plus button on the right"
+                caption="Find the task field below the weekly table"
+              />
               <p className="type-help mt-6 text-ink-muted">
                 A good starting point is three or four tasks. The add-task field
                 becomes unavailable at {settingsConfig.maxTasksPerWeek} tasks,
                 including habits
               </p>
-              <GuideFigure
-                name="add-task"
-                alt="The Add new task input below the table and a task named Prepare a presentation"
-                caption="Add the task once, then use its row throughout the week"
-              />
             </section>
 
             <section id="daily-marks" className={sectionClassName}>
@@ -185,6 +185,11 @@ export const GuidePage = () => {
                 mark from the menu. You can open the same cell again to change
                 it as your plans or progress change
               </p>
+              <GuideFigure
+                name="choose-status"
+                alt="An empty day square with its status menu open underneath"
+                caption="In this screenshot, Full done, Half done, and Delay correspond to Completed, Partially completed, and Delayed in the current menu"
+              />
               <dl className="mt-8 divide-y divide-rule">
                 {marks.map((mark) => (
                   <div key={mark.icon} className="flex gap-5 py-5 first:pt-0">
@@ -209,11 +214,6 @@ export const GuidePage = () => {
                 unfilled square; choosing Delete removes the mark and returns
                 the cell to a dot
               </p>
-              <GuideFigure
-                name="choose-status"
-                alt="A day cell with the Empty, Completed, Partially completed, Delayed, Failed, and Delete menu options"
-                caption="These are the same symbols and labels you will find in the table"
-              />
             </section>
 
             <section id="next-week" className={sectionClassName}>
@@ -233,16 +233,16 @@ export const GuidePage = () => {
                   Use the right arrow above the table to see the next week
                 </li>
               </ol>
+              <GuideFigure
+                name="next-week"
+                alt="The task menu with Copy to next week highlighted between Rename and Delete task"
+                caption="Choose Copy to next week in the task menu"
+              />
               <p className="type-help mt-6 text-ink-muted">
                 The copy starts with no daily marks. Your original task and its
                 marks stay in the week you copied from. Copying is a separate
                 action from choosing Delayed in a day cell
               </p>
-              <GuideFigure
-                name="next-week"
-                alt="The task menu showing Rename, Copy to next week, and Delete task"
-                caption="Continue a task next week while keeping this week's record"
-              />
             </section>
 
             <section id="habits" className={sectionClassName}>
@@ -260,8 +260,8 @@ export const GuidePage = () => {
               </p>
               <GuideFigure
                 name="habit-example"
-                alt="A Read for 20 minutes task with completed and partially completed marks on different days"
-                caption="One row is enough to follow a habit through the week"
+                alt="The Read for 20 minutes row with four completed squares, two partially completed squares, and one empty square"
+                caption="Use the same row to record each day’s reading progress"
               />
             </section>
 

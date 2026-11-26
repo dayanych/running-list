@@ -1,12 +1,13 @@
-type GuideFigureName =
-  | 'week-overview'
-  | 'add-task'
-  | 'choose-status'
-  | 'next-week'
-  | 'habit-example';
+const screenshotSizes = {
+  'week-overview': { width: 580, height: 357 },
+  'add-task': { width: 418, height: 64 },
+  'choose-status': { width: 208, height: 315 },
+  'next-week': { width: 285, height: 184 },
+  'habit-example': { width: 484, height: 43 },
+};
 
 interface Props {
-  name: GuideFigureName;
+  name: keyof typeof screenshotSizes;
   alt: string;
   caption: string;
 }
@@ -23,16 +24,18 @@ export const GuideFigure = ({ name, alt, caption }: Props) => {
 
   if (!src) return null;
 
+  const { width, height } = screenshotSizes[name];
+
   return (
     <figure className="mt-8">
       <img
         src={src}
         alt={alt}
-        width={1440}
-        height={900}
+        width={width}
+        height={height}
         loading="lazy"
         decoding="async"
-        className="h-auto w-full border border-rule"
+        className="h-auto max-w-full border border-rule"
       />
       <figcaption className="type-help mt-3 text-ink-muted">
         {caption}
